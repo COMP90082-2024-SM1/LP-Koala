@@ -22,18 +22,18 @@ Yujin Du - Back-end Developer: Yujin mainly focuses on the back end development.
 Qinglin Zhao - Back-end Developer: Qinglin will be commited to the back end development together with Yujin.<br>
 
 ## Workflow
-Our project uses a Git Flow branching strategy to streamline development and ensure stability:<br>
+### Our project uses a Git Flow branching strategy to streamline development and ensure stability:<br>
 Main Branch: Serves as the official project history, containing production-ready code.<br>
 Develop Branch: Acts as an integration branch for features, fixes, and updates. All completed work is merged here before being deployed to the main branch.<br>
 Feature Branches: For new features and non-emergency bug fixes. Branch off from and merge back into the develop branch.<br>
 Release Branches: Used to prepare for a new production release. They allow for minor bug fixes and preparing meta-data for a release.
 
-Naming Conventions<br>
+### Naming Conventions<br>
 Branches: Use a clear, descriptive name that reflects the feature or fix, prefixed accordingly: feature/, bugfix/, or release/. Example: feature/add-user-profiles.<br>
 Commits: Start with a verb in the imperative mood, followed by a concise description: "Add user login functionality".<br>
 Pull Requests: Title should match the branch purpose, and the description should clearly explain the change, including any relevant issue or task numbers.
 
-Workflow Process<br>
+### Workflow Process<br>
 Task Assignment: Tasks are assigned during the sprint planning meeting, documented in our project management tool.<br>
 Development: Work on your assigned tasks in the corresponding branch type. Regularly push your changes to the remote repository.<br>
 Code Review: Once a task is completed, open a PR for code review. At least one other team member must review and approve the changes.<br>
