@@ -2,13 +2,20 @@
 import Image from "next/image";
 import {Button} from "@/components/ui/button";
 import {useRouter} from "next/navigation";
+import axios from "axios";
+import React, {MouseEventHandler} from "react";
 
 const SignInForm = () => {
 
     const router = useRouter()
 
-    const onClick = () => {
-        router.push('/')
+    const onClick = async (e: React.FormEvent) => {
+        e.preventDefault()
+        const response = await axios.post('http://localhost:8081/api/log-in',{name: 'franco', password:'nihao'})
+        console.log(response)
+        if (response.status === 200) {
+            router.push('/');
+        }
     }
 
 
@@ -32,7 +39,7 @@ const SignInForm = () => {
             </div>
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form className="space-y-6" action="#" method="POST">
+                <form className="space-y-6" onSubmit={onClick} action="#" method="POST">
                     <div>
                         <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                             Email address
@@ -70,7 +77,6 @@ const SignInForm = () => {
                     <div>
                         <Button
                             type="submit"
-                            onClick={onClick}
                             className="flex w-full justify-center rounded-md bg-[#1c407f] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         >
                             Sign in
