@@ -2,7 +2,6 @@
 
 
 import {useEffect, useState} from "react";
-import {Simulate} from "react-dom/test-utils";
 
 export const Home = () => {
     const [text, setText] = useState('Loading');
