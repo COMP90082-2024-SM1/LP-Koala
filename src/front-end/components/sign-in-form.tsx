@@ -14,7 +14,7 @@ const SignInForm = () => {
         const response = await axios.post('http://localhost:8081/api/log-in',{name: 'franco', password:'nihao'})
         console.log(response)
         if (response.status === 200) {
-            router.push('/');
+            router.push('/dashboard');
         }
     }
 
