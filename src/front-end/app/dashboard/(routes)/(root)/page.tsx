@@ -43,14 +43,6 @@ export default async function Dashboard() {
     ]
     return (
         <div className="p-6 space-y-4">
-            <div className="flex items-center py-4 justify-between">
-                <Link href="/dashboard/create">
-                <Button>
-                    <PlusCircle className="h-4 w-4 mr-2" />
-                    New course
-                </Button>
-                </Link>
-            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <InfoCard
                     icon={Clock}
@@ -63,6 +55,12 @@ export default async function Dashboard() {
                     numberOfItems={5}
                     variant="success"
                 />
+                <Link href="/dashboard/create">
+                    <Button>
+                        <PlusCircle className="h-4 w-4 mr-2" />
+                        New Project
+                    </Button>
+                </Link>
             </div>
             <ProjectsList
                 items={items}

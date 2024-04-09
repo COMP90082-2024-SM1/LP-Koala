@@ -11,11 +11,11 @@ const guestRoutes = [
     label: "Dashboard",
     href: "/dashboard",
   },
-  {
-    icon: Compass,
-    label: "Projects",
-    href: "/projects",
-  },
+  // {
+  //   icon: Compass,
+  //   label: "Projects",
+  //   href: "/projects",
+  // },
 ];
 
 const adminRoutes = [

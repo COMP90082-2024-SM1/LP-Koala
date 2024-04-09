@@ -3,7 +3,7 @@ import Link from "next/link";
 import { BookOpen } from "lucide-react";
 
 // import { IconBadge } from "@/components/icon-badge";
-// import { CourseProgress } from "@/components/course-progress";
+// import { ProjectProgress } from "@/components/course-progress";
 
 interface ProjectCardProps {
   id: string;
@@ -25,7 +25,7 @@ export const ProjectCard = ({
   category
 }: ProjectCardProps) => {
   return (
-    <Link href={`/courses/${id}`}>
+    <Link href={`/projects/${id}`}>
       <div className="group hover:shadow-sm transition overflow-hidden border rounded-lg p-3 h-full">
         <div className="relative w-full aspect-video rounded-md overflow-hidden">
           <Image
@@ -51,7 +51,7 @@ export const ProjectCard = ({
             </div>
           </div>
           {/*{progress !== null ? (*/}
-          {/*  <CourseProgress*/}
+          {/*  <ProjectProgress*/}
           {/*    variant={progress === 100 ? "success" : "default"}*/}
           {/*    size="sm"*/}
           {/*    value={progress}*/}
