@@ -5,7 +5,7 @@ const nextConfig = {
             {
                 source: '/',
                 destination: '/log-in',
-                permanent:true
+                permanent: true
             }
         ]
     }
