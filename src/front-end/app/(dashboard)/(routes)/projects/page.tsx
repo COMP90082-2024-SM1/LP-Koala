@@ -21,18 +21,46 @@ export default async function Dashboard() {
     //     coursesInProgress
     // } = await getDashboardCourses(userId);
 
-    const items = [{
-        id: '123',
-        title: 'sad',
-        imageUrl: '',
-        chaptersLength: 2,
-        price: 12,
-        progress: 20,
-        category: 'writing'
+    const items = [
+        {
+            id: '123',
+            title: 'Project 1',
+            imageUrl: '',
+            chaptersLength: 2,
+            price: 12,
+            progress: 20,
+            category: 'writing'
     },
         {
             id: '123',
-            title: 'sad',
+            title: 'Project 2',
+            imageUrl: '',
+            chaptersLength: 2,
+            price: 12,
+            progress: 20,
+            category: 'writing'
+        },
+        {
+            id: '123',
+            title: 'Project 3',
+            imageUrl: '',
+            chaptersLength: 2,
+            price: 12,
+            progress: 20,
+            category: 'writing'
+        },
+        {
+            id: '123',
+            title: 'Project 4',
+            imageUrl: '',
+            chaptersLength: 2,
+            price: 12,
+            progress: 20,
+            category: 'writing'
+        },
+        {
+            id: '123',
+            title: 'Project 5',
             imageUrl: '',
             chaptersLength: 2,
             price: 12,

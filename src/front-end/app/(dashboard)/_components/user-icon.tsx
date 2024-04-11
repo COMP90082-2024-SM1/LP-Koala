@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {CircleUserRound} from "lucide-react";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import {useRouter} from "next/navigation";
@@ -12,20 +12,20 @@ function UserIcon() {
     const router = useRouter()
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className='focus:outline-none'
-
+            <DropdownMenuTrigger  className='focus:outline-none'
             >
-                <CircleUserRound className='mx-3' color='#1c407f' size={36} />
+                <CircleUserRound className='mx-3 hover:stroke-gray-400' color='#1c407f' size={36} />
             </DropdownMenuTrigger>
-            <DropdownMenuContent className='mx-4'>
+            <DropdownMenuContent className='mx-4' >
                 {/*TODO: /profile should be followed by a user id to show corresponding user*/}
                 <DropdownMenuItem onClick={()=>router.push('/profile')}>
                     Profile
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={()=>router.push('/change-password')}>
                     Change Password
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                {/*user should be logged out: clear cookie for jwt?*/}
+                <DropdownMenuItem onClick={()=>router.push('/log-in')}>
                     Log Out
                 </DropdownMenuItem>
             </DropdownMenuContent>

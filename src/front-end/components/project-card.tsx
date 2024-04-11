@@ -1,9 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { BookOpen } from "lucide-react";
 
-// import { IconBadge } from "@/components/icon-badge";
-// import { ProjectProgress } from "@/components/course-progress";
 
 interface ProjectCardProps {
   id: string;
@@ -46,7 +43,7 @@ export const ProjectCard = ({
             <div className="flex items-center gap-x-1 text-slate-500">
               {/*<IconBadge size="sm" icon={BookOpen} />*/}
               <span>
-                {chaptersLength} {chaptersLength === 1 ? "Activity" : "Activities"}
+                {chaptersLength} {chaptersLength === 1 ? "Module" : "Modules"}
               </span>
             </div>
           </div>
@@ -57,9 +54,7 @@ export const ProjectCard = ({
           {/*    value={progress}*/}
           {/*  />*/}
           {/*) : (*/}
-            <p className="text-md md:text-sm font-medium text-slate-700">
-              {(price)}
-            </p>
+
           {/*)}*/}
         </div>
       </div>
