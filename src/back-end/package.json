@@ -1,0 +1,27 @@
+{
+  "name": "lp-project",
+  "version": "1.0.0",
+  "description": "LP project with Nodejs, Express and MongoDB",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "start:dev": "nodemon -L server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/COMP90082-2024-SM1/LP-Koala.git#backend"
+  },
+  "author": "Yujin Du, Qinglin Zhao, Weiyang Wu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/COMP90082-2024-SM1/LP-Koala/issues"
+  },
+  "homepage": "https://github.com/COMP90082-2024-SM1/LP-Koala/tree/backend#readme",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.3.1",
+    "prettier": "^3.2.5"
+  }
+}
