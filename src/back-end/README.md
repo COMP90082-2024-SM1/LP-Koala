@@ -7,3 +7,5 @@ Firstly, please ensure that Nodejs is installed in you local computer. You can d
 Secondly, open a terminal under "back-end" directory and type in `npm install` to install any packages listed in package.json.
 
 Thirdly, run `npm start` to run backend application.
+
+For the development team, run `npm start:dev` to activate nodemon functionality.
