@@ -62,7 +62,7 @@ exports.protect = asyncCatch(async (req, res, next) => {
     return next(new AppError("The user with this token does not exist.", 401));
   }
 
-  // TODO: Check if user chaNged password after the token was issued
+  // TODO: Check if user changed password after the token was issued
 
   // Grant access to protected route
   req.user = currentUser;

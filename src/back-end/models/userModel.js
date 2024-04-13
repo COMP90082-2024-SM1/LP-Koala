@@ -25,12 +25,18 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+// Hash password when creating users
+userSchema.pre("save", async function (next) {
+  this.password = await bcrypt.hash(this.password, 15);
+  next();
+});
+
+// Check incoming password when login
 userSchema.methods.correctPassword = async function (
   incomingPassword,
   userPassword
 ) {
-  //TODO: Use bcrypt for hashing
-  return await (incomingPassword === userPassword);
+  return await bcrypt.compare(incomingPassword, userPassword);
 };
 
 const User = mongoose.model("User", userSchema);
