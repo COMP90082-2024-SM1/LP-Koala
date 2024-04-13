@@ -8,4 +8,4 @@ Secondly, open a terminal under "back-end" directory and type in `npm install` t
 
 Thirdly, run `npm start` to run backend application.
 
-For the development team, run `npm start:dev` to activate nodemon functionality.
+For the development team, run `npm run start:dev` to activate nodemon functionality.
