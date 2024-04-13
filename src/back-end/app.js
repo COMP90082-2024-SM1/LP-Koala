@@ -1,6 +1,9 @@
 const express = require("express");
 const authRouter = require("./routes/authRoute");
 const userRouter = require("./routes/userRoute");
+const projectRouter = require("./routes/projectRoute");
+const cors = require("cors");
+
 const app = express();
 
 // TODO: Implement middlewares
@@ -9,10 +12,10 @@ app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
 });
-
+app.use(cors());
 // TODO: Implement routers
 app.use("/users", userRouter);
-
+app.use("/projects", projectRouter);
 // TODO: Implement global error handler here
 //app.use(globalErrorHandler);
 

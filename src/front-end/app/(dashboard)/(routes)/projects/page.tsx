@@ -1,10 +1,8 @@
-import { redirect } from "next/navigation";
 import Link from "next/link"
 import { PlusCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { CheckCircle, Clock } from "lucide-react";
 
-// import { getDashboardCourses } from "@/actions/get-(dashboard)-courses";
 import { ProjectsList } from "@/components/projects-list";
 
 import { InfoCard } from "./_components/info-card";
@@ -69,6 +67,9 @@ export default async function Dashboard() {
         }
 
     ]
+
+
+
     return (
         <div className="p-6 space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -91,7 +92,6 @@ export default async function Dashboard() {
                 </Link>
             </div>
             <ProjectsList
-                items={items}
             />
         </div>
     )
