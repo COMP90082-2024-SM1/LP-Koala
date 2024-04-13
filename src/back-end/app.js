@@ -1,5 +1,6 @@
 const express = require("express");
 const authRouter = require("./routes/authRoute");
+const userRouter = require("./routes/userRoute");
 const app = express();
 
 // TODO: Implement middlewares
@@ -10,7 +11,9 @@ app.use((req, res, next) => {
 });
 
 // TODO: Implement routers
-// app.use("/users", userRouter);
-app.use("/", authRouter);
+app.use("/users", userRouter);
+
+// TODO: Implement global error handler here
+//app.use(globalErrorHandler);
 
 module.exports = app;

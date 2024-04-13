@@ -1,16 +1,79 @@
-const User = require("../models/userModel");
 const asyncCatch = require("../utils/asyncCatch");
-exports.signup = asyncCatch(async (req, res, next) => {
-  // Create new user object
-  console.log(req.body);
-  const newUser = await User.create({
-    name: req.body.name,
-    password: req.body.password,
-  });
+const jwt = require("jsonwebtoken");
+const User = require("../models/userModel");
+const AppError = require("./../utils/appError");
+const { promisify } = require("util");
 
-  // Send response
-  res.status(201).json({
-    status: "success",
-    data: { user: newUser },
+const signToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN,
   });
+};
+
+const createSendToken = (user, statusCode, req, res) => {
+  const token = signToken(user._id);
+  user.password = undefined;
+  res.status(statusCode).json({
+    status: "success",
+    token,
+    data: {
+      user,
+    },
+  });
+};
+
+exports.login = asyncCatch(async (req, res, next) => {
+  const { username, password } = req.body;
+
+  // Check if username and password exist
+  if (!username || !password) {
+    return next(new AppError("Please provide username and password.", 400));
+  }
+
+  // Check if user exists and password is correct
+  const user = await User.findOne({ username }).select("+password");
+  if (!user || !(await user.correctPassword(password, user.password))) {
+    return next(new AppError("Incorrect username or password", 401));
+  }
+  // Send token to client
+  createSendToken(user, 200, req, res);
 });
+
+exports.protect = asyncCatch(async (req, res, next) => {
+  // Check if token exists
+  let token;
+  // Retrieve authorisation token
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  }
+  if (!token) {
+    return next(new AppError("Please log in to get access.", 401));
+  }
+
+  // Obtain verification token
+  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+
+  // Check if user still exists
+  const currentUser = await User.findById(decoded.id);
+  if (!currentUser) {
+    return next(new AppError("The user with this token does not exist.", 401));
+  }
+
+  // TODO: Check if user chaNged password after the token was issued
+
+  // Grant access to protected route
+  req.user = currentUser;
+  next();
+});
+
+exports.restricTo = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(new AppError("You don't have access to create users.", 403));
+    }
+    next();
+  };
+};
