@@ -1,6 +1,6 @@
 import React from 'react';
-import {DataTable} from "@/app/(dashboard)/users/_component/data-table";
-import {columns} from "@/app/(dashboard)/users/_component/columns";
+import {DataTable} from "@/app/(dashboard)/(routes)/users/_component/data-table";
+import {columns} from "@/app/(dashboard)/(routes)/users/_component/columns";
 
 function Page() {
 
@@ -16,7 +16,7 @@ function Page() {
             role: 'Researcher'
     }]
     return (
-        <div>
+        <div className="p-6 space-y-4">
             <DataTable columns={columns} data={users}/>
         </div>
     );
