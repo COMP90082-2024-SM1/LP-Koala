@@ -2,6 +2,7 @@
 
 import { ProjectCard } from "@/components/project-card";
 import {useEffect, useState} from "react";
+import {ClipLoader} from "react-spinners";
 
 
 
@@ -10,16 +11,22 @@ import {useEffect, useState} from "react";
 export const ProjectsList = () => {
 
     const [projects, setProjects] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
     const getProjects = async ()=>{
         // await fetch('http://localhost:3000/projects').then((r)=>{
         //     if (r.ok){
         //         console.log(r.json())
         //     }
         // });
-        const response = await fetch('http://localhost:3000/projects');
-        const data = await response.json();
-        setProjects(data.projects);
-        console.log(data.projects);
+        await fetch('http://localhost:3000/projects').then(r=>{
+            if (r.ok){
+                setIsLoading(false);
+                r.json().then(data=>setProjects(data.projects))
+            }
+        })
+        // const data =  response.json().then();
+        // setProjects(data.projects);
+        // console.log(data.projects);
     }
 
     useEffect(() => {
@@ -41,11 +48,15 @@ export const ProjectsList = () => {
           />
         ))}
       </div>
-      {projects.length === 0 && (
+      {projects.length === 0 && !isLoading && (
         <div className="text-center text-sm text-muted-foreground mt-10">
           No courses found
         </div>
       )}
+
+        <div className='justify-center flex'>
+            <ClipLoader loading={isLoading} size={50} className='!border-sky-700 !border-b-transparent' />
+        </div>
     </div>
   )
 }
