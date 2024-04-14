@@ -40,7 +40,7 @@ export const ProjectsList = () => {
             key={project.id}
             id={project.id}
             title={project.name}
-            imageUrl={''}
+            imageUrl={'/'}
             chaptersLength={project.chaptersLength}
             price={project.price!}
             progress={project.progress}

@@ -5,7 +5,8 @@ import {useRouter} from "next/navigation";
 import React, { useState} from "react";
 import {ClipLoader} from "react-spinners";
 import Cookies from 'js-cookie';
-
+import {jwtDecode} from "jwt-decode";
+import {json} from "stream/consumers";
 const SignInForm = () => {
     const router = useRouter()
     const [isErrorMessageDisplayed, setErrorMessageDisplayed] = useState(false);
@@ -25,12 +26,12 @@ const SignInForm = () => {
             })
             setErrorMessageDisplayed(false);
             const data = await response.json();
-            Cookies.set('token','Bearer' + data.token);
-            Cookies.set('userId', data.data.user._id);
-            console.log(Cookies.get('token'));
+            Cookies.set('token','Bearer ' + data.token);
+            Cookies.set('user', JSON.stringify(data.data.user));
+
             router.push('/projects');
         }catch(error) {
-            // console.log(error)
+            console.log(error)
             setIsLoading(false)
             setErrorMessageDisplayed(true)
             setFormData((prevState) => ({...prevState, password: ''}))
