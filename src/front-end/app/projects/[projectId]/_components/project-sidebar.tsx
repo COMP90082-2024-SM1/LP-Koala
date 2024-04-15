@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link"
 import { PlusCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import {Logo} from "./logo";
 import { ProjectSidebarItem } from "./project-sidebar-item";
 import {ProjectProgress} from "./project-progress";
 
@@ -24,13 +25,11 @@ export const ProjectSidebar =  ({
 
     const project = {title:'nihao'}
   return (
-    <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm">
-      <div className="p-8 flex flex-col z-[-20]">
-        <h1 className="font-semibold text-center ">
-          {project.title}
-        </h1>
+    <div className="h-full border-r flex flex-col overflow-y-auto bg-white shadow-sm w-56">
+      <div className="p-6">
+        <Logo />
       </div>
-      <div className="flex flex-col flex-grow relative">
+      <div className="flex flex-col w-full">
         <div className="flex-grow">
           this is sidebar for modules
         </div> 
@@ -45,8 +44,8 @@ export const ProjectSidebar =  ({
         {/*    isLocked={!chapter.isFree && !purchase}*/}
         {/*  />*/}
         {/*))}*/}
-        <Link href="/projects/1/create">
-            <Button className="w-40 mt-auto mb-4"> {/* Adjust mb-4 to increase or decrease the space from the bottom */}
+        <Link href="/projects/1/create" className="mt-auto">
+            <Button className="w-40 mb-4">
                 <PlusCircle className="h-4 w-4 mr-2" />
                 Add Module
             </Button>

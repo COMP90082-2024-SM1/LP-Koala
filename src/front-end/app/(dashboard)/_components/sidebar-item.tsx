@@ -29,7 +29,7 @@ export const SidebarItem = ({
   }
 
   return (
-    <button
+   <button
       onClick={onClick}
       type="button"
       className={cn(
@@ -43,7 +43,7 @@ export const SidebarItem = ({
           className={cn(
             "text-slate-500",
             isActive && "text-sky-700"
-          )}
+           )}
         />
         {label}
       </div>
