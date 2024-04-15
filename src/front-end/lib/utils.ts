@@ -20,3 +20,7 @@ export const getCurrentUser = async ()=> {
     return await response.json()
 
 }
+
+export function getTimestampInSeconds () {
+    return Math.floor(Date.now() / 1000)
+}

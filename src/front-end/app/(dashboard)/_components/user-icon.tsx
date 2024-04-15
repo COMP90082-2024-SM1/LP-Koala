@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {CircleUserRound} from "lucide-react";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import {useRouter} from "next/navigation";
+import Cookies from "js-cookie";
 
 
 
@@ -25,7 +26,11 @@ function UserIcon() {
                     Change Password
                 </DropdownMenuItem>
                 {/*user should be logged out: clear cookie for jwt?*/}
-                <DropdownMenuItem onClick={()=>router.push('/log-in')}>
+                <DropdownMenuItem onClick={()=>{
+                    Cookies.remove('token');
+                    Cookies.remove('user');
+                    router.push('/log-in');
+                }}>
                     Log Out
                 </DropdownMenuItem>
             </DropdownMenuContent>

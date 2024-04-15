@@ -25,7 +25,7 @@ export const ProjectSidebar =  ({
 
     const project = {title:'nihao'}
   return (
-    <div className="h-full border-r flex flex-col overflow-y-auto bg-white shadow-sm w-56">
+    <div className="h-full border-r flex flex-col overflow-y-auto bg-white shadow-sm w-full">
       <div className="p-6">
         <Logo />
       </div>

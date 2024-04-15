@@ -21,12 +21,12 @@ export const ProjectNavbar = ({
   progressCount,
 }: CourseNavbarProps) => {
   return (
-    <div className="p-4 border-b h-full flex items-center bg-white w-full px-10" style={{ width: '1000px' }}>
-      <p className='text-center right-52 left-52 md:right-28 md:left-80 absolute text-3xl md:text-6xl text-sky-700 z-0'>DLASSP</p>
-      <ProjectMobileSidebar
-        course={course}
-        progressCount={progressCount}
-      />
+      <div className="p-4 border-b h-full flex items-center bg-white shadow-sm">
+          <p className='text-center right-52 left-52 md:right-28 md:left-80 absolute text-3xl md:text-6xl text-sky-700 z-0'>DLASSP</p>
+          <ProjectMobileSidebar
+            course={course}
+            progressCount={progressCount}
+          />
       <Link href="/projects">
         <Button style={{ width: '100px', position: 'relative', zIndex: 1 }} className="mt-auto mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />

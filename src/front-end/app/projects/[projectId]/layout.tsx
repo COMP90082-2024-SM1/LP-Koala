@@ -15,13 +15,13 @@ const ProjectLayout =  ({
 
   return (
       <div className="h-full">
-        <div className="h-[80px] md:pl-80 fixed inset-y-0 w-full z-50">
+        <div className="h-[80px] md:pl-56 fixed inset-y-0 w-full z-50">
           <ProjectNavbar
               // course={course}
               // progressCount={progressCount}
           />
         </div>
-        <div className="hidden md:flex h-full w-80 flex-col fixed inset-y-0 z-50">
+        <div className="hidden md:flex h-full w-56 flex-col fixed inset-y-0 z-50">
           <ProjectSidebar
               // course={course}
               // progressCount={progressCount}
