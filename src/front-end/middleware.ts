@@ -13,6 +13,8 @@ export function middleware(request: NextRequest){
                 console.log('JWT expired', request.nextUrl.pathname);
                 return Response.redirect(new URL('/log-in', request.url));
             }
+        }else {
+            return Response.redirect(new URL('/log-in', request.url));
         }
     } catch (error) {
         console.log(error)
