@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
-
-
+import Link from "next/link"
+import { PlusCircle } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import { ProjectSidebarItem } from "./project-sidebar-item";
 import {ProjectProgress} from "./project-progress";
 
@@ -24,22 +25,15 @@ export const ProjectSidebar =  ({
     const project = {title:'nihao'}
   return (
     <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm">
-      <div className="p-8 flex flex-col border-b">
+      <div className="p-8 flex flex-col">
         <h1 className="font-semibold">
           {project.title}
         </h1>
-
-          <div className="mt-10">
-            <ProjectProgress
-              variant="success"
-              value={progressCount}
-            />
-          </div>
-
       </div>
-      <div className="flex flex-col w-full">
-
-          this is sidebar for activities
+      <div className="flex flex-col flex-grow relative">
+        <div className="flex-grow">
+          this is sidebar for modules
+        </div> 
         {/*  TODO: list all the activities*/}
         {/*{course.chapters.map((chapter) => (*/}
         {/*  <ProjectSidebarItem*/}
@@ -51,6 +45,12 @@ export const ProjectSidebar =  ({
         {/*    isLocked={!chapter.isFree && !purchase}*/}
         {/*  />*/}
         {/*))}*/}
+        <Link href="/projects/1/create">
+            <Button className="w-40 mt-auto mb-4"> {/* Adjust mb-4 to increase or decrease the space from the bottom */}
+                <PlusCircle className="h-4 w-4 mr-2" />
+                Add Module
+            </Button>
+        </Link>
       </div>
     </div>
   )

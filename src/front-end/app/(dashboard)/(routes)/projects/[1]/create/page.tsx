@@ -26,7 +26,7 @@ const formSchema = z.object({
   }),
 });
 
-const CreatePage = () => {
+const CreateModulePage = () => {
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,11 +51,11 @@ const CreatePage = () => {
     <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
       <div>
         <h1 className="text-2xl">
-          Name your project
+          Name your module
         </h1>
-        <p className="text-sm text-slate-600">
+        {/* <p className="text-sm text-slate-600">
           What would you like to name your project? Don&apos;t worry, you can change this later.
-        </p>
+        </p> */}
         <Form {...form}>
           <form
             // onSubmit={form.handleSubmit(onSubmit)}
@@ -67,18 +67,15 @@ const CreatePage = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Project title
+                    Module title
                   </FormLabel>
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="e.g. 'Advanced web development'"
+                      placeholder="e.g. 'Module 1'"
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>
-                    What will you teach in this project?
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -106,4 +103,4 @@ const CreatePage = () => {
    );
 }
  
-export default CreatePage;
+export default CreateModulePage;
