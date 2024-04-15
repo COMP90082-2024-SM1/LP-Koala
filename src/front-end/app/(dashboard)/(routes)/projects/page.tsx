@@ -1,13 +1,10 @@
 import Link from "next/link"
 import { PlusCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { CheckCircle, Clock } from "lucide-react";
-
 import { ProjectsList } from "@/components/projects-list";
 
-import { InfoCard } from "./_components/info-card";
 
-export default async function Dashboard() {
+export default function Dashboard() {
 
     return (
         <div className="p-6 space-y-4">

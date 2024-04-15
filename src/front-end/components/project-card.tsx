@@ -4,7 +4,7 @@ import Link from "next/link";
 
 interface ProjectCardProps {
   id: string;
-  title: string;
+  name: string;
   imageUrl: string;
   chaptersLength: number;
   price: number;
@@ -14,7 +14,7 @@ interface ProjectCardProps {
 
 export const ProjectCard = ({
   id,
-  title,
+  name,
   imageUrl,
   chaptersLength,
   price,
@@ -28,13 +28,13 @@ export const ProjectCard = ({
           <Image
             fill
             className="object-cover"
-            alt={title}
+            alt={name}
             src={imageUrl}
           />
         </div>
         <div className="flex flex-col pt-2">
           <div className="text-lg md:text-base font-medium group-hover:text-sky-700 transition line-clamp-2">
-            {title}
+            {name}
           </div>
           <p className="text-xs text-muted-foreground">
             {category}

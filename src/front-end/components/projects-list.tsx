@@ -13,11 +13,7 @@ export const ProjectsList = () => {
     const [projects, setProjects] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const getProjects = async ()=>{
-        // await fetch('http://localhost:3000/projects').then((r)=>{
-        //     if (r.ok){
-        //         console.log(r.json())
-        //     }
-        // });
+
         await fetch('http://localhost:3000/projects').then(r=>{
             if (r.ok){
                 setIsLoading(false);
@@ -37,9 +33,9 @@ export const ProjectsList = () => {
       <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4">
         {projects.map((project) => (
           <ProjectCard
-            key={project.id}
-            id={project.id}
-            title={project.name}
+            key={project._id}
+            id={project._id}
+            name={project.name}
             imageUrl={'/'}
             chaptersLength={project.chaptersLength}
             price={project.price!}

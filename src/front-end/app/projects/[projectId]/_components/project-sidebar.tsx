@@ -25,8 +25,8 @@ export const ProjectSidebar =  ({
     const project = {title:'nihao'}
   return (
     <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm">
-      <div className="p-8 flex flex-col">
-        <h1 className="font-semibold">
+      <div className="p-8 flex flex-col z-[-20]">
+        <h1 className="font-semibold text-center ">
           {project.title}
         </h1>
       </div>
