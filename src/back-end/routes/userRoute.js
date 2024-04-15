@@ -15,4 +15,6 @@ router.post(
 );
 
 router.patch('/updateMyPassword', authController.updatePassword);
+router.patch('/updateName', userController.updateName);
+
 module.exports = router;
