@@ -8,67 +8,6 @@ import { ProjectsList } from "@/components/projects-list";
 import { InfoCard } from "./_components/info-card";
 
 export default async function Dashboard() {
-    // const { userId } = auth();
-    //
-    // if (!userId) {
-    //     return redirect("/");
-    // }
-
-    // const {
-    //     completedCourses,
-    //     coursesInProgress
-    // } = await getDashboardCourses(userId);
-
-    const items = [
-        {
-            id: '123',
-            title: 'Project 1',
-            imageUrl: '',
-            chaptersLength: 2,
-            price: 12,
-            progress: 20,
-            category: 'writing'
-    },
-        {
-            id: '123',
-            title: 'Project 2',
-            imageUrl: '',
-            chaptersLength: 2,
-            price: 12,
-            progress: 20,
-            category: 'writing'
-        },
-        {
-            id: '123',
-            title: 'Project 3',
-            imageUrl: '',
-            chaptersLength: 2,
-            price: 12,
-            progress: 20,
-            category: 'writing'
-        },
-        {
-            id: '123',
-            title: 'Project 4',
-            imageUrl: '',
-            chaptersLength: 2,
-            price: 12,
-            progress: 20,
-            category: 'writing'
-        },
-        {
-            id: '123',
-            title: 'Project 5',
-            imageUrl: '',
-            chaptersLength: 2,
-            price: 12,
-            progress: 20,
-            category: 'writing'
-        }
-
-    ]
-
-
 
     return (
         <div className="p-6 space-y-4">
