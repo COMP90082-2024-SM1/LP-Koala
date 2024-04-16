@@ -34,7 +34,7 @@ export const SidebarRoutes = () => {
 
   const [isAdmin, setIsAdmin] = useState(false)
   useEffect(() => {
-    console.log(getUserRole().then(r => setIsAdmin(r === 'admin')))
+    getUserRole(Cookies.get('token')).then(r => setIsAdmin(r === 'admin'))
   }, []);
 
   const routes = isAdmin ? adminRoutes : raterRoutes;

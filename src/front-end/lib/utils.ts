@@ -7,10 +7,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const getCurrentUser = async ()=> {
-
-    const token = Cookies.get('token')? Cookies.get('token'):" ";
-    const userId = jwtDecode(token!).id
+export const getCurrentUser = async (token:string | undefined)=> {
+    const userId = jwtDecode(token).id
     const response = await fetch(`http://localhost:3000/users/findUser/${userId}`, {
         method: 'GET',
         headers: {
@@ -43,8 +41,8 @@ export function isUserLoggedIn (token: string | undefined) {
 
 }
 
-export const getUserRole= async () =>{
-    const user = await getCurrentUser();
-    console.log(user);
+export const getUserRole = async (token: string | undefined) =>{
+    const user = await getCurrentUser(token);
+    // console.log(token);
     return user.role;
 }
