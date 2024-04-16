@@ -1,17 +1,24 @@
 'use client';
 import Image from "next/image";
 import {Button} from "@/components/ui/button";
-import {useRouter} from "next/navigation";
-import React, { useState} from "react";
+import {redirect, useRouter} from "next/navigation";
+import React, {useEffect, useState} from "react";
 import {ClipLoader} from "react-spinners";
 import Cookies from 'js-cookie';
-import {jwtDecode} from "jwt-decode";
-import {json} from "stream/consumers";
+import {isUserLoggedIn} from "@/lib/utils";
 const SignInForm = () => {
     const router = useRouter()
     const [isErrorMessageDisplayed, setErrorMessageDisplayed] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({username:'', password:''});
+
+    useEffect(() => {
+        const token = Cookies.get('token');
+        if (isUserLoggedIn(token)) {
+            return redirect('/projects');
+        }
+    }, []);
+
     const onClick = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
@@ -77,7 +84,7 @@ const SignInForm = () => {
                                 type="usernane"
                                 autoComplete="username"
                                 required
-                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 value={formData.username}
                                 onChange={onChange}
                             />
@@ -97,7 +104,7 @@ const SignInForm = () => {
                                 type="password"
                                 autoComplete="current-password"
                                 required
-                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 value={formData.password}
                                 onChange={onChange}
                             />

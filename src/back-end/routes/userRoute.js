@@ -14,4 +14,6 @@ router.post(
   userController.createUser
 );
 
+router.get("/findUser/:userId", userController.findUser)
+
 module.exports = router;

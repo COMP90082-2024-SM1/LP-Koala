@@ -4,18 +4,24 @@ import {BarChart, Compass, Layout, List, UserRound} from "lucide-react";
 import { usePathname } from "next/navigation";
 
 import { SidebarItem } from "./sidebar-item";
+import Cookies from "js-cookie";
+import {getUserRole} from "@/lib/utils";
+import {useEffect, useState} from "react";
 
-const guestRoutes = [
+const raterRoutes = [
   {
     icon: Layout,
     label: "Projects",
     href: "/projects",
   },
-  // {
-  //   icon: Compass,
-  //   label: "Projects",
-  //   href: "/(projects)",
-  // },
+];
+
+const adminRoutes = [
+  {
+    icon: Layout,
+    label: "Projects",
+    href: "/projects",
+  },
   {
     icon: UserRound,
     label: "Users",
@@ -23,25 +29,15 @@ const guestRoutes = [
   }
 ];
 
-const adminRoutes = [
-  {
-    icon: List,
-    label: "Projects",
-    href: "/admin/(projects)",
-  },
-  {
-    icon: BarChart,
-    label: "Create",
-    href: "/admin/create",
-  },
-]
-
 export const SidebarRoutes = () => {
   const pathname = usePathname();
 
-  const isAdminPage = pathname?.includes("/admin");
+  const [isAdmin, setIsAdmin] = useState(false)
+  useEffect(() => {
+    console.log(getUserRole().then(r => setIsAdmin(r === 'admin')))
+  }, []);
 
-  const routes = isAdminPage ? adminRoutes : guestRoutes;
+  const routes = isAdmin ? adminRoutes : raterRoutes;
 
   return (
     <div className="flex flex-col w-full">
