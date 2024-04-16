@@ -15,6 +15,7 @@ router.post(
 );
 
 router.get("/findUser/:userId", userController.findUser);
+router.get("/getUsers", authController.restricTo('admin'), userController.getUsers)
 router.patch('/updateMyPassword', authController.updatePassword);
 router.patch('/updateName', userController.updateName);
 

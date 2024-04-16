@@ -1,5 +1,5 @@
 import {NextRequest, NextResponse} from "next/server";
-import {getTimestampInSeconds, getUserRole, isUserLoggedIn} from "@/lib/utils";
+import {getUserRole, isUserLoggedIn} from "@/lib/utils";
 
 export async function middleware  (request: NextRequest){
 
@@ -14,7 +14,6 @@ export async function middleware  (request: NextRequest){
     });
 
     if (request.nextUrl.pathname.startsWith('/users')) {
-        console.log(role);
         if (role==='rater'){
             return NextResponse.redirect(new URL('/projects', request.url))
         }

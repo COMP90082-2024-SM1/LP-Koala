@@ -25,6 +25,8 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import {useEffect, useState} from "react";
+import Cookies from "js-cookie";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
