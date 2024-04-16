@@ -5,7 +5,6 @@ const userController = require('../controllers/userController');
 const router = express.Router();
 
 router.post('/login', authController.login);
-
 router.use(authController.protect);
 
 router.post(
@@ -14,6 +13,12 @@ router.post(
   userController.createUser
 );
 
+router.delete(
+  '/deleteUser/:id',
+  authController.restricTo('admin'),
+  userController.forbidSelfDelete,
+  userController.deleteUser
+);
 router.patch('/updateMyPassword', authController.updatePassword);
 router.patch('/updateName', userController.updateName);
 
