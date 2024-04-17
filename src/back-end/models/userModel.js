@@ -56,5 +56,5 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
 };
 
 const User = mongoose.model('User', userSchema);
-
+// Some random text here to test open ai code review
 module.exports = User;
