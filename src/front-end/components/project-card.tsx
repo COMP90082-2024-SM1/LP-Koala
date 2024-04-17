@@ -6,20 +6,12 @@ interface ProjectCardProps {
   id: string;
   name: string;
   imageUrl: string;
-  chaptersLength: number;
-  price: number;
-  progress: number | null;
-  category: string;
 };
 
 export const ProjectCard = ({
   id,
   name,
   imageUrl,
-  chaptersLength,
-  price,
-  progress,
-  category
 }: ProjectCardProps) => {
   return (
     <Link href={`/projects/${id}`}>
@@ -36,15 +28,15 @@ export const ProjectCard = ({
           <div className="text-lg md:text-base font-medium group-hover:text-sky-700 transition line-clamp-2">
             {name}
           </div>
-          <p className="text-xs text-muted-foreground">
-            {category}
-          </p>
+          {/*<p className="text-xs text-muted-foreground">*/}
+          {/*  {category}*/}
+          {/*</p>*/}
           <div className="my-3 flex items-center gap-x-2 text-sm md:text-xs">
             <div className="flex items-center gap-x-1 text-slate-500">
               {/*<IconBadge size="sm" icon={BookOpen} />*/}
-              <span>
-                {chaptersLength} {chaptersLength === 1 ? "Module" : "Modules"}
-              </span>
+              {/*<span>*/}
+              {/*  {chaptersLength} {chaptersLength === 1 ? "Module" : "Modules"}*/}
+              {/*</span>*/}
             </div>
           </div>
           {/*{progress !== null ? (*/}

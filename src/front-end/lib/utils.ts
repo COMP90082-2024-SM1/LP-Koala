@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const getCurrentUser = async (token:string | undefined)=> {
-    const userId = jwtDecode(token).id
+    const userId = jwtDecode(token!).id
     const response = await fetch(`http://localhost:3000/users/findUser/${userId}`, {
         method: 'GET',
         headers: {

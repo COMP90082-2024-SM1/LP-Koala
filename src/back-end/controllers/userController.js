@@ -1,5 +1,8 @@
 const User = require('../models/userModel');
+const AppError = require('../utils/appError');
 const asyncCatch = require('../utils/asyncCatch');
+const factory = require('../controllers/handlerFactory');
+
 exports.createUser = asyncCatch(async (req, res, next) => {
   // Create new user object
   console.log(req.body);
@@ -59,3 +62,11 @@ exports.getUsers = asyncCatch(async (req, res, next)=> {
     }
   })
 })
+exports.forbidSelfDelete = (req, res, next) => {
+  if (req.params.id == req.user.id) {
+    return next(new AppError('You cannot delete your own account.', 405));
+  }
+  next();
+};
+
+exports.deleteUser = factory.deleteOneDoc(User);

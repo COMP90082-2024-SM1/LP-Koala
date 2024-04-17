@@ -1,5 +1,4 @@
 import { Menu } from "lucide-react";
-import { Chapter, Course, UserProgress } from "@prisma/client";
 
 import {
   Sheet,
@@ -9,19 +8,9 @@ import {
 
 import { ProjectSidebar } from "./project-sidebar";
 
-interface CourseMobileSidebarProps {
-  course: Course & {
-    chapters: (Chapter & {
-      userProgress: UserProgress[] | null;
-    })[];
-  };
-  progressCount: number;
-};
 
-export const ProjectMobileSidebar = ({
-  course,
-  progressCount,
-}: CourseMobileSidebarProps) => {
+
+export const ProjectMobileSidebar = () => {
   return (
     <Sheet>
       <SheetTrigger className="md:hidden pr-4 hover:opacity-75 transition">
@@ -29,8 +18,6 @@ export const ProjectMobileSidebar = ({
       </SheetTrigger>
       <SheetContent side="left" className="p-0 bg-white w-72">
         <ProjectSidebar
-          course={course}
-          progressCount={progressCount}
         />
       </SheetContent>
     </Sheet>
