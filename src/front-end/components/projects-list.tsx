@@ -37,10 +37,6 @@ export const ProjectsList = () => {
             id={project._id}
             name={project.name}
             imageUrl={'/'}
-            chaptersLength={project.chaptersLength}
-            price={project.price!}
-            progress={project.progress}
-            category={project?.category?.name!}
           />
         ))}
       </div>

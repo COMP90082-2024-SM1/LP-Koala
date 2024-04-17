@@ -11,10 +11,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+
 
 type User = {
+  _id: string
   name: string,
   projects: string[],
   role: string
@@ -48,14 +48,8 @@ export const columns: ColumnDef<User>[] = [
       )
     },
     cell: ({ row }) => {
-      const price = parseFloat(row.getValue("price") || "0");
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD"
-      }).format(price);
-      console.log(row.getValue('projects'))
-
-      return <div>{row.getValue('projects')[0]}</div>
+      const projects = row.getValue('projects') as string[]
+      return <div>{projects?.length > 0 && projects.map((project,index)=> <div key={index}>{project}</div>)}</div>
     }
   },
   {
@@ -72,8 +66,6 @@ export const columns: ColumnDef<User>[] = [
       )
     },
     cell: ({ row }) => {
-      const isPublished = row.getValue("isPublished") || false;
-
       return (
         // <Badge className={cn(
         //   "bg-slate-500",
@@ -90,7 +82,7 @@ export const columns: ColumnDef<User>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const { id } = row.original;
+      const { _id } = row.original;
 
       return (
         <DropdownMenu>
@@ -101,7 +93,7 @@ export const columns: ColumnDef<User>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <Link href={`/teacher/courses/${id}`}>
+            <Link href={`/users/${_id}`}>
               <DropdownMenuItem>
                 <Pencil className="h-4 w-4 mr-2" />
                 Edit

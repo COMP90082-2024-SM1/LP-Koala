@@ -4,16 +4,7 @@ import { PlusCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {Logo} from "./logo";
 import { ProjectSidebarItem } from "./project-sidebar-item";
-import {ProjectProgress} from "./project-progress";
 
-// interface CourseSidebarProps {
-//   course: Course & {
-//     chapters: (Chapter & {
-//       userProgress: UserProgress[] | null;
-//     })[]
-//   };
-//   progressCount: number;
-// };
 
 
 

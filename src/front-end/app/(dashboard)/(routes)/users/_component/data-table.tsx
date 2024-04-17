@@ -25,6 +25,8 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import {useEffect, useState} from "react";
+import Cookies from "js-cookie";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -64,7 +66,7 @@ export function DataTable<TData, TValue>({
                     }
                     className="max-w-sm"
                 />
-                <Link href="/teacher/create">
+                <Link href="/users/create">
                     <Button>
                         <PlusCircle className="h-4 w-4 mr-2" />
                         New User
