@@ -1,48 +1,34 @@
 const mongoose = require('mongoose');
 
-const projectSchema = new mongoose.Schema( {
-    name:{
-        type: String,
-        required: [true, "Please enter name here."],
+const projectSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: [true, 'Please enter project title here.'],
+  },
+  description: {
+    type: String,
+  },
+  image: {
+    type: String,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+  },
+  researchers: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
     },
-    createdAt: {
-        type: Date,
-        required: [true],
-        // TODO: time zone or use timestamp?
-        default: Date.now()
+  ],
+  raters: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
     },
-    createdBy: {
-        type: {
-            // TODO: or use username here?
-            name: {
-                type: String,
-                required: [true, "Please enter name here."],
-            },
-            role: {
-                type: String,
-                enum: ["rater", "researcher", "admin"],
-                default: "rater",
-            },
-        }
-    },
-    raters: {
-        type: [{
-            // TODO: or use username here?
-            name: {
-                type: String,
-                required: [true, "Please enter name here."],
-            },
-            role: {
-                type: String,
-                enum: ["rater", "researcher", "admin"],
-                default: "rater",
-            },
-        }]
-    },
-    // modules: {
-    //
-    // },
-})
-const Project = mongoose.model("Project", projectSchema);
+  ],
+  // TODO: Reference module modules here
+});
+const Project = mongoose.model('Project', projectSchema);
 
 module.exports = Project;

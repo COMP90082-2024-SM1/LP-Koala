@@ -49,7 +49,6 @@ exports.protect = asyncCatch(async (req, res, next) => {
   ) {
     token = req.headers.authorization.split(' ')[1];
   }
-  console.log(token)
   if (!token) {
     return next(new AppError('Please log in to get access.', 401));
   }
@@ -77,7 +76,9 @@ exports.protect = asyncCatch(async (req, res, next) => {
 exports.restricTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-      return next(new AppError("You don't have access to create users.", 403));
+      return next(
+        new AppError("You don't have access to perform this operation.", 403)
+      );
     }
     next();
   };

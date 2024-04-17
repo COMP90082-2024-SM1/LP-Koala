@@ -5,7 +5,6 @@ const factory = require('../controllers/handlerFactory');
 
 exports.createUser = asyncCatch(async (req, res, next) => {
   // Create new user object
-  console.log(req.body);
   const newUser = await User.create({
     name: req.body.name,
     username: req.body.username,
@@ -20,20 +19,18 @@ exports.createUser = asyncCatch(async (req, res, next) => {
   });
 });
 
-exports.findUser = asyncCatch(async (req, res, next)=>{
-
-  const user = await User.findById(req.params.userId)
-  console.log(req.params)
+exports.findUser = asyncCatch(async (req, res, next) => {
+  const user = await User.findById(req.params.userId);
   res.status(200).json({
-    status: "success",
-    user:{
-        id: user.id,
-        name: user.name,
-        username: user.username,
-        role: user.role
-      }
-  })
-})
+    status: 'success',
+    user: {
+      id: user.id,
+      name: user.name,
+      username: user.username,
+      role: user.role,
+    },
+  });
+});
 
 exports.updateName = asyncCatch(async (req, res, next) => {
   const updatedUser = await User.findByIdAndUpdate(
@@ -52,16 +49,15 @@ exports.updateName = asyncCatch(async (req, res, next) => {
   });
 });
 
-exports.getUsers = asyncCatch(async (req, res, next)=> {
+exports.getUsers = asyncCatch(async (req, res, next) => {
   const users = await User.find();
-  console.log(users);
   res.status(200).json({
     status: 'success',
     data: {
-      users
-    }
-  })
-})
+      users,
+    },
+  });
+});
 exports.forbidSelfDelete = (req, res, next) => {
   if (req.params.id == req.user.id) {
     return next(new AppError('You cannot delete your own account.', 405));
