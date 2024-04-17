@@ -31,7 +31,18 @@ export const ProjectSidebar =  ({
       </div>
       <div className="flex flex-col w-full">
         <div className="flex-grow">
-          this is sidebar for modules
+          <Link href="/projects/661a8acb802cb862e77a7343/modules/1" className="mt-auto">
+              <Button className="w-40 mb-4">
+                  Module 1
+              </Button>
+          </Link>
+        </div> 
+        <div className="flex-grow">
+          <Link href="/projects/661a8acb802cb862e77a7343/modules/1" className="mt-auto">
+              <Button className="w-40 mb-4">
+                  Module 2
+              </Button>
+          </Link>
         </div> 
         {/*  TODO: list all the activities*/}
         {/*{course.chapters.map((chapter) => (*/}
@@ -44,8 +55,8 @@ export const ProjectSidebar =  ({
         {/*    isLocked={!chapter.isFree && !purchase}*/}
         {/*  />*/}
         {/*))}*/}
-        <Link href="/projects/1/create" className="mt-auto">
-            <Button className="w-40 mb-4">
+        <Link href="/projects/1/create" className="mt-auto mb-4 self-center w-full">
+            <Button className="w-40">
                 <PlusCircle className="h-4 w-4 mr-2" />
                 Add Module
             </Button>

@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react"
 // import toast from "react-hot-toast";
 
 import {
@@ -24,6 +25,12 @@ const formSchema = z.object({
   title: z.string().min(1, {
     message: "Title is required",
   }),
+  description: z.string().min(1, {
+    message: "Description is required",
+  }),
+  image: z.string().min(1, {
+    message: "image is required",
+  }),
 });
 
 const CreatePage = () => {
@@ -31,7 +38,9 @@ const CreatePage = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: ""
+      title: "",
+      description: "",
+      image: ""
     },
   });
 
@@ -53,14 +62,12 @@ const CreatePage = () => {
         <h1 className="text-2xl">
           Name your project
         </h1>
-        <p className="text-sm text-slate-600">
-          What would you like to name your project? Don&apos;t worry, you can change this later.
-        </p>
         <Form {...form}>
           <form
             // onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-8 mt-8"
           >
+            {/* Project Title Field */}
             <FormField
               control={form.control}
               name="title"
@@ -72,7 +79,7 @@ const CreatePage = () => {
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="e.g. 'Advanced web development'"
+                      placeholder="e.g., 'Advanced web development'"
                       {...field}
                     />
                   </FormControl>
@@ -83,6 +90,62 @@ const CreatePage = () => {
                 </FormItem>
               )}
             />
+            {/* Project Description Field */}
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Project description
+                  </FormLabel>
+                  <FormControl>
+                    <textarea
+                      className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                      disabled={isSubmitting}
+                      placeholder="Describe what your project is about"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Provide a brief description of your project.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* Image Upload Field */}
+            <FormField
+              control={form.control}
+              name="image"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Project image
+                  </FormLabel><br></br>
+                  <FormControl>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      disabled={isSubmitting}
+                      onChange={(e) => field.onChange(e.target.files[0])}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Upload an image for your project.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            /><br></br>
+            {/* Allocate Users Button */}
+            <Link href="/projects/allocate">
+                <Button>
+                    Allocate Rater
+                    <ArrowRight className="h-4 w-4 mr-2" />
+                </Button>
+            </Link>
+            {/* Form Buttons */}
             <div className="flex items-center gap-x-2">
               <Link href="/projects">
                 <Button
@@ -103,6 +166,7 @@ const CreatePage = () => {
         </Form>
       </div>
     </div>
+
    );
 }
  
