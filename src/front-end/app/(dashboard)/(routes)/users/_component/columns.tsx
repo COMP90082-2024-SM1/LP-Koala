@@ -49,7 +49,7 @@ export const columns: ColumnDef<User>[] = [
     },
     cell: ({ row }) => {
       const projects = row.getValue('projects') as string[]
-      return <div>{projects.map((project,index)=> <div key={index}>{project}</div>)}</div>
+      return <div>{projects?.length > 0 && projects.map((project,index)=> <div key={index}>{project}</div>)}</div>
     }
   },
   {
