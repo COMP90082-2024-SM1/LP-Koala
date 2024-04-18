@@ -1,5 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Trash, MoreHorizontal, Pencil } from "lucide-react"
+import ConfirmModal from './confirm-modal';
+import React, { useState } from 'react';
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
+
 
 
 interface ProjectCardProps {
@@ -13,6 +24,14 @@ export const ProjectCard = ({
   name,
   imageUrl,
 }: ProjectCardProps) => {
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  const handleConfirmDelete = () => {
+    console.log("Deleting project", id);
+    setShowConfirmModal(false);
+    // Implement deletion logic here, such as API calls
+  };
+
   return (
     <Link href={`/projects/${id}`}>
       <div className="group hover:shadow-sm transition overflow-hidden border rounded-lg p-3 h-full">
@@ -27,6 +46,28 @@ export const ProjectCard = ({
         <div className="flex flex-col pt-2">
           <div className="text-lg md:text-base font-medium group-hover:text-sky-700 transition line-clamp-2">
             {name}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-4 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <Link href={`/projects/create`}>
+                  <DropdownMenuItem>
+                    <Pencil className="h-4 w-4 mr-2" />
+                    Edit
+                  </DropdownMenuItem>
+                </Link>
+                <button onClick={() => setShowConfirmModal(true)} className="w-full text-left">
+                  <DropdownMenuItem>
+                    <Trash className="h-4 w-4 mr-2" />
+                    Delete
+                  </DropdownMenuItem>
+                </button>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           {/*<p className="text-xs text-muted-foreground">*/}
           {/*  {category}*/}
@@ -49,6 +90,7 @@ export const ProjectCard = ({
 
           {/*)}*/}
         </div>
+        <ConfirmModal isOpen={showConfirmModal} onClose={() => setShowConfirmModal(false)} onConfirm={handleConfirmDelete} />
       </div>
     </Link>
   )
