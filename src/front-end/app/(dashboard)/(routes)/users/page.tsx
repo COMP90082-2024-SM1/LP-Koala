@@ -5,17 +5,6 @@ import {cookies} from "next/headers";
 
 async function Page() {
 
-    // const users = [
-    //     {
-    //         name: 'user1',
-    //         projects: ['project1', 'project2'],
-    //         role: 'Researcher'
-    //
-    // },{
-    //         name: 'user1',
-    //         projects: ['project1', 'project2'],
-    //         role: 'Researcher'
-    // }]
     const token = cookies().get('token')?.value
     const response = await fetch('http://localhost:3000/users/getUsers', {
         method: 'GET',
@@ -27,7 +16,6 @@ async function Page() {
 
     const responseObject = await response.json()
     const users = responseObject.data.users
-    console.log(users)
     return (
         <div className="p-6 space-y-4">
             <DataTable columns={columns} data={users}/>
