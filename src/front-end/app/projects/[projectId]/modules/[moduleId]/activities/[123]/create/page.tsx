@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 "use client";
 
 import * as z from "zod";
@@ -162,13 +161,3 @@ const CreateActivityPage = () => {
 }
  
 export default CreateActivityPage;
-=======
-
-function Page() {
-    return (
-        <div>hi this is create for activity</div>
-    );
-}
-
-export default Page;
->>>>>>> 9f34d01a4a85f04b39e55bcebebb717defb6ab3d
