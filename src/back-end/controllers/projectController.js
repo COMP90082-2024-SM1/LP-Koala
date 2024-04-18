@@ -51,4 +51,16 @@ exports.getProjects = asyncCatch(async (req, res, next) => {
   });
 });
 
+// Returns a project with researchers' and raters' names and usernames
+exports.getOneProject = factory.getOneDoc(Project, [
+  {
+    path: 'researchers',
+    select: 'name username',
+  },
+  {
+    path: 'raters',
+    select: 'name username',
+  },
+]);
+
 exports.deleteProject = factory.deleteOneDoc(Project);
