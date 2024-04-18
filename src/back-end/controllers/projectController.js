@@ -1,4 +1,5 @@
 const Project = require('../models/projectModel');
+const AppError = require('../utils/appError');
 const asyncCatch = require('../utils/asyncCatch');
 
 exports.createProject = asyncCatch(async (req, res, next) => {
@@ -8,6 +9,7 @@ exports.createProject = asyncCatch(async (req, res, next) => {
     description: req.body.description,
     image: req.body.image,
     researchers: [req.user.id],
+    raters: req.body.raters,
   });
 
   // Send response
@@ -17,11 +19,31 @@ exports.createProject = asyncCatch(async (req, res, next) => {
   });
 });
 
+// Give an overview of users' projects, including researchers' name and usernames
 exports.getProjects = asyncCatch(async (req, res, next) => {
-  const projects = await Project.find().populate({
+  // First, check whether the user is rater, researcher, admin
+  let projects;
+  const role = req.user.role;
+  const id = req.user.id;
+  const query = {};
+  // Firstly, we find the corresponding query according to their roles
+  if (role === 'researcher' || role === 'rater') {
+    query[role + 's'] = { $elemMatch: { $eq: id } };
+  } else if (role == null || role != 'admin') {
+    // Return error in case no role is found
+    return next(
+      new AppError(
+        "Unable to identify the current user's role. Refuse to get projects.",
+        401
+      )
+    );
+  }
+  // Next, display their own projects according to their roles
+  projects = await Project.find(query).populate({
     path: 'researchers',
     select: 'name username',
   });
+
   res.status(200).json({
     status: 'success',
     projects: projects,
