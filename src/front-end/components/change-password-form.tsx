@@ -1,12 +1,61 @@
 'use client';
 
 import {Button} from "@/components/ui/button";
-const onClick = ()=>{
+import React, {useState} from "react";
+import Cookies from "js-cookie";
+import {ClipLoader} from "react-spinners";
 
-}
 const ChangePasswordForm = () => {
+
+    const [isErrorMessageDisplayed, setErrorMessageDisplayed] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [formData, setFormData] = useState({passwordCurrent:'', newPassword:''});
+    const [isSuccessMessageDisplayed, setSuccessMessageDisplayed] = useState(false);
+    const onClick = async (e: React.FormEvent)=>{
+        e.preventDefault();
+        setIsLoading(true);
+        setErrorMessageDisplayed(false);
+        try {
+            const response = await fetch('http://localhost:3000/users/updateMyPassword', {
+                method: 'PATCH',
+                body: JSON.stringify(formData),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                    "authorization": Cookies.get('token')!
+                }
+            })
+            setErrorMessageDisplayed(false);
+            if (response.status == 401) {
+                setSuccessMessageDisplayed(false);
+                setErrorMessageDisplayed(true);
+            }else if (response.ok) {
+                const data = await response.json();
+                setErrorMessageDisplayed(false);
+                setSuccessMessageDisplayed(true);
+                setIsLoading(false);
+                Cookies.set('token','Bearer ' + data.token);
+            }
+            // router.push('/projects');
+        }catch(error) {
+            console.log(error)
+            setIsLoading(false)
+            setErrorMessageDisplayed(true)
+            setFormData((prevState) => ({...prevState, password: ''}))
+        }
+    }
+
+    const onChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+        const {name,value} = event.target;
+        setFormData((prevState)=> ({...prevState, [name]:value}))
+    }
     return (
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm flex flex-col flex-1 justify-center min-h-full">
+        <div className="sm:mx-auto sm:w-full sm:max-w-sm flex flex-col flex-1  ">
+            <p className='text-red-600 my-4' hidden={!isErrorMessageDisplayed}>
+                Your current password is incorrect
+            </p>
+            <p className='text-green-500 my-4' hidden={!isSuccessMessageDisplayed}>
+                Password successfully updated!
+            </p>
             <form className="space-y-6" onSubmit={onClick} action="#" method="POST">
                 <div>
                     <div className="flex items-center justify-between">
@@ -16,8 +65,10 @@ const ChangePasswordForm = () => {
                     </div>
                     <div className="mt-2">
                         <input
-                            id="password"
-                            name="password"
+                            onChange={onChange}
+                            value={formData.passwordCurrent}
+                            id="current-password"
+                            name="passwordCurrent"
                             type="password"
                             autoComplete="current-password"
                             required
@@ -34,10 +85,12 @@ const ChangePasswordForm = () => {
                     </div>
                     <div className="mt-2">
                         <input
-                            id="password"
-                            name="password"
+                            onChange={onChange}
+                            value={formData.newPassword}
+                            id="newPassword"
+                            name="newPassword"
                             type="password"
-                            autoComplete="new-password"
+                            autoComplete="newPassword"
                             required
                             className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         />
@@ -46,7 +99,13 @@ const ChangePasswordForm = () => {
 
                 <div className='flex space-x-3'>
                     <Button
-                        type="submit"
+                        type="button"
+                        onClick={()=>{
+                            setFormData((prevState) => ({...prevState, newPassword: ''}))
+                            console.log(formData)
+                        }
+
+                    }
                         className="flex w-full justify-center rounded-md bg-red-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                         Clear
@@ -55,6 +114,7 @@ const ChangePasswordForm = () => {
                         type="submit"
                         className="flex w-full justify-center rounded-md bg-[#1c407f] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
+                        <ClipLoader hidden={!isLoading} loading={isLoading} size={20} className='!border-sky-700 !border-b-transparent'/>
                         Confirm
                     </Button>
                 </div>

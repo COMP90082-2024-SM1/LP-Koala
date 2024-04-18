@@ -29,6 +29,7 @@ export function isUserLoggedIn (token: string | undefined) {
     try {
         if (token !== undefined) {
             const decoded = jwtDecode(token);
+            // TODO need to validate on server side in case that user has recently changed their password
             return (decoded.exp ? decoded.exp : 0) >= getTimestampInSeconds();
 
         }else {
