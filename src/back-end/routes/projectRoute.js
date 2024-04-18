@@ -11,4 +11,5 @@ router.get('/', projectController.getProjects);
 
 router.use(restricTo('researcher'));
 router.post('/createProject', projectController.createProject);
+router.delete('/deleteProject/:id', projectController.deleteProject);
 module.exports = router;

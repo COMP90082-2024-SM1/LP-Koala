@@ -1,6 +1,7 @@
 const Project = require('../models/projectModel');
 const AppError = require('../utils/appError');
 const asyncCatch = require('../utils/asyncCatch');
+const factory = require('./handlerFactory');
 
 exports.createProject = asyncCatch(async (req, res, next) => {
   // Create new user object
@@ -49,3 +50,5 @@ exports.getProjects = asyncCatch(async (req, res, next) => {
     projects: projects,
   });
 });
+
+exports.deleteProject = factory.deleteOneDoc(Project);
