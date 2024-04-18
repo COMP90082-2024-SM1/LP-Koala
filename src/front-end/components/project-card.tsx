@@ -33,8 +33,33 @@ export const ProjectCard = ({
   };
 
   return (
-    <Link href={`/projects/${id}`}>
+
       <div className="group hover:shadow-sm transition overflow-hidden border rounded-lg p-3 h-full">
+        <div className='float-right'>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-4 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <Link href={`/projects/create`}>
+                <DropdownMenuItem>
+                  <Pencil className="h-4 w-4 mr-2" />
+                  Edit
+                </DropdownMenuItem>
+              </Link>
+              <button onClick={() => setShowConfirmModal(true)} className="w-full text-left">
+                <DropdownMenuItem>
+                  <Trash className="h-4 w-4 mr-2" />
+                  Delete
+                </DropdownMenuItem>
+              </button>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        <Link href={`/projects/${id}`}>
         <div className="relative w-full aspect-video rounded-md overflow-hidden">
           <Image
             fill
@@ -46,28 +71,6 @@ export const ProjectCard = ({
         <div className="flex flex-col pt-2">
           <div className="text-lg md:text-base font-medium group-hover:text-sky-700 transition line-clamp-2">
             {name}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-4 w-8 p-0">
-                  <span className="sr-only">Open menu</span>
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <Link href={`/projects/create`}>
-                  <DropdownMenuItem>
-                    <Pencil className="h-4 w-4 mr-2" />
-                    Edit
-                  </DropdownMenuItem>
-                </Link>
-                <button onClick={() => setShowConfirmModal(true)} className="w-full text-left">
-                  <DropdownMenuItem>
-                    <Trash className="h-4 w-4 mr-2" />
-                    Delete
-                  </DropdownMenuItem>
-                </button>
-              </DropdownMenuContent>
-            </DropdownMenu>
           </div>
           {/*<p className="text-xs text-muted-foreground">*/}
           {/*  {category}*/}
@@ -80,6 +83,7 @@ export const ProjectCard = ({
               {/*</span>*/}
             </div>
           </div>
+
           {/*{progress !== null ? (*/}
           {/*  <ProjectProgress*/}
           {/*    variant={progress === 100 ? "success" : "default"}*/}
@@ -90,8 +94,9 @@ export const ProjectCard = ({
 
           {/*)}*/}
         </div>
+        </Link>
+
         <ConfirmModal isOpen={showConfirmModal} onClose={() => setShowConfirmModal(false)} onConfirm={handleConfirmDelete} />
       </div>
-    </Link>
   )
 }
