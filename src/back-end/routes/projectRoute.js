@@ -1,6 +1,11 @@
 const express = require('express');
 const projectController = require('../controllers/projectController');
-const { restricTo, protect } = require('../controllers/authController');
+const {
+  restricTo,
+  protect,
+  checkAccess,
+} = require('../controllers/authController');
+const Project = require('../models/projectModel');
 
 const router = express.Router();
 
@@ -12,5 +17,9 @@ router.get('/:id', projectController.getOneProject);
 
 router.use(restricTo('researcher'));
 router.post('/createProject', projectController.createProject);
-router.delete('/deleteProject/:id', projectController.deleteProject);
+router.delete(
+  '/deleteProject/:id',
+  checkAccess(Project),
+  projectController.deleteProject
+);
 module.exports = router;
