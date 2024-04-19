@@ -4,12 +4,21 @@ const asyncCatch = require('../utils/asyncCatch');
 const factory = require('./handlerFactory');
 
 exports.createProject = asyncCatch(async (req, res, next) => {
+  // Pass researchers according to front-end input
+  if (!req.body.researchers || req.body.researchers == []) {
+    researchers = [req.user.id];
+  } else {
+    researchers = req.body.researchers;
+    if (!researchers.includes(req.user.id)) {
+      researchers.push(req.user.id);
+    }
+  }
   // Create new user object
   const newProject = await Project.create({
     title: req.body.title,
     description: req.body.description,
     image: req.body.image,
-    researchers: [req.user.id],
+    researchers: researchers,
     raters: req.body.raters,
   });
 

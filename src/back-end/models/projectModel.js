@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const Item = require('./itemModel');
 
-const projectSchema = new mongoose.Schema({
+const projectSchema = new Item({
   title: {
     type: String,
     required: [true, 'Please enter project title here.'],
@@ -11,22 +12,6 @@ const projectSchema = new mongoose.Schema({
   image: {
     type: String,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now(),
-  },
-  researchers: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: 'User',
-    },
-  ],
-  raters: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: 'User',
-    },
-  ],
   // TODO: Reference module modules here
 });
 const Project = mongoose.model('Project', projectSchema);
