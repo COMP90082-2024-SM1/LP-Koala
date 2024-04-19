@@ -1,18 +1,18 @@
 'use client';
-
 import { ProjectCard } from "@/components/project-card";
 import {useEffect, useState} from "react";
 import {ClipLoader} from "react-spinners";
-
-
+import {getUserRole} from "@/lib/utils";
+import Cookies from "js-cookie";
 
 
 
 export const ProjectsList = () => {
 
-    const [projects, setProjects] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
-    const getProjects = async ()=>{
+    const [projects, setProjects] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [role, setRole] = useState('');
+    const getProjectsAndRole = async ()=>{
 
         await fetch('http://localhost:3000/projects').then(r=>{
             if (r.ok){
@@ -20,13 +20,13 @@ export const ProjectsList = () => {
                 r.json().then(data=>setProjects(data.projects))
             }
         })
-        // const data =  response.json().then();
-        // setProjects(data.projects);
-        // console.log(data.projects);
+
+        const role =  await getUserRole(Cookies.get('token'));
+        setRole(role);
     }
 
     useEffect(() => {
-        getProjects()
+        getProjectsAndRole()
     }, []);
   return (
     <div>
@@ -37,6 +37,7 @@ export const ProjectsList = () => {
             id={project._id}
             name={project.name}
             imageUrl={'/'}
+            isRater={role === 'rater'}
           />
         ))}
       </div>

@@ -10,6 +10,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
+import {getUserRole} from "@/lib/utils";
+import Cookies from "js-cookie";
 
 
 
@@ -17,15 +19,16 @@ interface ProjectCardProps {
   id: string;
   name: string;
   imageUrl: string;
+  isRater: boolean;
 };
 
-export const ProjectCard = ({
+export const ProjectCard  = ({
   id,
   name,
   imageUrl,
-}: ProjectCardProps) => {
+  isRater
+                             }: ProjectCardProps) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-
   const handleConfirmDelete = () => {
     console.log("Deleting project", id);
     setShowConfirmModal(false);
@@ -34,8 +37,9 @@ export const ProjectCard = ({
 
   return (
 
-      <div className="group hover:shadow-sm transition overflow-hidden border rounded-lg p-3 h-full">
-        <div className='float-right'>
+      <div className="relative group hover:shadow-sm transition overflow-hidden border rounded-lg p-3 h-full">
+
+        { !isRater && ( <div className='absolute right-1 z-20'>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-4 w-8 p-0">
@@ -58,7 +62,7 @@ export const ProjectCard = ({
               </button>
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
+        </div>)}
         <Link href={`/projects/${id}`}>
         <div className="relative w-full aspect-video rounded-md overflow-hidden">
           <Image
