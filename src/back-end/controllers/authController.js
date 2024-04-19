@@ -108,6 +108,9 @@ exports.updatePassword = asyncCatch(async (req, res, next) => {
 exports.checkAccess = (Model) =>
   asyncCatch(async (req, res, next) => {
     const doc = await Model.findById(req.params.id);
+    if (!doc) {
+      return next(new AppError('No document found with that ID', 404));
+    }
     if (verifyDocAccess(req, res, next, doc)) {
       return next(
         new AppError('Unauthorised user accessing this document', 403)
