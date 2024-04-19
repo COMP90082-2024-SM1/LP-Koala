@@ -49,7 +49,7 @@ export const ProjectsList = () => {
       </div>
       {projects.length === 0 && !isLoading && (
         <div className="text-center text-sm text-muted-foreground mt-10">
-          No courses found
+          No Projects found
         </div>
       )}
 

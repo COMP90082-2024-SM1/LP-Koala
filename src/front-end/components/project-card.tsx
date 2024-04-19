@@ -10,9 +10,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import {getUserRole} from "@/lib/utils";
 import Cookies from "js-cookie";
-
+import {useRouter} from "next/navigation";
 
 
 interface ProjectCardProps {
@@ -29,10 +28,34 @@ export const ProjectCard  = ({
   isRater
                              }: ProjectCardProps) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const handleConfirmDelete = () => {
-    console.log("Deleting project", id);
-    setShowConfirmModal(false);
-    // Implement deletion logic here, such as API calls
+  const router = useRouter();
+  const handleConfirmDelete = async () => {
+      console.log("Deleting project", id);
+      setShowConfirmModal(false)
+      const token = Cookies.get('token')!;
+      const user = Cookies.get('user')!
+
+
+      // Implement deletion logic here, such as API calls
+        try {
+          const response = await fetch(`http://localhost:3000/projects/${id}`,{
+              method: 'DELETE',
+              headers: {
+                  "Content-type": "application/json; charset=UTF-8",
+                  'authorization': token
+              },
+              body: `{"user": ${user}}`
+          })
+
+          if (response.status === 204) {
+              console.log('project',id,' deleted');
+              location.reload();
+          }
+
+      } catch (error){
+          console.log(error)
+          // setIsLoading(false);
+      }
   };
 
   return (

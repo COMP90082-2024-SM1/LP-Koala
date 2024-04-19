@@ -104,7 +104,6 @@ export const columns: ColumnDef<User>[] = [
       }
       const onClick = async ()=> {
           const token = Cookies.get('token')!
-          console.log(token)
           setIsLoading(true)
           try {
             const response = await fetch(`http://localhost:3000/users/deleteUser/${_id}`,{
@@ -112,7 +111,7 @@ export const columns: ColumnDef<User>[] = [
                   headers: {
                     "Content-type": "application/json; charset=UTF-8",
                     'authorization': token
-                  }
+                  },
                 })
 
             if (response.status === 204) {
@@ -126,19 +125,6 @@ export const columns: ColumnDef<User>[] = [
           }
       }
       return (
-        // <DropdownMenu>
-        //   <DropdownMenuTrigger asChild>
-        //
-        //   </DropdownMenuTrigger>
-        //   <DropdownMenuContent align="end">
-        //     <Link href={`/users/${_id}`}>
-        //       <DropdownMenuItem>
-        //         <Pencil className="h-4 w-4 mr-2" />
-        //         Edit
-        //       </DropdownMenuItem>
-        //     </Link>
-        //   </DropdownMenuContent>
-        // </DropdownMenu>
           <div>
             {(_id !== currentId) && (<Button
               onClick={()=> setIsModalOpen(true)}
