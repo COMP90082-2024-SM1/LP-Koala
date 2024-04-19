@@ -21,7 +21,7 @@ router.post(
 );
 router
   .route('/:id')
-  .get(projectController.getOneProject)
+  .get(checkAccess(Project), projectController.getOneProject)
   .delete(
     restrictTo('researcher'),
     checkAccess(Project),

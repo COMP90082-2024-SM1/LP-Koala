@@ -12,7 +12,10 @@ const projectSchema = new Item({
   image: {
     type: String,
   },
-  // TODO: Reference module modules here
+  modules: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Module',
+  },
 });
 const Project = mongoose.model('Project', projectSchema);
 
