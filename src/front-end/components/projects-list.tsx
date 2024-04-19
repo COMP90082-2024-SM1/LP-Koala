@@ -13,11 +13,17 @@ export const ProjectsList = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [role, setRole] = useState('');
     const getProjectsAndRole = async ()=>{
-
-        await fetch('http://localhost:3000/projects').then(r=>{
+        const token = Cookies.get('token')!;
+        await fetch('http://localhost:3000/projects', {
+            method: 'GET',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                "authorization": token
+            }
+        }).then(r=>{
             if (r.ok){
                 setIsLoading(false);
-                r.json().then(data=>setProjects(data.projects))
+                r.json().then(r=>setProjects(r.data))
             }
         })
 
@@ -35,7 +41,7 @@ export const ProjectsList = () => {
           <ProjectCard
             key={project._id}
             id={project._id}
-            name={project.name}
+            name={project.title}
             imageUrl={'/'}
             isRater={role === 'rater'}
           />

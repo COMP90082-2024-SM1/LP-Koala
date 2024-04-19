@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const AppError = require('./../utils/appError');
 const { promisify } = require('util');
+const verifyDocAccess = require('../utils/verifyDocAccess');
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -77,7 +78,9 @@ exports.protect = asyncCatch(async (req, res, next) => {
 exports.restricTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-      return next(new AppError("You don't have access to create users.", 403));
+      return next(
+        new AppError("You don't have access to perform this operation.", 403)
+      );
     }
     next();
   };
@@ -101,3 +104,18 @@ exports.updatePassword = asyncCatch(async (req, res, next) => {
   // 4) Log user in, send JWT
   createSendToken(user, 200, req, res);
 });
+
+// Check if a user has access to a particular document
+exports.checkAccess = (Model) =>
+  asyncCatch(async (req, res, next) => {
+    const doc = await Model.findById(req.params.id);
+    if (!doc) {
+      return next(new AppError('No document found with that ID', 404));
+    }
+    if (verifyDocAccess(req, res, next, doc)) {
+      return next(
+        new AppError('Unauthorised user accessing this document', 403)
+      );
+    }
+    next();
+  });
