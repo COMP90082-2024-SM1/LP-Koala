@@ -13,13 +13,22 @@ router.use(protect);
 
 // Only researchers/raters can see their own projects, but admin can see all the projects
 router.get('/', projectController.getProjects);
-router.get('/:id', projectController.getOneProject);
+
+router
+  .route('/:id')
+  .get(projectController.getOneProject)
+  .delete(
+    restricTo('researcher'),
+    checkAccess(Project),
+    projectController.deleteProject
+  )
+  .post(
+    restricTo('researcher'),
+    checkAccess(Project),
+    projectController.updateProject
+  );
 
 router.use(restricTo('researcher'));
 router.post('/createProject', projectController.createProject);
-router.delete(
-  '/deleteProject/:id',
-  checkAccess(Project),
-  projectController.deleteProject
-);
+
 module.exports = router;
