@@ -1,21 +1,29 @@
-import React from 'react';
-import {DataTable} from "@/app/(dashboard)/(routes)/projects/create/_component/data-table";
-import {columns} from "@/app/(dashboard)/(routes)/projects/create/_component/columns";
+import {columns} from "@/app/(dashboard)/projects/create/_component/columns";
+import {DataTable} from "@/app/(dashboard)/users/_component/data-table";
+import Cookies from "js-cookie";
+import {useEffect, useState} from "react";
 
 const Allocation = ({ isOpen, onClose, onConfirm }: {isOpen: boolean, onClose: React.MouseEventHandler<HTMLButtonElement>, onConfirm: React.MouseEventHandler<HTMLButtonElement>}) => {
     if (!isOpen) return null;
-    const users = [
-        {
-            name: 'user1',
-            projects: ['project1', 'project2'],
-            role: 'Researcher'
+    const token = Cookies.get('token')!
 
-    },{
-            name: 'user1',
-            projects: ['project1', 'project2'],
-            role: 'Researcher'
-    }]
-    
+    const [users, setUsers] = useState([])
+    const getUsers = async ()=> {
+        const response = await fetch('http://localhost:3000/users/getUsers', {
+            method: 'GET',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": token!
+            }
+        })
+
+        const result = await response.json();
+
+        setUsers(result.data.users);
+    }
+    useEffect(() => {
+        getUsers()
+    }, []);
     return (
         <div style={{
             position: 'fixed',

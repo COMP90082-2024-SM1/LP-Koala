@@ -1,6 +1,5 @@
-import {DataTable} from "@/app/(dashboard)/(routes)/users/_component/data-table";
-import {columns} from "@/app/(dashboard)/(routes)/users/_component/columns";
-import Cookies from "js-cookie";
+import {DataTable} from "@/app/(dashboard)/users/_component/data-table";
+import {columns} from "@/app/(dashboard)/users/_component/columns";
 import {cookies} from "next/headers";
 
 async function Page() {

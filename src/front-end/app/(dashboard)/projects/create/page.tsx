@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {cn} from "@/lib/utils";
 
 const formSchema = z.object({
   title: z.string().min(1, {
@@ -171,12 +172,14 @@ const CreatePage = () => {
                   type="button"
                   variant="ghost"
                 >
+
                   Cancel
                 </Button>
               </Link>
               <Button
                 type="submit"
                 disabled={!isValid || isSubmitting}
+                className={cn((isModalOpen) && 'z-[-10]')}
               >
                 Continue
               </Button>

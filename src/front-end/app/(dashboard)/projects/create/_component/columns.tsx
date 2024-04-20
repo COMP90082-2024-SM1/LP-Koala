@@ -1,19 +1,10 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, MoreHorizontal, Pencil } from "lucide-react"
-import Link from "next/link";
+import { ArrowUpDown } from "lucide-react"
 
 import { Button } from "@/components/ui/button";
-import {  } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+
 
 type User = {
   name: string,
@@ -26,6 +17,7 @@ export const columns: ColumnDef<User>[] = [
     header: ({ column }) => {
       return (
         <Button
+            type='button'
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
@@ -35,36 +27,14 @@ export const columns: ColumnDef<User>[] = [
       )
     },
   },
-  // {
-  //   accessorKey: "projects",
-  //   header: ({ column }) => {
-  //     return (
-  //       <Button
-  //         variant="ghost"
-  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //       >
-  //         Allocated Projects
-  //         <ArrowUpDown className="ml-2 h-4 w-4" />
-  //       </Button>
-  //     )
-  //   },
-  //   cell: ({ row }) => {
-  //     const price = parseFloat(row.getValue("price") || "0");
-  //     const formatted = new Intl.NumberFormat("en-US", {
-  //       style: "currency",
-  //       currency: "USD"
-  //     }).format(price);
-  //     console.log(row.getValue('projects'))
 
-  //     return <div>{row.getValue('projects')[0]}</div>
-  //   }
-  // },
   {
     accessorKey: "role",
     header: ({ column }) => {
       return (
         <Button
-          variant="ghost"
+            type='button'
+            variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Role
@@ -73,15 +43,7 @@ export const columns: ColumnDef<User>[] = [
       )
     },
     cell: ({ row }) => {
-      const isPublished = row.getValue("isPublished") || false;
-
       return (
-        // <Badge className={cn(
-        //   "bg-slate-500",
-        //   isPublished && "bg-sky-700"
-        // )}>
-        //   {isPublished ? "Published" : "Draft"}
-        // </Badge>
           <div>
             {row.getValue('role')}
           </div>
@@ -96,8 +58,7 @@ export const columns: ColumnDef<User>[] = [
       )
     },
     cell: ({ row }) => {
-      const { id } = row.original;
-
+      const { _id } = row.original;
       return (
         <div className="flex items-center">
           <label htmlFor="editCheckbox" className="flex items-center cursor-pointer">
