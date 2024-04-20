@@ -47,7 +47,7 @@ const Allocation = ({ isOpen, onClose, onConfirm }: {isOpen: boolean, onClose: R
                 overflow: 'auto' // Adds scroll if content is too long
             }}>
                 <h2>Allocate User</h2>
-                <DataTable columns={columns} data={users}/>
+                <DataTable columns={columns} data={users}  canCreateUser={false}/>
                 <div style={{
                     display: 'flex',
                     justifyContent: 'space-between', // This spaces the buttons apart

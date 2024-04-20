@@ -17,7 +17,7 @@ async function Page() {
     const users = responseObject.data.users
     return (
         <div className="p-6 space-y-4">
-            <DataTable columns={columns} data={users}/>
+            <DataTable columns={columns} data={users} canCreateUser={true}/>
         </div>
     );
 }
