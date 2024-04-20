@@ -56,12 +56,12 @@ export function DataTable<TData, TValue>({
     return (
         <div>
             <div className="flex items-center py-4 justify-between">
-                <Link href="/projects/create">
+                {/* <Link href="/projects/create">
                     <Button style={{ width: '100px', position: 'relative', zIndex: 1 }} className="mt-auto mb-4">
                         <ArrowLeft className="h-4 w-4 mr-2" />
                         Back
                     </Button>
-                </Link>
+                </Link> */}
                 <Input
                     placeholder="Filter users..."
                     value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}

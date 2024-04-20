@@ -1,13 +1,13 @@
 "use client";
 
 import * as z from "zod";
-import axios from "axios";
+import React, { useState } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react"
-// import toast from "react-hot-toast";
+import Allocation from '@/components/allocate-rater';
 
 import {
   Form,
@@ -55,6 +55,22 @@ const CreatePage = () => {
 //       toast.error("Something went wrong");
 //     }
 //   }
+    const [isModalOpen, setModalOpen] = useState(false);
+
+    const handleOpenModal = (e) => {
+        e.preventDefault();
+        setModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setModalOpen(false);
+    };
+
+    const handleConfirm = () => {
+        console.log("Allocation confirmed");
+        // Perform your allocation logic here or redirect
+        setModalOpen(false);
+    };
 
   return ( 
     <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
@@ -91,7 +107,7 @@ const CreatePage = () => {
               )}
             />
             {/* Project Description Field */}
-            <FormField
+            {/* <FormField
               control={form.control}
               name="description"
               render={({ field }) => (
@@ -113,7 +129,7 @@ const CreatePage = () => {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             {/* Image Upload Field */}
             <FormField
               control={form.control}
@@ -139,12 +155,15 @@ const CreatePage = () => {
               )}
             /><br></br>
             {/* Allocate Users Button */}
-            <Link href="/projects/allocate">
-                <Button>
-                    Allocate Rater
-                    <ArrowRight className="h-4 w-4 mr-2" />
-                </Button>
-            </Link>
+            <Button onClick={handleOpenModal}>
+                Allocate Rater
+                <ArrowRight className="h-4 w-4 mr-2" />
+            </Button>
+            <Allocation
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
+                onConfirm={handleConfirm}
+            />
             {/* Form Buttons */}
             <div className="flex items-center gap-x-2">
               <Link href="/projects">
