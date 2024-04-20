@@ -22,5 +22,14 @@ const singleChoiceSchema = new mongoose.Schema({
     }
 })
 
+mcqSchema.pre(/^find/, function(next){
+    this.populate('choices');
+    console.log(this);
+    next();
+})
+
+
 const singleChoice = mongoose.model('singleChoices', singleChoiceSchema);
 const mcqQuestion = mongoose.model('multipleChoices', mcqSchema);
+
+module.exports = {singleChoice, mcqQuestion};
