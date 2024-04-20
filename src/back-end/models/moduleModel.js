@@ -9,10 +9,10 @@ const moduleSchme = new Item({
   description: {
     type: String,
   },
-  activities: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'Activity',
-  },
+  //   activities: {
+  //     type: mongoose.Schema.ObjectId,
+  //     ref: 'Activity',
+  //   },
 });
 
 const Module = mongoose.model('Module', moduleSchme);
