@@ -16,14 +16,17 @@ export default function Dashboard() {
         getUserRole(Cookies.get('token')).then(r=> setIsRater(r === 'rater'));
     }, []);
     return (
-        <div className="p-6 space-y-4">
-
-            {!isRater && (<Button onClick={()=>{router.push('/projects/create')}}>
-                <PlusCircle className="h-4 w-4 mr-2" />
-                New Project
-            </Button>)}
-            <ProjectsList
-            />
+        <div className="p-6 flex flex-col">
+            {!isRater && (
+                <Button
+                    className="self-end bg-[#1c407f] mb-4"
+                    onClick={() => { router.push('/projects/create') }}
+                >
+                    <PlusCircle className="h-4 w-4 mr-2" />
+                    New Project
+                </Button>
+            )}
+            <ProjectsList />
         </div>
-    )
+    );
 }

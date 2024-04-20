@@ -66,10 +66,10 @@ export function DataTable<TData, TValue>({
                     onChange={(event) =>
                         table.getColumn("name")?.setFilterValue(event.target.value)
                     }
-                    className="max-w-sm"
+                    className="max-w-xs"
                 />
                 {canCreateUser && (<Link href="/users/create">
-                    <Button>
+                    <Button className="bg-[#1c407f]">
                         <PlusCircle className="h-4 w-4 mr-2" />
                         New User
                     </Button>
