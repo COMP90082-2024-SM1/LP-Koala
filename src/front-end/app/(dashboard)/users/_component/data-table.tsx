@@ -31,11 +31,13 @@ import Cookies from "js-cookie";
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
+    canCreateUser: boolean
 }
 
 export function DataTable<TData, TValue>({
                                              columns,
                                              data,
+                                             canCreateUser
                                          }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -60,18 +62,19 @@ export function DataTable<TData, TValue>({
             <div className="flex items-center py-4 justify-between">
                 <Input
                     placeholder="Filter users..."
-                    value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
+                    value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
-                        table.getColumn("title")?.setFilterValue(event.target.value)
+                        table.getColumn("name")?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm"
                 />
-                <Link href="/users/create">
+                {canCreateUser && (<Link href="/users/create">
                     <Button>
                         <PlusCircle className="h-4 w-4 mr-2" />
                         New User
                     </Button>
-                </Link>
+                </Link>)}
+
             </div>
             <div className="rounded-md border">
                 <Table>

@@ -11,6 +11,7 @@ const ChangePasswordForm = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({passwordCurrent:'', newPassword:''});
     const [isSuccessMessageDisplayed, setSuccessMessageDisplayed] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('Your current password is incorrect');
     const onClick = async (e: React.FormEvent)=>{
         e.preventDefault();
         setIsLoading(true);
@@ -25,23 +26,32 @@ const ChangePasswordForm = () => {
                 }
             })
             setErrorMessageDisplayed(false);
-            if (response.status == 401) {
-                setSuccessMessageDisplayed(false);
-                setErrorMessageDisplayed(true);
-            }else if (response.ok) {
+            if (response.ok) {
                 const data = await response.json();
                 setErrorMessageDisplayed(false);
                 setSuccessMessageDisplayed(true);
                 setIsLoading(false);
                 Cookies.set('token','Bearer ' + data.token);
             }
+            else if (response.status == 401) {
+                handleError('Your current password is incorrect')
+            } else if (response.status === 500) {
+                handleError('New password should at least have 8 characters')
+            }
             // router.push('/projects');
         }catch(error) {
             console.log(error)
-            setIsLoading(false)
-            setErrorMessageDisplayed(true)
+            setIsLoading(false);
+            setErrorMessageDisplayed(true);
             setFormData((prevState) => ({...prevState, password: ''}))
         }
+    }
+
+    const handleError = (message:string)=>{
+        setSuccessMessageDisplayed(false);
+        setErrorMessageDisplayed(true);
+        setErrorMessage(message);
+        setIsLoading(false);
     }
 
     const onChange = (event:React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +61,7 @@ const ChangePasswordForm = () => {
     return (
         <div className="sm:mx-auto sm:w-full sm:max-w-sm flex flex-col flex-1  ">
             <p className='text-red-600 my-4' hidden={!isErrorMessageDisplayed}>
-                Your current password is incorrect
+                {errorMessage}
             </p>
             <p className='text-green-500 my-4' hidden={!isSuccessMessageDisplayed}>
                 Password successfully updated!

@@ -5,20 +5,33 @@ import { useState } from "react";
 export function ProfileForm () {
 
     const user = JSON.parse(Cookies.get('user')!);
+    const token = Cookies.get('token')!;
     const [isEditing, setIsEditing] = useState(false);
     const [editedName, setEditedName] = useState(user.name);
-    const [editedRole, setEditedRole] = useState(user.role);
     const router = useRouter()
     const handleEditClick = () => {
         setIsEditing(true);
     };
 
-    const handleSaveClick = () => {
+    const handleSaveClick = async () => {
         setIsEditing(false);
         user.name = editedName;
-        user.role = editedRole;
-        
+
         Cookies.set('user', JSON.stringify(user));
+        try {
+            const response = await fetch('http://localhost:3000/users/updateName', {
+                method: "PATCH",
+                body: JSON.stringify({name:editedName}),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                    "authorization": token
+                }
+            })
+            const data = await response.json()
+            console.log(data)
+        }catch (error){
+            console.log(error)
+        }
         location.reload();
     };
     

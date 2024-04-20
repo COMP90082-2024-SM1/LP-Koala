@@ -10,31 +10,83 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-
+import Cookies from "js-cookie";
+import {useRouter} from "next/navigation";
 
 
 interface ProjectCardProps {
   id: string;
   name: string;
   imageUrl: string;
+  isRater: boolean;
 };
 
-export const ProjectCard = ({
+export const ProjectCard  = ({
   id,
   name,
   imageUrl,
-}: ProjectCardProps) => {
+  isRater
+                             }: ProjectCardProps) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const router = useRouter();
+  const handleConfirmDelete = async () => {
+      console.log("Deleting project", id);
+      setShowConfirmModal(false)
+      const token = Cookies.get('token')!;
+      const user = Cookies.get('user')!
 
-  const handleConfirmDelete = () => {
-    console.log("Deleting project", id);
-    setShowConfirmModal(false);
-    // Implement deletion logic here, such as API calls
+
+      // Implement deletion logic here, such as API calls
+        try {
+          const response = await fetch(`http://localhost:3000/projects/${id}`,{
+              method: 'DELETE',
+              headers: {
+                  "Content-type": "application/json; charset=UTF-8",
+                  'authorization': token
+              },
+              body: `{"user": ${user}}`
+          })
+
+          if (response.status === 204) {
+              console.log('project',id,' deleted');
+              location.reload();
+          }
+
+      } catch (error){
+          console.log(error)
+          // setIsLoading(false);
+      }
   };
 
   return (
-    <Link href={`/projects/${id}`}>
-      <div className="group hover:shadow-sm transition overflow-hidden border rounded-lg p-3 h-full">
+
+      <div className="relative group hover:shadow-sm transition overflow-hidden border rounded-lg p-3 h-full">
+
+        { !isRater && ( <div className='absolute right-1 z-20'>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-4 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <Link href={`/projects/create`}>
+                <DropdownMenuItem>
+                  <Pencil className="h-4 w-4 mr-2" />
+                  Edit
+                </DropdownMenuItem>
+              </Link>
+              <button onClick={() => setShowConfirmModal(true)} className="w-full text-left">
+                <DropdownMenuItem>
+                  <Trash className="h-4 w-4 mr-2" />
+                  Delete
+                </DropdownMenuItem>
+              </button>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>)}
+        <Link href={`/projects/${id}`}>
         <div className="relative w-full aspect-video rounded-md overflow-hidden">
           <Image
             fill
@@ -46,28 +98,6 @@ export const ProjectCard = ({
         <div className="flex flex-col pt-2">
           <div className="text-lg md:text-base font-medium group-hover:text-sky-700 transition line-clamp-2">
             {name}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-4 w-8 p-0">
-                  <span className="sr-only">Open menu</span>
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <Link href={`/projects/create`}>
-                  <DropdownMenuItem>
-                    <Pencil className="h-4 w-4 mr-2" />
-                    Edit
-                  </DropdownMenuItem>
-                </Link>
-                <button onClick={() => setShowConfirmModal(true)} className="w-full text-left">
-                  <DropdownMenuItem>
-                    <Trash className="h-4 w-4 mr-2" />
-                    Delete
-                  </DropdownMenuItem>
-                </button>
-              </DropdownMenuContent>
-            </DropdownMenu>
           </div>
           {/*<p className="text-xs text-muted-foreground">*/}
           {/*  {category}*/}
@@ -80,6 +110,7 @@ export const ProjectCard = ({
               {/*</span>*/}
             </div>
           </div>
+
           {/*{progress !== null ? (*/}
           {/*  <ProjectProgress*/}
           {/*    variant={progress === 100 ? "success" : "default"}*/}
@@ -90,8 +121,9 @@ export const ProjectCard = ({
 
           {/*)}*/}
         </div>
+        </Link>
+
         <ConfirmModal isOpen={showConfirmModal} onClose={() => setShowConfirmModal(false)} onConfirm={handleConfirmDelete} />
       </div>
-    </Link>
   )
 }

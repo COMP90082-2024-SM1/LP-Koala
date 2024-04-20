@@ -1,4 +1,3 @@
-import { cookies } from 'next/headers';
 import { ProfileForm } from './_components/profile-form';
 
 function Page() {

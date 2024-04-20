@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ConfirmModal = ({ isOpen, onClose, onConfirm }) => {
+const ConfirmModal = ({ isOpen, onClose, onConfirm }: {isOpen: boolean, onClose: React.MouseEventHandler<HTMLButtonElement>, onConfirm: React.MouseEventHandler<HTMLButtonElement>}) => {
   if (!isOpen) return null;
 
   return (
