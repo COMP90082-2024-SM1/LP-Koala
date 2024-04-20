@@ -2,7 +2,7 @@
 const express = require('express');
 const projectController = require('../controllers/projectController');
 const {
-  restricTo,
+  restrictTo,
   protect,
   checkAccess,
 } = require('../controllers/authController');
@@ -15,21 +15,23 @@ router.use(protect);
 // Only researchers/raters can see their own projects, but admin can see all the projects
 router.get('/', projectController.getProjects);
 
+router.post(
+  '/createProject',
+  restrictTo('researcher'),
+  projectController.createProject
+);
 router
   .route('/:id')
-  .get(projectController.getOneProject)
+  .get(checkAccess(Project), projectController.getOneProject)
   .delete(
-    restricTo('researcher'),
+    restrictTo('researcher'),
     checkAccess(Project),
     projectController.deleteProject
   )
   .post(
-    restricTo('researcher'),
+    restrictTo('researcher'),
     checkAccess(Project),
     projectController.updateProject
   );
-
-router.use(restricTo('researcher'));
-router.post('/createProject', projectController.createProject);
 
 module.exports = router;
