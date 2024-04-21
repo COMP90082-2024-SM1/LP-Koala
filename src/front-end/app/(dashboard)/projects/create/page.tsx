@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react"
 import Allocation from '@/components/allocate-rater';
+import Cookies from "js-cookie";
 
 import {
   Form,
@@ -26,52 +27,69 @@ const formSchema = z.object({
   title: z.string().min(1, {
     message: "Title is required",
   }),
-  description: z.string().min(1, {
-    message: "Description is required",
-  }),
   image: z.string().min(1, {
     message: "image is required",
   }),
 });
+type FormData = z.infer<typeof formSchema>;
 
 const CreatePage = () => {
   const router = useRouter();
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      description: "",
       image: ""
     },
   });
 
-  const { isSubmitting, isValid } = form.formState;
+  const { handleSubmit, formState: { isSubmitting, isValid }, reset } = form;
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedRaters, setSelectedRaters] = useState([]);
+  const handleOpenModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      setModalOpen(true);
+  };
 
-//   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-//     try {
-//       const response = await axios.post("/api/courses", values);
-//       router.push(`/teacher/courses/${response.data.id}`);
-//       toast.success("Course created");
-//     } catch {
-//       toast.error("Something went wrong");
-//     }
-//   }
-    const [isModalOpen, setModalOpen] = useState(false);
+  const handleCloseModal = () => {
+      setModalOpen(false);
+  };
 
-    const handleOpenModal = (e) => {
-        e.preventDefault();
-        setModalOpen(true);
-    };
+  const handleConfirm = () => {
+      console.log("Allocation confirmed");
+      props.onUpdateRaters(selectedRaters);
+      setModalOpen(false);
+  };
 
-    const handleCloseModal = () => {
-        setModalOpen(false);
-    };
+  const onSubmit = async (data: FormData) => {
+    console.log(data);
+    const formData = new FormData();
+    formData.append("title", data.title);
+    if (data.image) {
+      formData.append("image", data.image);
+    }
 
-    const handleConfirm = () => {
-        console.log("Allocation confirmed");
-        // Perform your allocation logic here or redirect
-        setModalOpen(false);
-    };
+    try {
+      const response = await fetch('http://localhost:3000/projects/createProject', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${Cookies.get('token')}`
+        },
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create project');
+      }
+
+      const result = await response.json();
+      console.log(result);
+      reset();
+      router.push('/projects'); // Redirect user to the projects page
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   return ( 
     <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
@@ -81,7 +99,7 @@ const CreatePage = () => {
         </h1>
         <Form {...form}>
           <form
-            // onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-8 mt-8"
           >
             {/* Project Title Field */}
@@ -107,30 +125,6 @@ const CreatePage = () => {
                 </FormItem>
               )}
             />
-            {/* Project Description Field */}
-            {/* <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Project description
-                  </FormLabel>
-                  <FormControl>
-                    <textarea
-                      className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                      disabled={isSubmitting}
-                      placeholder="Describe what your project is about"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    Provide a brief description of your project.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
             {/* Image Upload Field */}
             <FormField
               control={form.control}
@@ -145,7 +139,13 @@ const CreatePage = () => {
                       type="file"
                       accept="image/*"
                       disabled={isSubmitting}
-                      onChange={(e) => field.onChange(e.target.files[0])}
+                      onChange={(e) => {
+                        if (e.target.files && e.target.files[0]) {
+                          field.onChange(e.target.files[0]);
+                        } else {
+                          field.onChange(null); // Set field value to null if no file is selected
+                        }
+                      }}
                     />
                   </FormControl>
                   <FormDescription>
@@ -172,7 +172,6 @@ const CreatePage = () => {
                   type="button"
                   variant="ghost"
                 >
-
                   Cancel
                 </Button>
               </Link>
@@ -181,14 +180,13 @@ const CreatePage = () => {
                 disabled={!isValid || isSubmitting}
                 className={cn((isModalOpen) && 'z-[-10]')}
               >
-                Continue
+                Submit
               </Button>
             </div>
           </form>
         </Form>
       </div>
     </div>
-
    );
 }
  

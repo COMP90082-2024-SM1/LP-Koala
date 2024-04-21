@@ -2,16 +2,22 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown } from "lucide-react"
-
+import React from 'react';
 import { Button } from "@/components/ui/button";
 
-
 type User = {
-  name: string,
-  projects: string[],
-  role: string
+  _id: string;
+  name: string;
+  projects: string[];
+  role: string;
 }
-export const columns: ColumnDef<User>[] = [
+
+type ColumnProps = {
+  toggleRater: (id: string) => void;
+  isSelected: (id: string) => boolean;
+};
+
+export const columns = ({ toggleRater, isSelected }: ColumnProps): ColumnDef<User>[] => [
   {
     accessorKey: "name",
     header: ({ column }) => {
@@ -58,20 +64,18 @@ export const columns: ColumnDef<User>[] = [
       )
     },
     cell: ({ row }) => {
-      const { _id } = row.original;
-      return (
-        <div className="flex items-center">
-          <label htmlFor="editCheckbox" className="flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              id="editCheckbox"
-              className="form-checkbox h-4 w-4"
-              // onChange={handleCheckboxChange} // You need to define this function
-              // checked={isChecked} // This state must be managed in your component
-            />
-          </label>
-        </div>
-      )
+      <div className="flex items-center">
+        <label htmlFor={`editCheckbox-${row.original._id}`} className="flex items-center cursor-pointer">
+          <input
+            type="checkbox"
+            id={`editCheckbox-${row.original._id}`}
+            className="form-checkbox h-4 w-4"
+            onChange={() => toggleRater(row.original._id)}
+            checked={isSelected(row.original._id)}
+          />
+        </label>
+      </div>
     }
   }
-]
+];
+
