@@ -50,7 +50,6 @@ exports.protect = asyncCatch(async (req, res, next) => {
   ) {
     token = req.headers.authorization.split(' ')[1];
   }
-  console.log(token)
   if (!token) {
     return next(new AppError('Please log in to get access.', 401));
   }
@@ -75,7 +74,7 @@ exports.protect = asyncCatch(async (req, res, next) => {
   next();
 });
 
-exports.restricTo = (...roles) => {
+exports.restrictTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       return next(
