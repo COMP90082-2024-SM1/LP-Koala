@@ -62,10 +62,20 @@ exports.getAllItems = (Model) =>
     let items;
     const role = req.user.role;
     const id = req.user.id;
-    const query = {};
+    let query = {};
     // Firstly, we find the corresponding query according to their roles
-    if (role === 'researcher' || role === 'rater') {
+    if (
+      role === 'researcher' ||
+      (role === 'rater' && Model.constructor.modelName != 'Module')
+    ) {
       query[role + 's'] = { $elemMatch: { $eq: id } };
+      // Since modules have access time, we construct a different query
+    } else if (role === 'rater' && Model.constructor.modelName === 'Module') {
+      query = {
+        raters: { $elemMatch: { $eq: id } },
+        accessable: true,
+        accessTime: { $lte: Date.now() },
+      };
     } else if (role == null || role != 'admin') {
       // Return error in case no role is found
       return next(
