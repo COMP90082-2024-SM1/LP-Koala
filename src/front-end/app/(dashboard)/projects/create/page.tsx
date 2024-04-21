@@ -61,6 +61,10 @@ const CreatePage = () => {
       setModalOpen(false);
   };
 
+  const updateRaters = (raters: string[]) => {
+    setSelectedRaters(raters);
+  };
+
   const onSubmit = async (data: FormData) => {
     console.log(data);
     const formData = new FormData();
@@ -73,7 +77,7 @@ const CreatePage = () => {
       const response = await fetch('http://localhost:3000/projects/createProject', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${Cookies.get('token')}`
+          'Authorization': Cookies.get('token')!
         },
         body: formData
       });
@@ -164,6 +168,7 @@ const CreatePage = () => {
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
                 onConfirm={handleConfirm}
+                onUpdateRaters={updateRaters}
             />
             {/* Form Buttons */}
             <div className="flex items-center gap-x-2">

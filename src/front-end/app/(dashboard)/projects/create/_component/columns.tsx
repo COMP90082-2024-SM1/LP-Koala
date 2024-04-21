@@ -64,17 +64,19 @@ export const columns = ({ toggleRater, isSelected }: ColumnProps): ColumnDef<Use
       )
     },
     cell: ({ row }) => {
-      <div className="flex items-center">
-        <label htmlFor={`editCheckbox-${row.original._id}`} className="flex items-center cursor-pointer">
-          <input
-            type="checkbox"
-            id={`editCheckbox-${row.original._id}`}
-            className="form-checkbox h-4 w-4"
-            onChange={() => toggleRater(row.original._id)}
-            checked={isSelected(row.original._id)}
-          />
-        </label>
-      </div>
+      return(
+        <div className="flex items-center">
+          <label htmlFor={`editCheckbox-${row.original._id}`} className="flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              id={`editCheckbox-${row.original._id}`}
+              className="form-checkbox h-4 w-4"
+              onChange={() => toggleRater(row.original._id)}
+              checked={isSelected(row.original._id)}
+            />
+          </label>
+        </div>
+      )
     }
   }
 ];
