@@ -5,6 +5,7 @@ const projectRouter = require('./routes/projectRoute');
 const moduleRouter = require('./routes/moduleRoute');
 const activityRouter = require('./routes/activityRoute');
 const cors = require('cors');
+const uploadingFuction = require('./server');
 
 const app = express();
 
@@ -14,6 +15,8 @@ app.use((req, res, next) => {
   next();
 });
 app.use(cors());
+
+
 
 app.use('/users', userRouter);
 app.use('/projects', projectRouter);
