@@ -42,7 +42,7 @@ export const ProjectsList = () => {
             key={project._id}
             id={project._id}
             name={project.title}
-            imageUrl={'/'}
+            imageUrl={project.image}
             isRater={role === 'rater'}
           />
         ))}

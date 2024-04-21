@@ -92,7 +92,7 @@ export const ProjectCard  = ({
             fill
             className="object-cover"
             alt={name}
-            src={imageUrl}
+            src={"data:image/jpeg;base64,"+ imageUrl}
           />
         </div>
         <div className="flex flex-col pt-2">

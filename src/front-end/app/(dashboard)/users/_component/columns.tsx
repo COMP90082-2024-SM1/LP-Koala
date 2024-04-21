@@ -47,23 +47,37 @@ export const columns: ColumnDef<User>[] = [
     },
   },
   {
-    accessorKey: "projects",
+    accessorKey: "username",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Allocated Projects
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button
+              variant="ghost"
+              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            User Name
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
       )
     },
-    cell: ({ row }) => {
-      const projects = row.getValue('projects') as string[]
-      return <div>{projects?.length > 0 && projects.map((project,index)=> <div key={index}>{project}</div>)}</div>
-    }
   },
+  // {
+  //   accessorKey: "projects",
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //       >
+  //         Allocated Projects
+  //         <ArrowUpDown className="ml-2 h-4 w-4" />
+  //       </Button>
+  //     )
+  //   },
+  //   cell: ({ row }) => {
+  //     const projects = row.getValue('projects') as string[]
+  //     return <div>{projects?.length > 0 && projects.map((project,index)=> <div key={index}>{project}</div>)}</div>
+  //   }
+  // },
   {
     accessorKey: "role",
     header: ({ column }) => {
@@ -79,12 +93,6 @@ export const columns: ColumnDef<User>[] = [
     },
     cell: ({ row }) => {
       return (
-        // <Badge className={cn(
-        //   "bg-slate-500",
-        //   isPublished && "bg-sky-700"
-        // )}>
-        //   {isPublished ? "Published" : "Draft"}
-        // </Badge>
           <div>
             {row.getValue('role')}
           </div>
