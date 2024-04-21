@@ -111,6 +111,23 @@ exports.checkAccess = (Model) =>
     if (!doc) {
       return next(new AppError('No document found with that ID', 404));
     }
+    // Check if a rater is able to access a particular module
+    if (req.user.role == 'rater' && doc.accessable) {
+      return next(new AppError('This item is not accessable.', 403));
+    }
+    // Check if a rater can access a module at the current time
+    if (
+      req.user.role == 'rater' &&
+      doc.accessTime &&
+      doc.accessTime > Date.now()
+    ) {
+      return next(
+        new AppError(
+          `This module is locked until ${Date.toLocaleString()}`,
+          403
+        )
+      );
+    }
     if (verifyDocAccess(req, res, next, doc)) {
       return next(
         new AppError('Unauthorised user accessing this document', 403)
