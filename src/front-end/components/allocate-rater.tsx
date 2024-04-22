@@ -1,3 +1,4 @@
+'use client';
 import {columns} from "@/app/(dashboard)/projects/create/_component/columns";
 import {DataTable} from "@/app/(dashboard)/users/_component/data-table";
 import Cookies from "js-cookie";
@@ -87,7 +88,7 @@ const Allocation: React.FC<AllocationProps> = ({ isOpen, onClose, onConfirm, onU
                         padding: '8px 16px',
                         borderRadius: '8px',
                         transition: 'background-color 300ms'
-                    }} onClick={handleConfirm}>Confirm</button>
+                    }} onClick={()=>handleConfirm()}>Confirm</button>
                 </div>
             </div>
         </div>

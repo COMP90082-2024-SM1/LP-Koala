@@ -66,23 +66,19 @@ const CreatePage = () => {
   };
 
   const onSubmit = async (data: FormData) => {
-    console.log(data);
-    // const formData = new FormData();
-    // formData.append("title", data.title);
-    // if (data.image) {
-    //   formData.append("image", data.image);
-    // }
     const fullData = {
       title: data.title,
       image: data.image,
       raters: selectedRaters
     };
+      console.log(fullData);
 
     try {
       const response = await fetch('http://localhost:3000/projects/createProject', {
         method: 'POST',
         headers: {
-          'Authorization': Cookies.get('token')!
+            "Content-type": "application/json; charset=UTF-8",
+            'Authorization': Cookies.get('token')!
         },
         body: JSON.stringify(fullData)
       });
@@ -150,6 +146,15 @@ const CreatePage = () => {
                       disabled={isSubmitting}
                       onChange={(e) => {
                         if (e.target.files && e.target.files[0]) {
+                            const reader = new FileReader()
+
+                            reader.readAsDataURL(e.target.files[0])
+
+                            reader.onload = () => {
+                                console.log('called: ', reader)
+                                // console.log(reader.result)
+                                field.onChange(reader.result)
+                            }
                           field.onChange(e.target.files[0]);
                         } else {
                           field.onChange(null); // Set field value to null if no file is selected

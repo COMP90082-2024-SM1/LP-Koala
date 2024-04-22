@@ -17,14 +17,14 @@ import {useRouter} from "next/navigation";
 interface ProjectCardProps {
   id: string;
   name: string;
-  imageUrl: string;
+  image: string;
   isRater: boolean;
 };
 
 export const ProjectCard  = ({
   id,
   name,
-  imageUrl,
+  image,
   isRater
                              }: ProjectCardProps) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -92,7 +92,7 @@ export const ProjectCard  = ({
             fill
             className="object-cover"
             alt={name}
-            src={"data:image/jpeg;base64,"+ imageUrl}
+            src={image}
           />
         </div>
         <div className="flex flex-col pt-2">
