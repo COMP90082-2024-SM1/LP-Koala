@@ -5,7 +5,6 @@ const projectRouter = require('./routes/projectRoute');
 const moduleRouter = require('./routes/moduleRoute');
 const activityRouter = require('./routes/activityRoute');
 const cors = require('cors');
-const uploadingFuction = require('./server');
 
 const app = express();
 
