@@ -1,14 +1,13 @@
 "use client";
 
 import * as z from "zod";
-import React, { useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/router';
 import Link from "next/link";
 import { ArrowRight } from "lucide-react"
-import AllocationRater from '@/components/allocate-rater';
-import AllocationResearcher from '@/components/allocate-researcher';
+import Allocation from '@/components/allocate-rater';
 import Cookies from "js-cookie";
 
 import {
@@ -34,8 +33,9 @@ const formSchema = z.object({
 });
 type FormData = z.infer<typeof formSchema>;
 
-const CreatePage = () => {
+const EditPage = () => {
   const router = useRouter();
+  const id = router.query.id;
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,79 +44,67 @@ const CreatePage = () => {
     },
   });
 
-  const {formState: { isSubmitting, isValid }, reset } = form;
-  const [isRaterModalOpen, setRaterModalOpen] = useState(false);
-  const [isResearcherModalOpen, setResearcherModalOpen] = useState(false);
+  const {formState: { isSubmitting, isValid }, reset, setValue } = form;
+  const [isModalOpen, setModalOpen] = useState(false);
   const [selectedRaters, setSelectedRaters] = useState<string[]>([]);
-  const [selectedResearchers, setselectedResearchers] = useState<string[]>([]);
-  const handleOpenRaterModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleOpenModal = (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
-      setRaterModalOpen(true);
+      setModalOpen(true);
   };
 
-  const handleOpenResearcherModal = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setResearcherModalOpen(true);
-};
-
-  const handleRaterCloseModal = () => {
-      setRaterModalOpen(false);
-  };
-
-  const handleResearcherCloseModal = () => {
-    setResearcherModalOpen(false);
+  const handleCloseModal = () => {
+      setModalOpen(false);
   };
 
   const handleConfirm = () => {
       console.log("Allocation confirmed");
       updateRaters(selectedRaters);
-      setRaterModalOpen(false);
+      setModalOpen(false);
   };
-
-  const handleConfirm2 = () => {
-    console.log("Allocation confirmed");
-    updateResearchers(selectedResearchers);
-    setResearcherModalOpen(false);
-};
 
   const updateRaters = (raters: string[]) => {
     setSelectedRaters(raters);
   };
 
-  const updateResearchers = (researchers: string[]) => {
-    setselectedResearchers(researchers);
-  };
-
-  const onSubmit = async (data: FormData) => {
-    const fullData = {
-      title: data.title,
-      image: data.image,
-      researchers: selectedResearchers,
-      raters: selectedRaters
-    };
-      console.log(fullData);
-
-    try {
-      const response = await fetch('http://localhost:3000/projects/createProject', {
-        method: 'POST',
+  useEffect(() => {
+    if (id) {
+      // Fetch existing data using the ID from the API
+      fetch(`http://localhost:3000/projects/${id}`, {
+        method: 'GET',
         headers: {
-            "Content-type": "application/json; charset=UTF-8",
-            'Authorization': Cookies.get('token')!
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${Cookies.get('token')}`
         },
-        body: JSON.stringify(fullData)
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to create project');
-      }
-
-      const result = await response.json();
-      console.log(result);
-      reset();
-      router.push('/projects'); // Redirect user to the projects page
-    } catch (error) {
-      console.error('Error:', error);
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Assuming data comes in the shape { title: "example", image: "url" }
+        if (data) {
+          setValue('title', data.title);
+          setValue('image', data.image);
+        }
+      })
+      .catch(error => console.error('Failed to fetch data:', error));
     }
+  }, [id, setValue]);
+
+  const handleUpdate = async (data: FormData) => {
+    console.log('Updating with data:', data);
+    // Put request to update data
+    fetch(`http://localhost:3000/projects/${id}`, {
+      method: 'PUT',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": Cookies.get('token')!
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(updatedData => {
+      console.log('Update successful:', updatedData);
+      router.push('/projects'); // Redirect to list page or dashboard after update
+    })
+    .catch(error => console.error('Failed to update:', error));
   };
 
   return ( 
@@ -127,7 +115,7 @@ const CreatePage = () => {
         </h1>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit(handleUpdate)}
             className="space-y-8 mt-8"
           >
             {/* Project Title Field */}
@@ -175,12 +163,11 @@ const CreatePage = () => {
 
                             reader.onload = () => {
                                 console.log('called: ', reader)
-                                // console.log(reader.result)
                                 field.onChange(reader.result)
                             }
                           field.onChange(e.target.files[0]);
                         } else {
-                          field.onChange(null); // Set field value to null if no file is selected
+                          field.onChange(null);
                         }
                       }}
                     />
@@ -192,27 +179,16 @@ const CreatePage = () => {
                 </FormItem>
               )}
             /><br></br>
-            {/* Allocate Raters Button */}
-            <Button onClick={handleOpenRaterModal}>
+            {/* Allocate Users Button */}
+            <Button onClick={handleOpenModal}>
                 Allocate Rater
                 <ArrowRight className="h-4 w-4 mr-2" />
             </Button>
-            <AllocationRater
-                isOpen={isRaterModalOpen}
-                onClose={handleRaterCloseModal}
+            <Allocation
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
                 onConfirm={handleConfirm}
                 onUpdateRaters={updateRaters}
-            /><br></br>
-            {/* Allocate Researchers Button */}
-            <Button onClick={handleOpenResearcherModal}>
-                Allocate Researcher
-                <ArrowRight className="h-4 w-4 mr-2" />
-            </Button>
-            <AllocationResearcher
-                isOpen={isResearcherModalOpen}
-                onClose={handleResearcherCloseModal}
-                onConfirm={handleConfirm2}
-                onUpdateResearchers={updateResearchers}
             />
             {/* Form Buttons */}
             <div className="flex items-center gap-x-2">
@@ -226,8 +202,8 @@ const CreatePage = () => {
               </Link>
               <Button
                 type="submit"
-                disabled={!isValid || isSubmitting || isRaterModalOpen || isResearcherModalOpen}
-                className={cn((isRaterModalOpen || isResearcherModalOpen) && 'z-[-10]')}
+                disabled={!isValid || isSubmitting}
+                className={cn((isModalOpen) && 'z-[-10]')}
               >
                 Submit
               </Button>
@@ -239,4 +215,4 @@ const CreatePage = () => {
    );
 }
  
-export default CreatePage;
+export default EditPage;
