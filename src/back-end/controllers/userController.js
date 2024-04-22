@@ -3,11 +3,10 @@ const AppError = require('../utils/appError');
 const asyncCatch = require('../utils/asyncCatch');
 const factory = require('../controllers/handlerFactory');
 const Project = require('../models/projectModel');
+const Module = require('../models/moduleModel');
 exports.createUser = asyncCatch(async (req, res, next) => {
   let newUser;
   // Ensure projects exist
-  // TODO: Think about deleting user on the effect on projects/modules (include both rater and researcher)
-  // TODO: Think about creating user on the effect on modules (Have to update manually)
   if (req.body.role == 'rater') {
     const allocatedProjectIds = req.body.projects;
 
@@ -102,4 +101,30 @@ exports.forbidSelfDelete = (req, res, next) => {
   next();
 };
 
-exports.deleteUser = factory.deleteOneDoc(User);
+exports.deleteUser = asyncCatch(async (req, res, next) => {
+  const user = await User.findByIdAndDelete(req.params.id);
+
+  if (!user) {
+    return next(new AppError('No document found with that ID', 404));
+  }
+  // Remove user in modules and projects
+  let query = {};
+  if (user.role == 'rater' || user.role == 'researcher') {
+    query[user.role + 's'] = { $elemMatch: { $eq: user.id } };
+    await Project.updateMany(
+      query,
+      { $pull: { raters: user.id } },
+      { new: true, runValidators: true }
+    );
+    await Module.updateMany(
+      query,
+      { $pull: { raters: user.id } },
+      { new: true, runValidators: true }
+    );
+  }
+
+  res.status(204).json({
+    status: 'success',
+    data: null,
+  });
+});
