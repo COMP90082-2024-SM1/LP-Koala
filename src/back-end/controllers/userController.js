@@ -2,15 +2,52 @@ const User = require('../models/userModel');
 const AppError = require('../utils/appError');
 const asyncCatch = require('../utils/asyncCatch');
 const factory = require('../controllers/handlerFactory');
-
+const Project = require('../models/projectModel');
 exports.createUser = asyncCatch(async (req, res, next) => {
-  // Create new user object
-  const newUser = await User.create({
-    name: req.body.name,
-    username: req.body.username,
-    password: req.body.password,
-    role: req.body.role,
-  });
+  let newUser;
+  // Ensure projects exist
+  // TODO: Think about deleting user on the effect on projects/modules (include both rater and researcher)
+  // TODO: Think about creating user on the effect on modules (Have to update manually)
+  if (req.body.role == 'rater') {
+    const allocatedProjectIds = req.body.projects;
+
+    if (!allocatedProjectIds || allocatedProjectIds == []) {
+      return next(
+        new AppError(
+          'A rater must be allocated to a project when created.',
+          400
+        )
+      );
+    }
+    allocatedProjectIds.forEach(async (id) => {
+      await Project.findById(id);
+    });
+
+    // Create new user object
+    newUser = await User.create({
+      name: req.body.name,
+      username: req.body.username,
+      password: req.body.password,
+      role: req.body.role,
+    });
+    // Update projects
+    console.log('GOING TO UPDATE PROJECTS');
+    allocatedProjectIds.forEach(async (id) => {
+      await Project.findByIdAndUpdate(
+        id,
+        { $push: { raters: newUser.id } },
+        { new: true, runValidators: true }
+      );
+    });
+  } else {
+    // Create new user object
+    newUser = await User.create({
+      name: req.body.name,
+      username: req.body.username,
+      password: req.body.password,
+      role: req.body.role,
+    });
+  }
 
   // Send response
   res.status(201).json({
