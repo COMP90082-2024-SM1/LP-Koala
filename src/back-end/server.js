@@ -9,6 +9,7 @@ const fs = require("fs");
 const { Readable } = require('stream');
 
 const app = require("./app");
+const fileModel = require('./models/fileModel');
 
 // Load configuration file
 dotenv.config({ path: "./config.env" });
@@ -27,17 +28,119 @@ async function initialization(){
         .then(() => {
             console.log("Connect to database successfully.");
         });
-
 }
 
 
 
 
 
-app.get("/test/find", (req, res) => {
-    res.status(204).json({
+app.get("/test/file/findAll", (req, res) => {
+    const cursor = bucket.find({});
+    const files = []
+    cursor.toArray()
+        .then(docs => {
+            // 遍历文档数组
+            for (const doc of docs) {
+                console.log(doc._id);
+                let filename = doc.filename;
+                let fileId = doc._id;
+                files.push({filename, fileId});
+            }
+            res.status(200).json({
+                status : 'success',
+                data : files
+            })
+        })
+        .catch(err => {
+            res.status(500).json({
+                status: 'fail',
+                message: 'server is busy now, please try again later.'
+            })
+            console.error('Error fetching documents:', err);
+        });
+});
 
-    })
+app.delete("/test/file/:id", (req,res) => {
+    if (req.params.id.length !== 24) {
+        res.status(404).json({
+            status: 'fail',
+            message: 'No such file with the given document ID'
+        })
+        return
+    }
+
+    bucket.delete(new mongodb.ObjectId(req.params.id)).then(() =>{
+        const query = {fieldName : 'fileId'};
+        fileModel.deleteOne(query).then(()=>{
+            res.status(200).json({
+                status: 'success',
+                message: 'delete successfully'
+        }).catch(err =>{
+            res.status(404).json({
+                status: 'fail',
+                message: 'No such file with the given document ID'
+            })
+        })
+
+    })}).catch( err => {
+        res.status(404).json({
+            status: 'fail',
+            message: 'No such file with the given document ID'
+        })
+    });
+
+
+
+
+})
+
+app.get("/test/file/:id", (req, res) =>{
+    if (req.params.id.length !== 24) {
+        res.status(404).json({
+            status: 'fail',
+            message: 'No such file with the given document ID'
+        })
+        return
+    }
+    const cursor = bucket.find({_id:new mongodb.ObjectId(req.params.id)})
+    const files = []
+    cursor.toArray()
+        .then(docs => {
+            if (docs.length === 0){
+                res.status(404).json({
+                    status: 'fail',
+                    message: 'No such file with the given document ID'
+                })
+                return
+            }
+            const downloadStream = bucket.openDownloadStream(new mongodb.ObjectId(req.params.id))
+
+            const doc = docs[0];
+            downloadStream.once('data', data => {
+                res.set({
+                    'Content-Type': data.contentType,
+                    'Content-Disposition': `attachment; filename="${doc.filename}"`
+                });
+            });
+
+
+            downloadStream.pipe(res);
+
+            downloadStream.on('error', err => {
+                console.error('error occurred while reading file.：', err);
+                res.status(500).json({
+                    status : 'fail',
+                    message: 'error occurred while reading file.'
+                });
+            });
+        })
+        .catch(err => {
+            res.status(500).json({
+                status: 'fail',
+                message: 'server is busy now, please try again later.'
+            })
+            console.error('Error fetching documents:', err);
+        });
 })
 
 
@@ -49,7 +152,7 @@ initialization().then(() => {
     });
     upload = multer({ storage: multer.memoryStorage() });
 
-    app.post("/test/upload", upload.single('file'), (req, res) => {
+    app.post("/test/file/upload", upload.single('file'), (req, res) => {
         const file = req.file;
         const readableStream = new Readable();
         readableStream.push(file.buffer);
@@ -64,10 +167,24 @@ initialization().then(() => {
         readableStream.pipe(uploadStream)
             .on('finish', () => {
                 console.log('File uploaded to GridFS');
-                res.status(201).json({
-                    status: 'success',
-                    message: 'File uploaded successfully'
+                fileModel.create({
+                    fileName: uploadStream.filename,
+                    fileId: uploadStream.id
+                }).then((doc) =>{
+                    res.status(201).json({
+                        status: 'success',
+                        fileId: uploadStream.id,
+                        referenceId: doc._id,
+                        message: 'File uploaded successfully'
+                    });
+                }).catch(err => {
+                    console.error('Error uploading file:', err);
+                    res.status(500).json({
+                        status: 'fail',
+                        message: 'server is busy now, please try again later'
+                    });
                 });
+
             })
             .on('error', (err) => {
                 console.error('Error uploading file:', err);

@@ -10,10 +10,17 @@ exports.getAllChoice = factory.getAll(singleChoice);
 exports.getAllMcqQuestions = factory.getAll(mcqQuestion);
 exports.getAllShortAnswerQuestions = factory.getAll(shortAnswer);
 exports.getAllActivity = factory.getAll(activity);
+
 exports.createChoice = factory.createOne(singleChoice);
 exports.createMcq = factory.createOne(mcqQuestion);
 exports.createShortAnswerQuestions = factory.createOne(shortAnswer);
 exports.createActivity = factory.createOne(activity);
+
+exports.getOneChoice = factory.getOne(singleChoice);
+exports.getOneMcqQuestion = factory.getOne(mcqQuestion);
+exports.getOneShortAnswerQuestion = factory.getOne(shortAnswer);
+exports.getOneActivity = factory.getOne(activity, {path: 'files'})
+
 exports.deleteChoice = factory.deleteOne(singleChoice);
 exports.deleteMcq = factory.deleteOne(mcqQuestion);
 exports.deleteActivity = factory.deleteOne(activity);

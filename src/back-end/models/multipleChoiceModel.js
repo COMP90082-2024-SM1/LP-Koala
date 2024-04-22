@@ -24,7 +24,6 @@ const singleChoiceSchema = new mongoose.Schema({
 
 mcqSchema.pre(/^find/, function(next){
     this.populate('choices');
-    console.log(this);
     next();
 })
 
