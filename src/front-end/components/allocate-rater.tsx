@@ -13,7 +13,6 @@ interface AllocationProps {
   
 const Allocation: React.FC<AllocationProps> = ({ isOpen, onClose, onConfirm, onUpdateRaters }) => {
     if (!isOpen) return null;
-    const token = Cookies.get('token');
 
     const [users, setUsers] = useState([]);
     const [selectedRaters, setSelectedRaters] = useState<string[]>([]);
@@ -23,7 +22,7 @@ const Allocation: React.FC<AllocationProps> = ({ isOpen, onClose, onConfirm, onU
             method: 'GET',
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
-                "Authorization": `Bearer ${token}`
+                "Authorization": Cookies.get('token')!
             }
         });
 

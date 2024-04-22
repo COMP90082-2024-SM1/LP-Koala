@@ -1,8 +1,7 @@
 "use client";
 
-import {ColumnDef} from "@tanstack/react-table"
-import {ArrowUpDown, Trash} from "lucide-react"
-
+import {ColumnDef} from "@tanstack/react-table";
+import {ArrowUpDown, Trash} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import Cookies from "js-cookie";
 import {
@@ -28,8 +27,6 @@ type User = {
 
 const currentUser = JSON.parse(Cookies.get('user')!);
 const currentId = currentUser._id;
-
-
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -143,8 +140,7 @@ export const columns: ColumnDef<User>[] = [
               <DialogContent
                   className="bg-white
                 text-black p-0
-                overflow-hidden
-                "
+                overflow-hidden"
               >
                 <DialogHeader className='pt-8 px-6'>
                   <DialogTitle className='text-2xl text-center font-bold'>
@@ -171,11 +167,9 @@ export const columns: ColumnDef<User>[] = [
                         className='bg-red-600 w-[7rem]'
                     >
                       <ClipLoader hidden={!isLoading} loading={isLoading} size={20} className='!border-sky-700 !border-b-transparent'/>
-
                       Confirm
                     </Button>
                   </div>
-
                 </DialogFooter>
               </DialogContent>
             </Dialog>

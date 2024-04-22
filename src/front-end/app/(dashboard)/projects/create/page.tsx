@@ -43,9 +43,9 @@ const CreatePage = () => {
     },
   });
 
-  const { handleSubmit, formState: { isSubmitting, isValid }, reset } = form;
+  const {formState: { isSubmitting, isValid }, reset } = form;
   const [isModalOpen, setModalOpen] = useState(false);
-  const [selectedRaters, setSelectedRaters] = useState([]);
+  const [selectedRaters, setSelectedRaters] = useState<string[]>([]);
   const handleOpenModal = (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       setModalOpen(true);
@@ -57,7 +57,7 @@ const CreatePage = () => {
 
   const handleConfirm = () => {
       console.log("Allocation confirmed");
-      props.onUpdateRaters(selectedRaters);
+      updateRaters(selectedRaters);
       setModalOpen(false);
   };
 
@@ -67,11 +67,16 @@ const CreatePage = () => {
 
   const onSubmit = async (data: FormData) => {
     console.log(data);
-    const formData = new FormData();
-    formData.append("title", data.title);
-    if (data.image) {
-      formData.append("image", data.image);
-    }
+    // const formData = new FormData();
+    // formData.append("title", data.title);
+    // if (data.image) {
+    //   formData.append("image", data.image);
+    // }
+    const fullData = {
+      title: data.title,
+      image: data.image,
+      raters: selectedRaters
+    };
 
     try {
       const response = await fetch('http://localhost:3000/projects/createProject', {
@@ -79,7 +84,7 @@ const CreatePage = () => {
         headers: {
           'Authorization': Cookies.get('token')!
         },
-        body: formData
+        body: JSON.stringify(fullData)
       });
 
       if (!response.ok) {
