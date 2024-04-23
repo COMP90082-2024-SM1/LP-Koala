@@ -5,17 +5,24 @@ const projectRouter = require('./routes/projectRoute');
 const moduleRouter = require('./routes/moduleRoute');
 const activityRouter = require('./routes/activityRoute');
 const cors = require('cors');
+const mongoSanitise = require('express-mongo-sanitize');
+const xss = require('xss-clean');
 
 const app = express();
 
 app.use(express.json());
+
+// Data sanitisation against NoSQL query injection
+app.use(mongoSanitise());
+
+// Data sanitisation against
+app.use(xss());
+
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
   next();
 });
 app.use(cors());
-
-
 
 app.use('/users', userRouter);
 app.use('/projects', projectRouter);
