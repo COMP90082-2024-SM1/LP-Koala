@@ -33,7 +33,7 @@ const formSchema = z.object({
   }),
 });
 
-const CreateActivityPage = () => {
+const CreateActivityPage = ({params}:{params:{projectId: string}}) => {
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -137,7 +137,7 @@ const CreateActivityPage = () => {
             />
             {/* Form Buttons */}
             <div className="flex items-center gap-x-2">
-              <Link href="/projects/661a8acb802cb862e77a7343">
+              <Link href={`/projects/${params.projectId}`}>
                 <Button
                   type="button"
                   variant="ghost"
