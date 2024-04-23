@@ -71,7 +71,7 @@ export const ProjectCard  = ({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <Link href={`/projects/create`}>
+              <Link href={`/projects/${id}/edit`}>
                 <DropdownMenuItem>
                   <Pencil className="h-4 w-4 mr-2" />
                   Edit
@@ -110,16 +110,6 @@ export const ProjectCard  = ({
               {/*</span>*/}
             </div>
           </div>
-
-          {/*{progress !== null ? (*/}
-          {/*  <ProjectProgress*/}
-          {/*    variant={progress === 100 ? "success" : "default"}*/}
-          {/*    size="sm"*/}
-          {/*    value={progress}*/}
-          {/*  />*/}
-          {/*) : (*/}
-
-          {/*)}*/}
         </div>
         </Link>
 
