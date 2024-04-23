@@ -9,6 +9,13 @@ const moduleSchme = new Item({
   description: {
     type: String,
   },
+  accessTime: {
+    type: Date,
+  },
+  accessable: {
+    type: Boolean,
+    default: true,
+  },
   //   activities: {
   //     type: mongoose.Schema.ObjectId,
   //     ref: 'Activity',
