@@ -28,8 +28,8 @@ const Allocation: React.FC<AllocationProps> = ({ isOpen, onClose, onConfirm, onU
         });
 
         const result = await response.json();
-        const raters = result.data.users.filter((user: any) => user.role === "researcher");
-        setUsers(raters);
+        const researchers = result.data.users.filter((user: any) => user.role === "researcher");
+        setUsers(researchers);
     };
 
     useEffect(() => {
@@ -72,7 +72,7 @@ const Allocation: React.FC<AllocationProps> = ({ isOpen, onClose, onConfirm, onU
                 maxWidth: '80%',
                 overflow: 'auto'
             }}>
-                <h2>Allocate Rater</h2>
+                <h2>Allocate Researcher</h2>
                 <DataTable
                     columns={columns({ toggleRater, isSelected: id => selectedResearchers.includes(id) })}
                     data={users}
