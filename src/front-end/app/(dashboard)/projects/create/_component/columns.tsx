@@ -23,7 +23,7 @@ export const columns = ({ toggleRater, isSelected }: ColumnProps): ColumnDef<Use
     header: ({ column }) => {
       return (
         <Button
-            type='button'
+          type='button'
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
