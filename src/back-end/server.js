@@ -73,16 +73,12 @@ app.delete("/test/file/:id", (req,res) => {
     }
 
     bucket.delete(new mongodb.ObjectId(req.params.id)).then(() =>{
-        const query = {fieldName : 'fileId'};
-        fileModel.deleteOne(query).then(()=>{
+        const query = {fileId : `${req.params.id}`};
+        fileModel.deleteOne(query).then((temp)=>{
+            console.log(temp);
             res.status(200).json({
                 status: 'success',
                 message: 'delete successfully'
-        }).catch(err =>{
-            res.status(404).json({
-                status: 'fail',
-                message: 'No such file with the given document ID'
-            })
         })
 
     })}).catch( err => {
