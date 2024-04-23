@@ -3,13 +3,13 @@ import {ProjectNavbar} from "./_components/project-navbar";
 import {ProjectSidebar} from "./_components/project-sidebar";
 
 
-
 const ProjectLayout =  ({
                               children,
                               params
                             }: {
   children: React.ReactNode;
   params: { projectId: string };
+  
 }) => {
 
 
@@ -30,4 +30,4 @@ const ProjectLayout =  ({
   )
 }
 
-export default ProjectLayout
+export default ProjectLayout;
