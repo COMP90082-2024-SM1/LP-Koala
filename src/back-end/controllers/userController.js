@@ -30,7 +30,6 @@ exports.createUser = asyncCatch(async (req, res, next) => {
       role: req.body.role,
     });
     // Update projects
-    console.log('GOING TO UPDATE PROJECTS');
     allocatedProjectIds.forEach(async (id) => {
       await Project.findByIdAndUpdate(
         id,
