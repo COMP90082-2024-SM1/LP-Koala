@@ -9,7 +9,7 @@ const ProjectLayout =  ({
                               params
                             }: {
   children: React.ReactNode;
-  params: { courseId: string };
+  params: { projectId: string };
 }) => {
 
 
@@ -20,7 +20,7 @@ const ProjectLayout =  ({
           />
         </div>
         <div className="hidden md:flex h-full w-56 flex-col fixed inset-y-0 z-50">
-          <ProjectSidebar
+          <ProjectSidebar projectId={params.projectId}
           />
         </div>
         <main className="md:pl-56 pt-[80px] h-full">

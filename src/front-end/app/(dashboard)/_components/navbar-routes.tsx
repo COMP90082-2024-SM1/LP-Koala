@@ -48,7 +48,6 @@ export const NavbarRoutes = () => {
             </Button>
           </Link>
         ) : null}
-        {/*TODO: the User should be replaced by the user name*/}
         <p className='my-auto'> Hello, {name}</p>
         <UserIcon/>
       </div>
