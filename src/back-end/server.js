@@ -10,9 +10,12 @@ const { Readable } = require('stream');
 
 const app = require("./app");
 const fileModel = require('./models/fileModel');
+const mime = require('mime-types');
 
 // Load configuration file
 dotenv.config({ path: "./config.env" });
+
+
 
 // Obtain server connection details from configuration file
 const database = process.env.DATABASE;
@@ -103,7 +106,6 @@ app.get("/test/file/:id", (req, res) =>{
         return
     }
     const cursor = bucket.find({_id:new mongodb.ObjectId(req.params.id)})
-    const files = []
     cursor.toArray()
         .then(docs => {
             if (docs.length === 0){
@@ -115,11 +117,12 @@ app.get("/test/file/:id", (req, res) =>{
             }
             const downloadStream = bucket.openDownloadStream(new mongodb.ObjectId(req.params.id))
 
-            const doc = docs[0];
+            const doc = docs[0].filename;
+            const type = mime.lookup(doc);
             downloadStream.once('data', data => {
                 res.set({
-                    'Content-Type': data.contentType,
-                    'Content-Disposition': `attachment; filename="${doc.filename}"`
+                    'Content-Type': `${type}`,
+                    'Content-Disposition': `attachment; filename="${doc}"`
                 });
             });
 
