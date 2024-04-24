@@ -8,11 +8,11 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react"
 import Allocation from '@/components/allocate-user';
 import Cookies from "js-cookie";
+import { useRouter } from 'next/navigation';
 
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormLabel,
   FormMessage,
@@ -44,6 +44,7 @@ interface Project {
 }
 
 const EditPage: React.FC<PageProps> = ({params}) =>{
+  const router = useRouter(); 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -155,6 +156,7 @@ const EditPage: React.FC<PageProps> = ({params}) =>{
       const result = await response.json();
       console.log(result);
       reset();
+      router.push(`/projects`);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -164,7 +166,7 @@ const EditPage: React.FC<PageProps> = ({params}) =>{
     <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
       <div>
         <h1 className="text-2xl">
-          Name your project
+          Edit your project
         </h1>
         <Form {...form}>
           <form
@@ -183,7 +185,6 @@ const EditPage: React.FC<PageProps> = ({params}) =>{
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="e.g., 'Advanced web development'"
                       {...field}
                     />
                   </FormControl>
@@ -279,5 +280,5 @@ const EditPage: React.FC<PageProps> = ({params}) =>{
     </div>
    );
 }
- 
+
 export default EditPage;

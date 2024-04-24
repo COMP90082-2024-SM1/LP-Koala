@@ -122,7 +122,7 @@ const CreatePage = () => {
     <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
       <div>
         <h1 className="text-2xl">
-          Name your project
+          Create your project
         </h1>
         <Form {...form}>
           <form
