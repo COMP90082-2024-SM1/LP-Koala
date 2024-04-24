@@ -40,7 +40,7 @@ const Allocation: React.FC<AllocationProps> = ({ isOpen, onClose, onConfirm, onU
         setSelectedRaters(current => {
             const isCurrentlySelected = current.includes(id);
             const newSelectedRaters = isCurrentlySelected ? current.filter(raterId => raterId !== id) : [...current, id];
-            console.log(`Toggling rater ${id}:`, { isCurrentlySelected, newSelectedRaters });
+            // console.log(`Toggling rater ${id}:`, { isCurrentlySelected, newSelectedRaters });
             return newSelectedRaters;
         });
     };
