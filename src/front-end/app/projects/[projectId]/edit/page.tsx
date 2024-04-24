@@ -4,11 +4,9 @@ import * as z from "zod";
 import React, {useEffect, useState } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react"
-import AllocationRater from '@/components/allocate-rater';
-import AllocationResearcher from '@/components/allocate-researcher';
+import Allocation from '@/components/allocate-user';
 import Cookies from "js-cookie";
 
 import {
@@ -59,7 +57,7 @@ const EditPage: React.FC<PageProps> = ({params}) =>{
   const {formState: { isSubmitting, isValid }, reset } = form;
   const [isRaterModalOpen, setRaterModalOpen] = useState(false);
   const [isResearcherModalOpen, setResearcherModalOpen] = useState(false);
-  const [selectedRaters, setSelectedRaters] = useState<string[]>([]);
+  const [selectedRaters, setSelectedRaters] = useState<string[]>(['']);
   const [selectedResearchers, setselectedResearchers] = useState<string[]>([]);
 
   useEffect(() => {
@@ -73,13 +71,21 @@ const EditPage: React.FC<PageProps> = ({params}) =>{
       });
       const {data: {data}} = await response.json();
       setProject(data);
-      console.log("Resetting form with title: ", data.title);
       reset({ // Reset form with fetched data
         title: data.title,
         image: data.image,
       });
       setImageURL(data.image);
-      setSelectedRaters(data.rater);
+      const ratersId: string[] = [];
+      const researchersId: string[] = [];
+      data.raters.map((rater)=>{
+          ratersId.push(rater._id)
+      });
+      data.researchers.map((researcher)=>{
+          researchersId.push(researcher._id)
+      })
+      setSelectedRaters(ratersId);
+      setselectedResearchers(researchersId);
     };
 
     fetchProject();
@@ -133,8 +139,8 @@ const EditPage: React.FC<PageProps> = ({params}) =>{
       console.log(fullData);
 
     try {
-      const response = await fetch('http://localhost:3000/projects/${params.projectId}', {
-        method: 'PUT',
+      const response = await fetch(`http://localhost:3000/projects/${params.projectId}`, {
+        method: 'POST',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             'Authorization': Cookies.get('token')!
@@ -227,22 +233,27 @@ const EditPage: React.FC<PageProps> = ({params}) =>{
                 Allocate Rater
                 <ArrowRight className="h-4 w-4 mr-2" />
             </Button>
-            <AllocationRater
+            <Allocation
                 isOpen={isRaterModalOpen}
                 onClose={handleRaterCloseModal}
                 onConfirm={handleConfirm}
-                onUpdateRaters={updateRaters}
+                onUpdateUsers={updateRaters}
+                allocatedUsers={selectedRaters}
+                userType='rater'
+
             /><br></br>
             {/* Allocate Researchers Button */}
             <Button onClick={handleOpenResearcherModal}>
                 Allocate Researcher
                 <ArrowRight className="h-4 w-4 mr-2" />
             </Button>
-            <AllocationResearcher
+            <Allocation
                 isOpen={isResearcherModalOpen}
                 onClose={handleResearcherCloseModal}
                 onConfirm={handleConfirm2}
-                onUpdateResearchers={updateResearchers}
+                onUpdateUsers={updateResearchers}
+                allocatedUsers={selectedResearchers}
+                userType='researcher'
             />
             {/* Form Buttons */}
             <div className="flex items-center gap-x-2">

@@ -16,7 +16,7 @@ router.post(
 router.get('/findUser/:userId', userController.findUser);
 router.get(
   '/getUsers',
-  authController.restrictTo('admin'),
+  authController.restrictTo('admin', 'researcher'),
   userController.getUsers
 );
 router.delete(
