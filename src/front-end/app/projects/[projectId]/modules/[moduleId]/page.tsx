@@ -18,8 +18,8 @@ function Page({params}:{params:{projectId: string, moduleId: string}}) {
                         New Activity
                     </Button>
             </div>
-            <ProjectsList
-            />
+            {/*<ProjectsList*/}
+            {/*/>*/}
         </div>
     );
 }

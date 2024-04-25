@@ -15,7 +15,8 @@ type ToasterToast = Omit<ToastProps, 'id' | 'title' | 'description' | 'action'> 
   id: string
   title?: React.ReactNode
   description?: React.ReactNode
-  action?: ToastActionElement }
+  action?: ToastActionElement
+}
 
 const actionTypes = {
   ADD_TOAST: "ADD_TOAST",

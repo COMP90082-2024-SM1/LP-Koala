@@ -1,16 +1,28 @@
-import Link from "next/link"
-import { PlusCircle } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { ProjectsList } from "@/components/projects-list";
 import {redirect} from "next/navigation";
+import {cookies} from "next/headers";
 
 
 interface ProjectProps  {
     params: {projectId: string}
 }
 
-function Page({params}:ProjectProps) {
-    return redirect(`/projects/${params.projectId}/modules/module1`)
+async function Page({params}:ProjectProps) {
+    const token = cookies().get('token')?.value
+
+    const response = await fetch(`http://localhost:3000/projects/${params.projectId}`, {
+            method: "GET",
+            headers: {
+                "Authorization": token!
+            }
+        });
+    const {data: {data}} = await response.json();
+
+    if (!data){
+        redirect('/projects')
+    }
+
+    redirect(`/projects/${params.projectId}/modules/${data.modules[0]}`)
+
 }
 
 export default Page;

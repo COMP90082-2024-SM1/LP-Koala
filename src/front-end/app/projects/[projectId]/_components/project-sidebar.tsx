@@ -103,15 +103,14 @@ export const ProjectSidebar =  ({projectId}: {projectId:string}) => {
       </div>
       <div className="flex flex-col w-full">
           {modules.map((module) => (
-              <div className="flex justify-between items-center" key={module._id}>
-                <ProjectSidebarItem 
+                <ProjectSidebarItem
+                    key={module._id}
                     icon={Puzzle}
                     label={module.title}
                     href={`/projects/${projectId}/modules/${module._id}`}
                     onDelete={() => requestDelete(module._id)}
                 />
                 
-            </div>
           ))}
       </div>
       <Button className="my-5 mx-auto flex-row" onClick={()=>router.push(`/projects/${projectId}/modules/create`)}>
