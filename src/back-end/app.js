@@ -4,6 +4,7 @@ const userRouter = require('./routes/userRoute');
 const projectRouter = require('./routes/projectRoute');
 const moduleRouter = require('./routes/moduleRoute');
 const activityRouter = require('./routes/activityRoute');
+const forumRouter = require('/routes/forumRoute');
 const cors = require('cors');
 const mongoSanitise = require('express-mongo-sanitize');
 const xss = require('xss-clean');
@@ -32,6 +33,7 @@ app.use('/users', userRouter);
 app.use('/projects', projectRouter);
 app.use('/modules', moduleRouter);
 app.use('/activity', activityRouter);
+app.use('/forums', forumRouter);
 // TODO: Implement global error handler here
 //app.use(globalErrorHandler);
 
