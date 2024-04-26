@@ -16,6 +16,11 @@ const moduleSchme = new Item({
     type: Boolean,
     default: true,
   },
+  projectId: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Project',
+    required: true,
+  },
   //   activities: {
   //     type: mongoose.Schema.ObjectId,
   //     ref: 'Activity',

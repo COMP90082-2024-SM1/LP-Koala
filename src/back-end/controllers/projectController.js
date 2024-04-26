@@ -16,6 +16,10 @@ exports.getOneProject = factory.getOneDoc(Project, [
     path: 'raters',
     select: 'name username',
   },
+  {
+    path: 'modules',
+    select: '-__v -projectId',
+  },
 ]);
 exports.createProject = factory.createOneItem(Project);
 exports.deleteProject = factory.deleteOneDoc(Project);
