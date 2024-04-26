@@ -125,11 +125,6 @@ const ActivityIdPage = async ({
                     Access Settings
                   </h2>
                 </div>
-                {/* <ActivityAccessForm
-                  initialData={chapter}
-                  courseId={params.projectId}
-                  chapterId={params.activityId}
-                /> */}
               </div>
             </div>
             <div>
@@ -139,11 +134,6 @@ const ActivityIdPage = async ({
                   Add a video
                 </h2>
               </div>
-              {/* <ActivityVideoForm
-                initialData={chapter}
-                chapterId={params.projectId}
-                courseId={params.activityId}
-              /> */}
             </div>
           </div>
           </div>
