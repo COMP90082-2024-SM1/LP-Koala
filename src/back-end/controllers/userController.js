@@ -54,6 +54,7 @@ exports.createUser = asyncCatch(async (req, res, next) => {
   });
 });
 
+
 exports.findUser = asyncCatch(async (req, res, next) => {
   const user = await User.findById(req.params.userId);
   res.status(200).json({
@@ -84,6 +85,7 @@ exports.updateName = asyncCatch(async (req, res, next) => {
   });
 });
 
+
 exports.getUsers = asyncCatch(async (req, res, next) => {
   const users = await User.find();
   res.status(200).json({
@@ -93,6 +95,7 @@ exports.getUsers = asyncCatch(async (req, res, next) => {
     },
   });
 });
+
 exports.forbidSelfDelete = (req, res, next) => {
   if (req.params.id == req.user.id) {
     return next(new AppError('You cannot delete your own account.', 405));

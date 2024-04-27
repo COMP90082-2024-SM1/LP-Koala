@@ -18,11 +18,12 @@ export const SidebarItem = ({
 }: SidebarItemProps) => {
   const pathname = usePathname();
   const router = useRouter();
-
   const isActive =
     (pathname === "/" && href === "/") ||
-    pathname === href ||
-    pathname?.startsWith(`${href}/`);
+      pathname === href ||
+      pathname?.startsWith(`${href}/`) ||
+      pathname.endsWith(href)
+  ;
 
   const onClick = () => {
     router.push(href);

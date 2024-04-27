@@ -18,7 +18,6 @@ function UserIcon() {
                 <CircleUserRound className='mx-3 hover:stroke-gray-400' color='#1c407f' size={36} />
             </DropdownMenuTrigger>
             <DropdownMenuContent className='mx-4' >
-                {/*TODO: /profile should be followed by a user id to show corresponding user*/}
                 <DropdownMenuItem onClick={()=>router.push('/profile')}>
                     Profile
                 </DropdownMenuItem>
