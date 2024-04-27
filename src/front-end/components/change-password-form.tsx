@@ -4,6 +4,7 @@ import {Button} from "@/components/ui/button";
 import React, {useState} from "react";
 import Cookies from "js-cookie";
 import {ClipLoader} from "react-spinners";
+import {Eye, EyeOff} from "lucide-react";
 
 const ChangePasswordForm = () => {
 
@@ -12,6 +13,7 @@ const ChangePasswordForm = () => {
     const [formData, setFormData] = useState({passwordCurrent:'', newPassword:''});
     const [isSuccessMessageDisplayed, setSuccessMessageDisplayed] = useState(false);
     const [errorMessage, setErrorMessage] = useState('Your current password is incorrect');
+    const [showPassword, setShowPassword] = useState(false)
     const onClick = async (e: React.FormEvent)=>{
         e.preventDefault();
         setIsLoading(true);
@@ -88,25 +90,31 @@ const ChangePasswordForm = () => {
                 </div>
 
                 <div>
-                    <div className="flex items-center justify-between">
-                        <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-                            New Password
-                        </label>
-                    </div>
-                    <div className="mt-2">
-                        <input
-                            onChange={onChange}
-                            value={formData.newPassword}
-                            id="newPassword"
-                            name="newPassword"
-                            type="password"
-                            autoComplete="newPassword"
-                            required
-                            className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        />
-                    </div>
-                </div>
 
+                <div className="flex items-center justify-between">
+                    <label htmlFor="newPassword" className="block text-sm font-medium leading-6 text-gray-900">
+                        New Password
+                    </label>
+                 </div>
+                 <div className="mt-2 relative">
+                     <input
+                        onChange={onChange}
+                        value={formData.newPassword}
+                        id="newPassword"
+                        name="newPassword"
+                        type={showPassword ? 'text' : 'password'}
+                        autoComplete="newPassword"
+                        required
+                        className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                     />
+                    <span 
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+                    onClick={() => setShowPassword(!showPassword)}
+                    >
+                    {showPassword ? <Eye/> : <EyeOff/>}
+                    </span>
+                </div>
+              </div>
                 <div className='flex space-x-3'>
                     <Button
                         type="button"

@@ -21,6 +21,10 @@ import {useToast} from "@/components/ui/use-toast";
 import {CircleCheck} from "lucide-react";
 import {ClipLoader} from "react-spinners";
 import {useRouter} from "next/navigation";
+import {Eye, EyeOff} from "lucide-react";
+
+
+
 const AddUserForm = ({projects}: { projects: Project[] }) =>{
     const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
     const [showPassword, setShowPassword] = useState(false)
@@ -114,25 +118,30 @@ const AddUserForm = ({projects}: { projects: Project[] }) =>{
                     )} >
                     </FormField>
 
-                    <FormField control={form.control} name='password' render={({field})=>(
-                        <FormItem >
-                            <FormLabel className="block text-sm font-medium leading-6 text-gray-800">
-                                Password
-                            </FormLabel>
-                            <FormControl>
-                                <Input
-                                    {...field}
-                                    placeholder='Enter password'
-                                    type={showPassword ? 'text': 'password'}
-                                />
-                            </FormControl>
-                            <Button className='bg-[#1c407f] hover:bg-blue-600' type='button' onClick={()=>{
-                                setShowPassword(!showPassword);
-                            }}>{showPassword ? 'Hide' : 'Show'} Password</Button>
-                            <FormMessage/>
-                        </FormItem>
-                    )} >
-                    </FormField>
+                    <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+                <FormItem className="relative">
+                <FormLabel className="block text-sm font-medium leading-6 text-gray-800">Password</FormLabel>
+                <FormControl>
+                  <div className="relative">
+                    <Input {...field} placeholder="Enter password" type={showPassword ? 'text' : 'password'}/>
+                    <span 
+                      className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowPassword(!showPassword);
+                      }}
+                    >
+                      {showPassword ? <Eye/> : <EyeOff/>}
+                    </span>
+                  </div>
+                </FormControl>
+              </FormItem>
+              
+            )}
+          ></FormField>
                     <FormField control={form.control} name='role' render={({field})=>(
                         <FormItem>
                             <FormLabel className="block text-sm font-medium leading-6 text-gray-800">
