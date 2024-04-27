@@ -5,11 +5,15 @@ import {ClipLoader} from "react-spinners";
 import {getUserRole} from "@/lib/utils";
 import Cookies from "js-cookie";
 
-
+interface Project {
+  _id: string;
+  title: string;
+  image: string;
+}
 
 export const ProjectsList = () => {
 
-    const [projects, setProjects] = useState([]);
+    const [projects, setProjects] = useState<Project[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [role, setRole] = useState('');
     const getProjectsAndRole = async ()=>{
@@ -52,10 +56,9 @@ export const ProjectsList = () => {
           No Projects found
         </div>
       )}
-
-        <div className='justify-center flex'>
-            <ClipLoader loading={isLoading} size={50} className='!border-sky-700 !border-b-transparent' />
-        </div>
+      <div className='justify-center flex'>
+          <ClipLoader loading={isLoading} size={50} className='!border-sky-700 !border-b-transparent' />
+      </div>
     </div>
   )
 }

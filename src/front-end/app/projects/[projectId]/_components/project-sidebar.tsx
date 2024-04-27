@@ -1,24 +1,100 @@
 "use client"
-import { redirect } from "next/navigation";
 import Link from "next/link"
-import { PlusCircle } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { PlusCircle , Puzzle} from "lucide-react"
 import {Logo} from "./logo";
-import React, { useState } from 'react';
-import { ProjectSidebarItem } from "./project-sidebar-item";
+import {ProjectSidebarItem} from "@/app/projects/[projectId]/_components/project-sidebar-item";
+import {useRouter} from "next/navigation";
+import ConfirmModal from '@/components/confirm-modal';
+import React, {useEffect, useState } from 'react';
+import { Button } from "@/components/ui/button";
+import Cookies from "js-cookie";
 
+interface Module {
+  _id: string;
+  title: string;
+}
+// TODO: Fetch modules based on project id
+// const modules = [
+//     {
+//         label: "module 1",
+//         href: "module1"
+//     },
+//     {
+//         label: "module 2",
+//         href: "module2"
+//     },
+//     {
+//         label: "module 3",
+//         href: "module3"
+//     }
+// ]
 
+export const ProjectSidebar =  ({projectId}: {projectId:string}) => {
 
-export const ProjectSidebar =  ({
-  // course ,
-  progressCount,
-}:{course?:any, progressCount?:number}) => {
+  const router = useRouter();
+  const [isActive, setIsActive] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [moduleIdToDelete, setModuleIdToDelete] = useState<string | null>(null);
+  const [modules, setModules] = useState<Module[]>([]);
 
-    const [isActive, setIsActive] = useState(false);
-    const toggleActive = () => {
-      setIsActive(!isActive);
-      console.log("IsActive now:", !isActive);
+  const requestDelete = (moduleId: string) => {
+      setModuleIdToDelete(moduleId);
+      setShowConfirmModal(true);
+  };
+  const toggleActive = () => {
+    setIsActive(!isActive);
+    console.log("IsActive now:", !isActive);
+  };
+
+  useEffect(() => {
+    const fetchModules = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/modules`, {
+          method: 'GET',
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            'Authorization': Cookies.get('token')!
+          }
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch modules');
+        }
+        const responseObject = await response.json();
+        const modules = responseObject.data as Module [];
+        setModules(modules); // Assuming the backend returns an array under the key 'modules'
+      } catch (error) {
+        console.error('Error fetching modules:', error);
+      }
     };
+      fetchModules();
+  }, []);
+
+  const handleDelete = async (id: string) => {
+    console.log("Deleting module", id);
+    setShowConfirmModal(false)
+    const token = Cookies.get('token')!;
+    const user = Cookies.get('user')!
+    // Implement deletion logic here, such as API calls
+      try {
+        const response = await fetch(`http://localhost:3000/modules/${id}`,{
+            method: 'DELETE',
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                'authorization': token
+            },
+            body: `{"user": ${user}}`
+        })
+
+        if (response.status === 204) {
+            console.log('module',id,' deleted');
+            location.reload();
+        }
+
+    } catch (error){
+        console.log(error)
+        // setIsLoading(false);
+    }
+};
 
   return (
     <div className="h-full border-r flex flex-col overflow-y-auto bg-white shadow-sm w-full">
@@ -26,78 +102,22 @@ export const ProjectSidebar =  ({
         <Logo />
       </div>
       <div className="flex flex-col w-full">
-        <div className="flex-grow">
-          <Link href="/projects/661a8acb802cb862e77a7343/modules/1" className="mt-auto">
-            <button
-              type="button"
-              className="w-40 mb-4 flex items-center gap-x-2 text-slate-500 text-sm font-[500] pl-10 transition-all hover:text-slate-600 hover:bg-slate-300/20"
-              onClick={toggleActive} // Set up the event handler here
-              style={{
-                backgroundColor: isActive ? '#bee3f8' : '', // Assuming '#bee3f8' is the color code for 'bg-sky-200'
-                color: isActive ? '#3182ce' : '', // Assuming '#3182ce' is the color code for 'text-sky-700'
-                borderColor: isActive ? '#3182ce' : '',
-              }}              
-            >
-              <div className="flex items-center gap-x-2 py-4">
-                Module 1
-              </div>
-              <div
-                style={{
-                  marginLeft: 'auto',
-                  opacity: isActive ? 100 : 0,
-                  border: '2px solid sky-700',
-                  height: '100%',
-                  transition: 'all 0.3s',
-                }}
-              />
-            </button>
-          </Link>
-        </div>
-        <div className="flex-grow">
-        <Link href="/projects/661a8acb802cb862e77a7343/modules/1" className="mt-auto">
-            <button
-              type="button"
-              className="w-40 mt-8 mb-8 ml-8 mr-0 flex items-center gap-x-2 text-slate-500 text-sm font-[500] pl-10 transition-all hover:text-slate-600 hover:bg-slate-300/20"
-              onClick={toggleActive} // Set up the event handler here
-              style={{
-                backgroundColor: isActive ? '#bee3f8' : '',
-                color: isActive ? '#3182ce' : '',
-                borderColor: isActive ? '#3182ce' : '',
-              }}              
-            >
-              <div className="flex items-center gap-x-2 py-4">
-                Module 2
-              </div>
-              <div
-                style={{
-                  marginLeft: 'auto',
-                  opacity: isActive ? 100 : 0,
-                  border: '2px solid sky-700',
-                  height: '100%',
-                  transition: 'all 0.3s',
-                }}
-              />
-            </button>
-          </Link>
-        </div> 
-        {/*  TODO: list all the activities*/}
-        {/*{course.chapters.map((chapter) => (*/}
-        {/*  <ProjectSidebarItem*/}
-        {/*    key={chapter.id}*/}
-        {/*    id={chapter.id}*/}
-        {/*    label={chapter.title}*/}
-        {/*    isCompleted={!!chapter.userProgress?.[0]?.isCompleted}*/}
-        {/*    courseId={course.id}*/}
-        {/*    isLocked={!chapter.isFree && !purchase}*/}
-        {/*  />*/}
-        {/*))}*/}
-        <Link href="/projects/1/create" className="mt-auto mb-4 self-center w-full">
-            <Button className="w-40">
-                <PlusCircle className="h-4 w-4 mr-2" />
-                Add Module
-            </Button>
-        </Link>
+          {modules.map((module) => (
+                <ProjectSidebarItem
+                    key={module._id}
+                    icon={Puzzle}
+                    label={module.title}
+                    href={`/projects/${projectId}/modules/${module._id}`}
+                    onDelete={() => requestDelete(module._id)}
+                />
+                
+          ))}
       </div>
+      <Button className="my-5 mx-auto flex-row" onClick={()=>router.push(`/projects/${projectId}/modules/create`)}>
+          <PlusCircle className="h-4 w-4 mr-2" />
+          Add Module
+      </Button>
+      <ConfirmModal isOpen={showConfirmModal} onClose={() => setShowConfirmModal(false)} onConfirm={() => moduleIdToDelete && handleDelete(moduleIdToDelete)} />
     </div>
   )
-}
+};

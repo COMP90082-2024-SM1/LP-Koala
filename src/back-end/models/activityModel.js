@@ -8,11 +8,21 @@ const activitySchema = new mongoose.Schema({
     multipleChoiceQuestions:[{
         type: mongoose.Schema.ObjectId,
         ref: 'multipleChoices'
+    }],
+    shortAnswerQuestions:[{
+        type: mongoose.Schema.ObjectId,
+        ref: 'shortAnswer'
+    }],
+    files : [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'fileModel'
     }]
 });
 
 activitySchema.pre(/^find/, function(next) {
     this.populate('multipleChoiceQuestions');
+    this.populate('shortAnswerQuestions');
+    this.populate('files');
     next();
 })
 

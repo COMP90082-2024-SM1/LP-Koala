@@ -1,11 +1,12 @@
 "use client";
 
 import * as z from "zod";
-import axios from "axios";
+import React, { useState } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Cookies from "js-cookie";
 
 import {
   Form,
@@ -17,48 +18,71 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {cn} from "@/lib/utils";
 
 const formSchema = z.object({
   title: z.string().min(1, {
     message: "Title is required",
   }),
 });
+type FormData = z.infer<typeof formSchema>;
 
-const CreateModulePage = () => {
+interface ProjectProps  {
+    params: {projectId: string}
+}
+
+function CreatePage({params}:ProjectProps) {
   const router = useRouter();
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: ""
+      title: "",
     },
   });
+  const {formState: { isSubmitting, isValid }, reset } = form;
 
-  const { isSubmitting, isValid } = form.formState;
+  const onSubmit = async (data: FormData) => {
+    const fullData = {
+      title: data.title,
+    };
+      console.log(fullData);
 
-//   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-//     try {
-//       const response = await axios.post("/api/courses", values);
-//       router.push(`/teacher/courses/${response.data.id}`);
-//       toast.success("Course created");
-//     } catch {
-//       toast.error("Something went wrong");
-//     }
-//   }
+    try {
+      const response = await fetch('http://localhost:3000/modules/createModule', {
+        method: 'POST',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            'Authorization': Cookies.get('token')!
+        },
+        body: JSON.stringify(fullData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create project');
+      }
+
+      const result = await response.json();
+      console.log(result);
+      reset();
+      router.push('/projects/${params.projectId}'); // Redirect user to the projects page
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   return ( 
     <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
       <div>
         <h1 className="text-2xl">
-          Name your module
+          Create your module
         </h1>
-        {/* <p className="text-sm text-slate-600">
-          What would you like to name your project? Don&apos;t worry, you can change this later.
-        </p> */}
+        <p>project: {params.projectId}</p>
         <Form {...form}>
           <form
-            // onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-8 mt-8"
           >
+            {/* Project Title Field */}
             <FormField
               control={form.control}
               name="title"
@@ -70,7 +94,7 @@ const CreateModulePage = () => {
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="e.g. 'Module 1'"
+                      placeholder="e.g., 'Module 1'"
                       {...field}
                     />
                   </FormControl>
@@ -78,8 +102,9 @@ const CreateModulePage = () => {
                 </FormItem>
               )}
             />
+            {/* Form Buttons */}
             <div className="flex items-center gap-x-2">
-              <Link href="/projects/661a8acb802cb862e77a7343">
+              <Link href="/projects/{params.projectId}">
                 <Button
                   type="button"
                   variant="ghost"
@@ -90,8 +115,9 @@ const CreateModulePage = () => {
               <Button
                 type="submit"
                 disabled={!isValid || isSubmitting}
+                className={cn()}
               >
-                Continue
+                Submit
               </Button>
             </div>
           </form>
@@ -101,4 +127,4 @@ const CreateModulePage = () => {
    );
 }
  
-export default CreateModulePage;
+export default CreatePage;

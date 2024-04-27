@@ -13,10 +13,10 @@ const projectSchema = new Item({
   image: {
     type: String,
   },
-  modules: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'Module',
-  },
+  // modules: {
+  //   type: mongoose.Schema.ObjectId,
+  //   ref: 'Module',
+  // },
 });
 const Project = mongoose.model('Project', projectSchema);
 

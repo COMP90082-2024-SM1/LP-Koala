@@ -7,8 +7,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react"
-import AllocationRater from '@/components/allocate-rater';
-import AllocationResearcher from '@/components/allocate-researcher';
+import Allocation from '@/components/allocate-user';
 import Cookies from "js-cookie";
 
 import {
@@ -123,7 +122,7 @@ const CreatePage = () => {
     <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
       <div>
         <h1 className="text-2xl">
-          Name your project
+          Create your project
         </h1>
         <Form {...form}>
           <form
@@ -170,9 +169,7 @@ const CreatePage = () => {
                       onChange={(e) => {
                         if (e.target.files && e.target.files[0]) {
                             const reader = new FileReader()
-
                             reader.readAsDataURL(e.target.files[0])
-
                             reader.onload = () => {
                                 console.log('called: ', reader)
                                 // console.log(reader.result)
@@ -197,22 +194,27 @@ const CreatePage = () => {
                 Allocate Rater
                 <ArrowRight className="h-4 w-4 mr-2" />
             </Button>
-            <AllocationRater
+            <Allocation
                 isOpen={isRaterModalOpen}
                 onClose={handleRaterCloseModal}
                 onConfirm={handleConfirm}
-                onUpdateRaters={updateRaters}
-            /><br></br>
+                onUpdateUsers={updateRaters}
+                allocatedUsers={[]}
+                userType='rater'
+            />
+              <br></br>
             {/* Allocate Researchers Button */}
             <Button onClick={handleOpenResearcherModal}>
                 Allocate Researcher
                 <ArrowRight className="h-4 w-4 mr-2" />
             </Button>
-            <AllocationResearcher
+            <Allocation
                 isOpen={isResearcherModalOpen}
                 onClose={handleResearcherCloseModal}
                 onConfirm={handleConfirm2}
-                onUpdateResearchers={updateResearchers}
+                onUpdateUsers={updateResearchers}
+                allocatedUsers={[]}
+                userType='researcher'
             />
             {/* Form Buttons */}
             <div className="flex items-center gap-x-2">

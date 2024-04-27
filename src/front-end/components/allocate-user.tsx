@@ -8,15 +8,17 @@ interface AllocationProps {
     isOpen: boolean;
     onClose: (event?: React.MouseEvent<HTMLButtonElement>) => void;
     onConfirm: React.MouseEventHandler<HTMLButtonElement>;
-    onUpdateRaters: (raters: any[]) => void;
+    onUpdateUsers: (raters: any[]) => void;
+    allocatedUsers: string[];
+    userType: string;
   }
   
   
-const Allocation: React.FC<AllocationProps> = ({ isOpen, onClose, onConfirm, onUpdateRaters }) => {
+const Allocation: React.FC<AllocationProps> = ({ isOpen, onClose, onConfirm, onUpdateUsers, allocatedUsers, userType }) => {
     if (!isOpen) return null;
 
     const [users, setUsers] = useState([]);
-    const [selectedRaters, setSelectedRaters] = useState<string[]>([]);
+    const [selectedUsers, setSelectedUsers] = useState<string[]>(allocatedUsers?allocatedUsers:[]);
 
     const getUsers = async () => {
         const response = await fetch('http://localhost:3000/users/getUsers', {
@@ -28,8 +30,8 @@ const Allocation: React.FC<AllocationProps> = ({ isOpen, onClose, onConfirm, onU
         });
 
         const result = await response.json();
-        const raters = result.data.users.filter((user: any) => user.role === "rater");
-        setUsers(raters);
+        const filteredUsers = result.data.users.filter((user: any) => user.role === userType);
+        setUsers(filteredUsers);
     };
 
     useEffect(() => {
@@ -37,16 +39,16 @@ const Allocation: React.FC<AllocationProps> = ({ isOpen, onClose, onConfirm, onU
     }, []);
 
     const toggleRater = (id: string) => {
-        setSelectedRaters(current => {
+        setSelectedUsers(current => {
             const isCurrentlySelected = current.includes(id);
-            const newSelectedRaters = isCurrentlySelected ? current.filter(raterId => raterId !== id) : [...current, id];
-            console.log(`Toggling rater ${id}:`, { isCurrentlySelected, newSelectedRaters });
-            return newSelectedRaters;
+            const newSelectedUsers = isCurrentlySelected ? current.filter(userId => userId !== id) : [...current, id];
+            // console.log(`Toggling rater ${id}:`, { isCurrentlySelected, newSelectedRaters });
+            return newSelectedUsers;
         });
     };
 
     const handleConfirm = () => {
-        onUpdateRaters(selectedRaters); // Pass the selected raters back to the parent component
+        onUpdateUsers(selectedUsers); // Pass the selected raters back to the parent component
         onClose(); // Close the modal
     };
 
@@ -72,9 +74,9 @@ const Allocation: React.FC<AllocationProps> = ({ isOpen, onClose, onConfirm, onU
                 maxWidth: '80%',
                 overflow: 'auto'
             }}>
-                <h2>Allocate Rater</h2>
+                <h2>Allocate {userType}</h2>
                 <DataTable
-                    columns={columns({ toggleRater, isSelected: id => selectedRaters.includes(id) })}
+                    columns={columns({ toggleRater, isSelected: id => selectedUsers.includes(id) })}
                     data={users}
                     canCreateUser={false}
                 />

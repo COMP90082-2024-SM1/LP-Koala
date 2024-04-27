@@ -88,7 +88,7 @@ const AddUserForm = ({projects}: { projects: Project[] }) =>{
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="w-full md:w-2/3 lg:w-1/2 xl:w-1/3 px-6 py-8 bg-white shadow-md rounded-lg space-y-4">
                     <FormField control={form.control} name='name' render={({field})=>(
-                        <FormItem >
+                        <FormItem>
                             <FormLabel className="block text-sm font-medium leading-6 text-gray-800">
                                 Name
                             </FormLabel>
@@ -100,8 +100,7 @@ const AddUserForm = ({projects}: { projects: Project[] }) =>{
                             </FormControl>
                             <FormMessage/>
                         </FormItem>
-                    )} >
-                    </FormField>
+                    )} />
                     <FormField control={form.control} name='username' render={({field})=>(
                         <FormItem >
                             <FormLabel className="block text-sm font-medium leading-6 text-gray-800">
@@ -115,10 +114,11 @@ const AddUserForm = ({projects}: { projects: Project[] }) =>{
                             </FormControl>
                             <FormMessage/>
                         </FormItem>
-                    )} >
-                    </FormField>
+                    )} />
 
-                    <FormField
+
+
+        <FormField
             control={form.control}
             name="password"
             render={({ field }) => (
@@ -142,6 +142,7 @@ const AddUserForm = ({projects}: { projects: Project[] }) =>{
               
             )}
           ></FormField>
+
                     <FormField control={form.control} name='role' render={({field})=>(
                         <FormItem>
                             <FormLabel className="block text-sm font-medium leading-6 text-gray-800">
@@ -163,8 +164,8 @@ const AddUserForm = ({projects}: { projects: Project[] }) =>{
                             <FormMessage/>
 
                         </FormItem>
-                    )} >
-                    </FormField>
+                    )} />
+
 
                     <FormField
                         control={form.control} name='projects' render={({field})=>(
@@ -197,15 +198,15 @@ const AddUserForm = ({projects}: { projects: Project[] }) =>{
                                             {project.title}
                                         </FormLabel>
                                     </FormItem>
-                                )} >
+                                )} />
 
-                                </FormField>
+
                             ))}
                             </div>
                             <FormMessage/>
                         </FormItem>
-                    )} >
-                    </FormField>
+                    )} />
+
                     <div className='flex flex-row justify-between'>
                         <Button disabled={isLoading} type='submit' className="bg-[#1c407f] text-white font-semibold px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
                             <ClipLoader hidden={!isLoading} loading={isLoading} size={20} className='!border-sky-700 !border-b-transparent'/>
