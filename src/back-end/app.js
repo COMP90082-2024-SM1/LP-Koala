@@ -10,6 +10,7 @@ const cors = require('cors');
 const mongoSanitise = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const compression = require('compression');
 
 const app = express();
 
@@ -23,6 +24,9 @@ app.use(xss());
 
 // Prevent parameter pollution, currently not whitelisting anything
 app.use(hpp({ whitelist: [] }));
+
+
+app.use(compression());
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
