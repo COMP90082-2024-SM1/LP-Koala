@@ -1,7 +1,6 @@
 'use client';
 import { Star, PlusCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { ProjectsList } from "@/components/projects-list";
 import {useRouter} from "next/navigation";
 import RateModal from '@/components/rate-modal';
 import {useState } from 'react';

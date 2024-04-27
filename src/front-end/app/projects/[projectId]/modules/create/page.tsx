@@ -44,6 +44,7 @@ function CreatePage({params}:ProjectProps) {
   const onSubmit = async (data: FormData) => {
     const fullData = {
       title: data.title,
+      projectId: params.projectId
     };
       console.log(fullData);
 
@@ -57,14 +58,20 @@ function CreatePage({params}:ProjectProps) {
         body: JSON.stringify(fullData)
       });
 
+      const responseBody = await response.text();
       if (!response.ok) {
-        throw new Error('Failed to create project');
+        throw new Error('Failed to create module');
       }
 
-      const result = await response.json();
-      console.log(result);
-      reset();
-      router.push('/projects/${params.projectId}'); // Redirect user to the projects page
+      try {
+        const result = JSON.parse(responseBody);
+        console.log('Successfully created module:', result);
+        reset();
+        router.push(`/projects/${params.projectId}`);
+      } catch (parseError) {
+          console.error('Error parsing JSON:', parseError);
+          throw new Error('Server error: Expected JSON response, received something else.');
+      }
     } catch (error) {
       console.error('Error:', error);
     }
@@ -76,13 +83,12 @@ function CreatePage({params}:ProjectProps) {
         <h1 className="text-2xl">
           Create your module
         </h1>
-        <p>project: {params.projectId}</p>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-8 mt-8"
           >
-            {/* Project Title Field */}
+            {/* Module Title Field */}
             <FormField
               control={form.control}
               name="title"
