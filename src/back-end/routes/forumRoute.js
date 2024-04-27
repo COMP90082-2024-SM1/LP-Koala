@@ -13,22 +13,22 @@ router.use(protect);
 router
   .route('/')
   .get(forumController.getAllForums)
-  .post(forumController.createForum);
+  .post(forumController.createOneForum);
 
 router
   .route('/threads/')
   .get(forumController.getAllThreads)
-  .post(forumController.createThread);
+  .post(forumController.createOneThread);
 
 router
   .route('/threads/posts/')
   .get(forumController.getAllPosts)
-  .post(forumController.createPost);
+  .post(forumController.createOnePost);
 
 router
   .route('/threads/posts/responds/')
   .get(forumController.getAllResponds)
-  .post(forumController.createRespond);
+  .post(forumController.createOneRespond);
 
 router
   .route('/threads/posts/responds/:id')

@@ -18,7 +18,7 @@ exports.createOneRespond = factory.createOne(Respond);
 exports.getOneForum = factory.getOne(Forum);
 exports.getOnePost = factory.getOne(Post);
 exports.getOneThread = factory.getOne(Thread);
-exports.getOneActivity = factory.getOne(Respond);
+exports.getOneRespond = factory.getOne(Respond);
 
 exports.deleteOneForum = factory.deleteOne(Forum);
 exports.deleteOnePost = factory.deleteOne(Post);
