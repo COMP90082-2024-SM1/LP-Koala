@@ -18,7 +18,7 @@ dotenv.config({ path: "./config.env" });
 
 
 // Obtain server connection details from configuration file
-const database = process.env.DATABASE;
+const database = process.env.DATABASE || 'mongodb+srv://hello:qweqwe123@cluster0.phkbgab.mongodb.net/lp-database';
 const port = process.env.PORT || 3000;
 
 
