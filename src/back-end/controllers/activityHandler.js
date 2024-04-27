@@ -29,9 +29,12 @@ exports.getAll = Model =>
 
 exports.getOne = (Model, option) =>
     catchAsync( async (req, res, next) => {
-        let fileData = [];
 
-        const query = Model.findById(req.params.id)
+        let query = Model.findById(req.params.id)
+
+        if (option) query = query.populate({
+            path: 'ratings'
+        });
 
         const ans = await query;
         // for (const i of ans.files){

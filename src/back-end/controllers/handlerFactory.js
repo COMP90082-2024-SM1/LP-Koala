@@ -1,5 +1,6 @@
 const asyncCatch = require('../utils/asyncCatch');
 const AppError = require('../utils/appError');
+const Project = require('../models/projectModel');
 
 // Create an item document according to its ID
 exports.createOneItem = (Model) =>
