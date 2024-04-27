@@ -2,8 +2,8 @@ const catchAsync = require('./../utils/asyncCatch');
 const {singleChoice, mcqQuestion} = require('./../models/multipleChoiceModel');
 const shortAnswer = require('./../models/shortAnswerModel');
 const activity = require('./../models/activityModel');
+const rating = require('./../models/ratingModel');
 const factory = require('./activityHandler');
-const multer = require('multer')
 
 
 exports.getAllChoice = factory.getAll(singleChoice);
@@ -15,11 +15,13 @@ exports.createChoice = factory.createOne(singleChoice);
 exports.createMcq = factory.createOne(mcqQuestion);
 exports.createShortAnswerQuestions = factory.createOne(shortAnswer);
 exports.createActivity = factory.createOne(activity);
+exports.createRating = factory.createOne(rating);
 
 exports.getOneChoice = factory.getOne(singleChoice);
 exports.getOneMcqQuestion = factory.getOne(mcqQuestion);
 exports.getOneShortAnswerQuestion = factory.getOne(shortAnswer);
-exports.getOneActivity = factory.getOne(activity, {path: 'files'})
+exports.getOneActivity = factory.getOne(activity, true);
+exports.getOneRating = factory.getOne(rating);
 
 exports.deleteChoice = factory.deleteOne(singleChoice);
 exports.deleteMcq = factory.deleteOne(mcqQuestion);

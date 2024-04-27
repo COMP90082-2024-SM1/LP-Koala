@@ -10,7 +10,7 @@ router.route('/mcq/choice')
 
 router.route('/mcq/choice/:id')
     .get(multipleChoiceController.getOneChoice)
-    .delete(multipleChoiceController.deleteChoice)
+    .delete(multipleChoiceController.deleteChoice);
 
 router.route('/mcq/multipleChoiceQuestion')
     .get(multipleChoiceController.getAllMcqQuestions)
@@ -18,7 +18,7 @@ router.route('/mcq/multipleChoiceQuestion')
 
 router.route('/mcq/multipleChoiceQuestion/:id')
     .get(multipleChoiceController.getOneMcqQuestion)
-    .delete(multipleChoiceController.deleteMcq)
+    .delete(multipleChoiceController.deleteMcq);
 
 router.route('/shortAnswer')
     .get(activityController.getAllShortAnswerQuestions)
@@ -26,7 +26,7 @@ router.route('/shortAnswer')
 
 router.route('/shortAnswer/:id')
     .get(activityController.getOneShortAnswerQuestion)
-    .delete(activityController.deleteShortAnswerQuestions)
+    .delete(activityController.deleteShortAnswerQuestions);
 
 router.route('/')
     .get(activityController.getAllActivity)
@@ -34,6 +34,14 @@ router.route('/')
 
 router.route('/:id')
     .get(activityController.getOneActivity)
-    .delete(activityController.deleteActivity)
+    .delete(activityController.deleteActivity);
+
+router.route('/ratings')
+    .post(activityController.createRating);
+
+router.route('/ratings/:id')
+    .get(activityController.getOneRating);
+
+
 
 module.exports = router;

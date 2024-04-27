@@ -16,6 +16,10 @@ const activitySchema = new mongoose.Schema({
     files : [{
         type: mongoose.Schema.ObjectId,
         ref: 'fileModel'
+    }],
+    ratings : [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'rating'
     }]
 });
 
