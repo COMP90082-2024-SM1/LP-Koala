@@ -22,6 +22,10 @@ async function Page({params}:ProjectProps) {
     }
 
     redirect(`/projects/${params.projectId}/modules/${data.modules[0]._id}`)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8f2497180b3bb1136da17be5ff23bc0af17273c8
 }
 
 export default Page;

@@ -13,19 +13,11 @@ const projectSchema = new Item({
   image: {
     type: String,
   },
-<<<<<<< HEAD
-  // modules: {
-  //   type: mongoose.Schema.ObjectId,
-  //   ref: 'Module',
-  // },
-=======
-  modules: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Module',
-    },
-  ],
->>>>>>> backend
+  modules: {
+    type: [mongoose.Schema.ObjectId],
+    ref: 'Module',
+  },
+
 });
 const Project = mongoose.model('Project', projectSchema);
 
