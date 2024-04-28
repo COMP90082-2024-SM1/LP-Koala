@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 export function ProfileForm () {
 
-    const user = JSON.parse(Cookies.get('user')!);
+    const user = JSON.parse(Cookies.get('user')??null)??{name:''};
     const token = Cookies.get('token')!;
     const [isEditing, setIsEditing] = useState(false);
     const [editedName, setEditedName] = useState(user.name);
