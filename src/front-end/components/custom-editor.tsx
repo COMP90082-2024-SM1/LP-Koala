@@ -77,13 +77,13 @@ function CustomEditor( ) {
                 const formData = new FormData();
                 formData.append('file', file);
 
-                const response = await fetch("http://localhost:3000/test/file/upload",{
+                const response = await fetch("https://lp-koala-backend-c0a69db0f618.herokuapp.com/test/file/upload",{
                     method: 'POST',
                     body: formData,
                 })
 
                 const data = await response.json();
-                const imageUrl = `http://localhost:3000/test/file/${data.fileId}`
+                const imageUrl = `https://lp-koala-backend-c0a69db0f618.herokuapp.com/test/file/${data.fileId}`
                 // insert image
                 insertFn(imageUrl, file.name, imageUrl);
             }
@@ -122,7 +122,7 @@ function CustomEditor( ) {
                 {html}
             </div>
             <div className='w-full aspect-video relative'>
-            <Image src='http://localhost:3000/test/file/6627b54b61beedecf926b0c9'
+            <Image src='https://lp-koala-backend-c0a69db0f618.herokuapp.com/test/file/6627b54b61beedecf926b0c9'
                    alt='image'
                    width={200}
                    height={200}

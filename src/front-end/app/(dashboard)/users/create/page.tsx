@@ -6,7 +6,7 @@ import {Project} from "@/type";
 async function Page() {
 
     const token = cookies().get('token')?.value
-    const response = await fetch('http://localhost:3000/projects', {
+    const response = await fetch('https://lp-koala-backend-c0a69db0f618.herokuapp.com/projects', {
         method: 'GET',
         headers: {
             "Content-type": "application/json; charset=UTF-8",

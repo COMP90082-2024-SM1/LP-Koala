@@ -62,7 +62,7 @@ const AddUserForm = ({projects}: { projects: Project[] }) =>{
         setIsLoading(false);
         setIsLoading(true);
         const token = Cookies.get('token')!
-        const response = await fetch("http://localhost:3000/users/createUser", {
+        const response = await fetch("https://lp-koala-backend-c0a69db0f618.herokuapp.com/users/createUser", {
             method: 'POST',
             body: JSON.stringify(values),
             headers: {

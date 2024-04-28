@@ -19,7 +19,7 @@ function ActivityList({activities}:ActivityListProps) {
     
     const getActivities = async ()=>{
         const token = Cookies.get('token')!;
-        await fetch('http://localhost:3000/activity',{
+        await fetch('https://lp-koala-backend-c0a69db0f618.herokuapp.com/activity',{
             method: 'GET',
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
@@ -34,6 +34,7 @@ function ActivityList({activities}:ActivityListProps) {
 
     useEffect(() => {
         getActivities()
+        console.log(activities)
     }, []);
 
     return (
@@ -45,7 +46,7 @@ function ActivityList({activities}:ActivityListProps) {
                         key={activity._id}
                         className="bg-gray-200 rounded-lg p-4 shadow-md w-64"
                     >
-                        <h3 className="text-xl font-semibold">{activity.description}</h3>
+                        <h3 className="text-xl font-semibold">{activity.title}</h3>
                         {/* You can add more details about each activity here */}
                     </li>
                 ))}

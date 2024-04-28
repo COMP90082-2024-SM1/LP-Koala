@@ -9,7 +9,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export const getCurrentUser = async (token:string | undefined)=> {
     const userId = jwtDecode(token!).id
-    const response = await fetch(`http://localhost:3000/users/findUser/${userId}`, {
+    const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/users/findUser/${userId}`, {
         method: 'GET',
         headers: {
             "Content-type": "application/json; charset=UTF-8",

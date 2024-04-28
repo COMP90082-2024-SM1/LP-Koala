@@ -9,7 +9,7 @@ interface ProjectProps  {
 async function Page({params}:ProjectProps) {
     const token = cookies().get('token')?.value
 
-    const response = await fetch(`http://localhost:3000/projects/${params.projectId}`, {
+    const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/projects/${params.projectId}`, {
             method: "GET",
             headers: {
                 "Authorization": token!

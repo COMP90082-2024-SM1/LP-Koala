@@ -19,7 +19,7 @@ const ChangePasswordForm = () => {
         setIsLoading(true);
         setErrorMessageDisplayed(false);
         try {
-            const response = await fetch('http://localhost:3000/users/updateMyPassword', {
+            const response = await fetch('https://lp-koala-backend-c0a69db0f618.herokuapp.com/users/updateMyPassword', {
                 method: 'PATCH',
                 body: JSON.stringify(formData),
                 headers: {

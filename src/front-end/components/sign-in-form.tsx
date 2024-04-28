@@ -24,7 +24,7 @@ const SignInForm = () => {
         setIsLoading(true);
         setErrorMessageDisplayed(false);
         try {
-            const response = await fetch('http://localhost:3000/users/login', {
+            const response = await fetch('https://lp-koala-backend-c0a69db0f618.herokuapp.com/users/login', {
                 method: 'POST',
                 body: JSON.stringify(formData),
                 headers: {

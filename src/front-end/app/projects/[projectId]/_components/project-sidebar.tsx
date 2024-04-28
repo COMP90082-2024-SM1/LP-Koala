@@ -38,7 +38,7 @@ export const ProjectSidebar =  ({projectId}: {projectId:string}) => {
       try {
         const token = Cookies.get('token')!
 
-        const response = await fetch(`http://localhost:3000/projects/${projectId}`, {
+        const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/projects/${projectId}`, {
                 method: "GET",
                 headers: {
                     "Authorization": token!
@@ -73,7 +73,7 @@ export const ProjectSidebar =  ({projectId}: {projectId:string}) => {
     const user = Cookies.get('user')!
     // Implement deletion logic here, such as API calls
       try {
-        const response = await fetch(`http://localhost:3000/modules/${id}`,{
+        const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/modules/${id}`,{
             method: 'DELETE',
             headers: {
                 "Content-type": "application/json; charset=UTF-8",

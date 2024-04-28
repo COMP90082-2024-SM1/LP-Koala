@@ -63,7 +63,7 @@ const EditPage: React.FC<PageProps> = ({params}) =>{
 
   useEffect(() => {
     const fetchProject = async () => {
-      const response = await fetch(`http://localhost:3000/projects/${params.projectId}`, {
+      const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/${params.projectId}`, {
         method: 'GET',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
@@ -140,7 +140,7 @@ const EditPage: React.FC<PageProps> = ({params}) =>{
       console.log(fullData);
 
     try {
-      const response = await fetch(`http://localhost:3000/projects/${params.projectId}`, {
+      const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/projects/${params.projectId}`, {
         method: 'POST',
         headers: {
             "Content-type": "application/json; charset=UTF-8",

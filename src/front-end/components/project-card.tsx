@@ -38,7 +38,7 @@ export const ProjectCard  = ({
 
       // Implement deletion logic here, such as API calls
         try {
-          const response = await fetch(`http://localhost:3000/projects/${id}`,{
+          const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/users/${id}`,{
               method: 'DELETE',
               headers: {
                   "Content-type": "application/json; charset=UTF-8",

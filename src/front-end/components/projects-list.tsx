@@ -18,7 +18,7 @@ export const ProjectsList = () => {
     const [role, setRole] = useState('');
     const getProjectsAndRole = async ()=>{
         const token = Cookies.get('token')!;
-        await fetch('http://localhost:3000/projects', {
+        await fetch('https://lp-koala-backend-c0a69db0f618.herokuapp.com/projects', {
             method: 'GET',
             headers: {
                 "Content-type": "application/json; charset=UTF-8",

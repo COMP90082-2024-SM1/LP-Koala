@@ -16,7 +16,7 @@ function Page({params}:{params:{projectId: string, moduleId: string}}) {
         try {
             const token = Cookies.get('token')!;
 
-            const response = await fetch(`http://localhost:3000/modules/${moduleId}`,{
+            const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/modules/${moduleId}`,{
                 method: "GET",
                 headers: {
                     "Authorization": token!

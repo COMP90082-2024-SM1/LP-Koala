@@ -96,7 +96,7 @@ const CreatePage = () => {
       console.log(fullData);
 
     try {
-      const response = await fetch('http://localhost:3000/projects/createProject', {
+      const response = await fetch('https://lp-koala-backend-c0a69db0f618.herokuapp.com/projects/createProject', {
         method: 'POST',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
