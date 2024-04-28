@@ -46,7 +46,7 @@ function ActivityList({activities}:ActivityListProps) {
                         key={activity._id}
                         className="bg-gray-200 rounded-lg p-4 shadow-md w-64"
                     >
-                        <h3 className="text-xl font-semibold">{activity.title}</h3>
+                        <h3 className="text-xl font-semibold">{activity.content}</h3>
                         {/* You can add more details about each activity here */}
                     </li>
                 ))}

@@ -19,3 +19,8 @@ export type Project = {
     raters: string[]
 
 }
+export type Activity = {
+    _id: string,
+    description: string,
+    content: string,
+}
