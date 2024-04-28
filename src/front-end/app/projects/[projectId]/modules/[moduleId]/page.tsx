@@ -60,7 +60,7 @@ function Page({params}:{params:{projectId: string, moduleId: string}}) {
                     Rate
                 </Button>
             </div>
-            <ActivityList activities={activities} />
+            <ActivityList activities={activities} projectId={projectId} moduleId={moduleId} />
             {rateModalOpen && <RateModal isOpen={rateModalOpen} onClose={closeRateModal} onSubmit={handleRateSubmit} />}
         </div>
     );
