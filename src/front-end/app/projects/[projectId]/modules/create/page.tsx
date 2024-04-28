@@ -58,17 +58,14 @@ function CreatePage({params}:ProjectProps) {
         body: JSON.stringify(fullData)
       });
 
-      const responseBody = await response.text();
+      const responseBody = await response.json();
       if (!response.ok) {
         throw new Error('Failed to create module');
       }
 
       try {
-        const result = JSON.parse(responseBody);
-        console.log('Successfully created module:', result);
         reset();
-        router.push(`/projects/${params.projectId}`);
-        location.reload();
+        location.replace(`/projects/${params.projectId}/modules/${responseBody.data._id}`)
       } catch (parseError) {
           console.error('Error parsing JSON:', parseError);
           throw new Error('Server error: Expected JSON response, received something else.');

@@ -18,12 +18,17 @@ async function Page({params}:ProjectProps) {
     const {data: {data}} = await response.json();
     console.log(data.modules, 'Hello')
 
-    if (!data){
-        redirect('/projects')
+    if (data.modules.length !== 0){
+        redirect(`/projects/${params.projectId}/modules/${data.modules[0]._id}`)
     }
 
-    redirect(`/projects/${params.projectId}/modules/${data.modules[0]._id}`)
-
+    return(
+        <div className="text-center text-sm text-muted-foreground mt-10">
+            No Modules found
+        </div>
+    )
 }
+
+
 
 export default Page;
