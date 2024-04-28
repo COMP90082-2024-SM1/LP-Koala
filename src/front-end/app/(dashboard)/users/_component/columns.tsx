@@ -111,7 +111,7 @@ export const columns: ColumnDef<User>[] = [
           const token = Cookies.get('token')!
           setIsLoading(true)
           try {
-            const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/${_id}`,{
+            const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/users/${_id}`,{
                   method: 'DELETE',
                   headers: {
                     "Content-type": "application/json; charset=UTF-8",
