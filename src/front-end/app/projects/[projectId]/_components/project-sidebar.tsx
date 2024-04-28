@@ -13,26 +13,11 @@ interface Module {
   _id: string;
   title: string;
 }
-// TODO: Fetch modules based on project id
-// const modules = [
-//     {
-//         label: "module 1",
-//         href: "module1"
-//     },
-//     {
-//         label: "module 2",
-//         href: "module2"
-//     },
-//     {
-//         label: "module 3",
-//         href: "module3"
-//     }
-// ]
 
 export const ProjectSidebar =  ({projectId}: {projectId:string}) => {
 
   const router = useRouter();
-  const [isActive, setIsActive] = useState(false);
+  // const [isActive, setIsActive] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [moduleIdToDelete, setModuleIdToDelete] = useState<string | null>(null);
   const [modules, setModules] = useState<Module[]>([]);
@@ -41,27 +26,28 @@ export const ProjectSidebar =  ({projectId}: {projectId:string}) => {
       setModuleIdToDelete(moduleId);
       setShowConfirmModal(true);
   };
-  const toggleActive = () => {
-    setIsActive(!isActive);
-    console.log("IsActive now:", !isActive);
-  };
+  // const toggleActive = () => {
+  //   setIsActive(!isActive);
+  //   console.log("IsActive now:", !isActive);
+  // };
 
   useEffect(() => {
     const fetchModules = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/modules`, {
-          method: 'GET',
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-            'Authorization': Cookies.get('token')!
-          }
-        });
+        const token = Cookies.get('token')!
+
+        const response = await fetch(`http://localhost:3000/projects/${projectId}`, {
+                method: "GET",
+                headers: {
+                    "Authorization": token!
+                }
+            });
         if (!response.ok) {
           throw new Error('Failed to fetch modules');
         }
-        const responseObject = await response.json();
-        const modules = responseObject.data as Module [];
-        setModules(modules); // Assuming the backend returns an array under the key 'modules'
+        const {data: {data}} = await response.json();
+        console.log(data.modules)
+        setModules(data.modules);
       } catch (error) {
         console.error('Error fetching modules:', error);
       }
@@ -89,10 +75,8 @@ export const ProjectSidebar =  ({projectId}: {projectId:string}) => {
             console.log('module',id,' deleted');
             location.reload();
         }
-
     } catch (error){
         console.log(error)
-        // setIsLoading(false);
     }
 };
 

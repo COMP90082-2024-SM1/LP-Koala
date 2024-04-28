@@ -16,6 +16,7 @@ async function Page({params}:ProjectProps) {
             }
         });
     const {data: {data}} = await response.json();
+    console.log(data.modules, 'Hello')
 
     if (!data){
         redirect('/projects')
