@@ -3,6 +3,9 @@
 import { LucideIcon, Trash } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import Cookies from "js-cookie";
+import { getUserRole } from "@/lib/utils"; 
+import React, {useEffect, useState } from 'react';
 
 interface SidebarItemProps {
   icon: LucideIcon;
@@ -19,12 +22,22 @@ export const ProjectSidebarItem = ({
 }: SidebarItemProps) => {
   const pathname = usePathname();
   const router = useRouter();
+  const [userRole, setUserRole] = useState<string | null>(null);
 
   const isActive =
     (pathname === "/" && href === "/") ||
       pathname === href ||
       pathname?.startsWith(`${href}/`) ||
       pathname.endsWith(href);
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      const role = await getUserRole(Cookies.get('token'));
+      setUserRole(role);
+    };
+  
+    fetchUserRole();
+  }, []);
 
   const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       router.push(href)
@@ -50,17 +63,18 @@ export const ProjectSidebarItem = ({
             />
             {label}
           </div>
+          {userRole !== 'rater' && (
             <button
-                onClick={(e) => {
-                    e.stopPropagation(); // Prevents the navigation event
-                    onDelete();
-                }}
-                className="p-1 opacity-80 hover:opacity-100"
+            onClick={(e) => {
+                e.stopPropagation(); // Prevents the navigation event
+                onDelete();
+            }}
+            className="p-1 opacity-80 hover:opacity-100"
             >
                 <Trash size={18} className="text-red-500 m-1" />
             </button>
+          )}
         </button>
-
       </>
   );
 };

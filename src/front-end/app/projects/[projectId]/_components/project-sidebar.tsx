@@ -8,6 +8,7 @@ import ConfirmModal from '@/components/confirm-modal';
 import React, {useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import Cookies from "js-cookie";
+import { getUserRole } from "@/lib/utils"; 
 
 interface Module {
   _id: string;
@@ -21,6 +22,7 @@ export const ProjectSidebar =  ({projectId}: {projectId:string}) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [moduleIdToDelete, setModuleIdToDelete] = useState<string | null>(null);
   const [modules, setModules] = useState<Module[]>([]);
+  const [userRole, setUserRole] = useState<string | null>(null);
 
   const requestDelete = (moduleId: string) => {
       setModuleIdToDelete(moduleId);
@@ -53,6 +55,15 @@ export const ProjectSidebar =  ({projectId}: {projectId:string}) => {
       }
     };
       fetchModules();
+  }, []);
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      const role = await getUserRole(Cookies.get('token'));
+      setUserRole(role);
+    };
+  
+    fetchUserRole();
   }, []);
 
   const handleDelete = async (id: string) => {
@@ -97,10 +108,12 @@ export const ProjectSidebar =  ({projectId}: {projectId:string}) => {
                 
           ))}
       </div>
-      <Button className="my-5 mx-auto flex-row" onClick={()=>router.push(`/projects/${projectId}/modules/create`)}>
+      {userRole !== 'rater' && (
+        <Button className="my-5 mx-auto flex-row" onClick={() => router.push(`/projects/${projectId}/modules/create`)}>
           <PlusCircle className="h-4 w-4 mr-2" />
           Add Module
-      </Button>
+        </Button>
+      )}
       <ConfirmModal isOpen={showConfirmModal} onClose={() => setShowConfirmModal(false)} onConfirm={() => moduleIdToDelete && handleDelete(moduleIdToDelete)} />
     </div>
   )
