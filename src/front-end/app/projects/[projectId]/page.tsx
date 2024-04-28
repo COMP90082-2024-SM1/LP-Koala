@@ -16,7 +16,6 @@ async function Page({params}:ProjectProps) {
             }
         });
     const {data: {data}} = await response.json();
-    console.log(data.modules, 'Hello')
 
     if (data.modules.length !== 0){
         redirect(`/projects/${params.projectId}/modules/${data.modules[0]._id}`)
@@ -27,6 +26,7 @@ async function Page({params}:ProjectProps) {
             No Modules found
         </div>
     )
+
 }
 
 
