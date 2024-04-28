@@ -22,7 +22,7 @@ async function Page({params}:ProjectProps) {
         redirect('/projects')
     }
 
-    redirect(`/projects/${params.projectId}/modules/${data.modules[0]}`)
+    redirect(`/projects/${params.projectId}/modules/${data.modules[0]._id}`)
 
 }
 

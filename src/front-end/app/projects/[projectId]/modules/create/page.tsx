@@ -68,6 +68,7 @@ function CreatePage({params}:ProjectProps) {
         console.log('Successfully created module:', result);
         reset();
         router.push(`/projects/${params.projectId}`);
+        location.reload();
       } catch (parseError) {
           console.error('Error parsing JSON:', parseError);
           throw new Error('Server error: Expected JSON response, received something else.');
@@ -110,7 +111,7 @@ function CreatePage({params}:ProjectProps) {
             />
             {/* Form Buttons */}
             <div className="flex items-center gap-x-2">
-              <Link href="/projects/{params.projectId}">
+              <Link href={`/projects/${params.projectId}`}>
                 <Button
                   type="button"
                   variant="ghost"
