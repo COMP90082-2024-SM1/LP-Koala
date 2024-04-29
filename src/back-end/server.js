@@ -1,10 +1,11 @@
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
-const app = require("./app");
+const app = require('./app');
 
+const trigger = 'test';
 // Load configuration file
-dotenv.config({ path: "./config.env" });
+dotenv.config({ path: './config.env' });
 
 // Obtain server connection details from configuration file
 const database = process.env.DATABASE;
@@ -13,11 +14,11 @@ const port = process.env.PORT || 3000;
 // Connect to the server
 mongoose
   .connect(database)
-  .then(console.log("Connect to database successfully."));
+  .then(console.log('Connect to database successfully.'));
 app.listen(port, () => {
   console.log(`App running on port ${port}`);
 });
 
-process.on("unhandledRejection", (err) => {
+process.on('unhandledRejection', (err) => {
   console.log(err.name, err.message);
 });
