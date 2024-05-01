@@ -70,8 +70,8 @@ Since we deploy our project via Heruko for demonstration purposes for now, the d
 **Merging**: Once testing is passed, the PR is merged into the develop branch. Release branches are merged into main and develop once they are ready for deployment.<br>
 **Deployment**: Changes in the main branch are deployed to production according to our release schedule.
 
-## Project Repository
-### Repository<br>
+## Project Branch
+### Branch<br>
 **main**: This is the primary branch where the source code of HEAD always reflects a production-ready state. It's central to our development and deployment process.<br>
 **frontend**: This branch is used for development specific to the frontend part of our project. Developers working on user interface components, client-side logic, and styling would use this branch.<br>
 **deploy-frontend**: This branch is used for deploying frontend changes. It acts as a staging or pre-production branch where frontend updates are tested in an environment that closely replicates the production setting before these changes are merged into the main branch and deployed to production.<br>
