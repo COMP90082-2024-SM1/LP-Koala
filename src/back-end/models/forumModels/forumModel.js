@@ -15,6 +15,7 @@ const forumSchema = new mongoose.Schema({
 
 forumSchema.pre(/^find/, function (next) {
   this.populate('threads');
+  next();
 });
 
 const forumModel = mongoose.model('forum', forumSchema);
