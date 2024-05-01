@@ -16,7 +16,7 @@ function Page({params}:{params:{projectId: string, moduleId: string}}) {
         try {
             const token = Cookies.get('token')!;
 
-            const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/modules/${moduleId}`,{
+            const response = await fetch(`http://localhost:3000/modules/${moduleId}`,{
                 method: "GET",
                 headers: {
                     "Authorization": token!
@@ -42,10 +42,10 @@ function Page({params}:{params:{projectId: string, moduleId: string}}) {
 
     const openRateModal = () => setRateModalOpen(true);
     const closeRateModal = () => setRateModalOpen(false);
-  
+
     const handleRateSubmit = (rating: number) => {
-      console.log('Rating Submitted:', rating);
-      closeRateModal();
+        console.log('Rating Submitted:', rating);
+        closeRateModal();
     };
 
     return (
@@ -60,7 +60,7 @@ function Page({params}:{params:{projectId: string, moduleId: string}}) {
                     Rate
                 </Button>
             </div>
-            <ActivityList activities={activities} />
+            <ActivityList activities={activities} projectId={projectId} moduleId={moduleId} />
             {rateModalOpen && <RateModal isOpen={rateModalOpen} onClose={closeRateModal} onSubmit={handleRateSubmit} />}
         </div>
     );

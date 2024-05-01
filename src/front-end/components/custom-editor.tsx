@@ -5,10 +5,13 @@ import React, { useState, useEffect } from 'react'
 import { Editor, Toolbar } from '@wangeditor/editor-for-react'
 import { IDomEditor, IEditorConfig, IToolbarConfig } from '@wangeditor/editor'
 import { i18nChangeLanguage } from '@wangeditor/editor'
-import Image from "next/image";
 import {ImageElement, InsertFnType} from "@/type";
 
-function CustomEditor( ) {
+
+interface CustomEditorProps {
+    onUpdate: (content:string) => void
+}
+function CustomEditor({onUpdate}:CustomEditorProps) {
 
     i18nChangeLanguage('en');
     const [editor, setEditor] = useState<IDomEditor | null>(null)  // TS syntax
@@ -69,6 +72,7 @@ function CustomEditor( ) {
         }
 
         editorConfig.MENU_CONF['uploadImage'] = {
+            allowedFileTypes: [],
             async customUpload(file: File, insertFn: InsertFnType) {   // TS syntax
 
                 // `file` is your selected file
@@ -77,13 +81,14 @@ function CustomEditor( ) {
                 const formData = new FormData();
                 formData.append('file', file);
 
-                const response = await fetch("https://lp-koala-backend-c0a69db0f618.herokuapp.com/test/file/upload",{
+                const response = await fetch("http://localhost:3000/test/file/upload",{
                     method: 'POST',
                     body: formData,
                 })
 
                 const data = await response.json();
-                const imageUrl = `https://lp-koala-backend-c0a69db0f618.herokuapp.com/test/file/${data.fileId}`
+                // TODO: deal with other file type here
+                const imageUrl = `http://localhost:3000/test/file/${data.fileId}`
                 // insert image
                 insertFn(imageUrl, file.name, imageUrl);
             }
@@ -101,7 +106,7 @@ function CustomEditor( ) {
     }, [editor])
 
     return (
-        <div className='h-full'>
+        <div className='h-1/2'>
             <div style={{ border: '1px solid #ccc', zIndex: 100}}>
                 <Toolbar
                     editor={editor}
@@ -113,7 +118,10 @@ function CustomEditor( ) {
                     defaultConfig={editorConfig}
                     value={html}
                     onCreated={setEditor}
-                    onChange={editor => setHtml(editor.getHtml())}
+                    onChange={editor => {
+                        setHtml(editor.getHtml())
+                        onUpdate(editor.getHtml())
+                    }}
                     mode="default"
                     style={{ height: '500px', overflowY: 'hidden' }}
                 />
@@ -121,13 +129,7 @@ function CustomEditor( ) {
             <div className='mt-14'>
                 {html}
             </div>
-            <div className='w-full aspect-video relative'>
-            <Image src='https://lp-koala-backend-c0a69db0f618.herokuapp.com/test/file/6627b54b61beedecf926b0c9'
-                   alt='image'
-                   width={200}
-                   height={200}
-            />
-            </div>
+
         </div>
     )
 }

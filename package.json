@@ -38,6 +38,7 @@
     "cmdk": "^1.0.0",
     "eslint": "8.57.0",
     "eslint-config-next": "14.1.4",
+    "he": "^1.2.0",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.363.0",
@@ -57,6 +58,7 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
+    "@types/he": "^1.2.3",
     "@types/js-cookie": "^3.0.6"
   }
 }
