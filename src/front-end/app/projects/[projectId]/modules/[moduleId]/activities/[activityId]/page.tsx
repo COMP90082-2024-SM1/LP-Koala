@@ -1,14 +1,9 @@
 'use client';
-import Link from "next/link";
-import { ArrowLeft, Eye, LayoutDashboard, Video } from "lucide-react";
-import {Sidebar} from "./_components/sidebar";
-import {Navbar} from "./_components/navbar";
 
-// import { db } from "@/lib/db";
-import { IconBadge } from "@/components/icon-badge";
-import { Banner } from "@/components/banner";
+
 import Cookies from "js-cookie";
 import {useEffect, useState} from "react";
+import he from "he";
 
 // import { ActivityTitleForm } from "./_components/activity-title-form";
 // import { ActivityDescriptionForm } from "./_components/activity-description-form";
@@ -24,7 +19,7 @@ const ActivityIdPage = ({
 
 
   const [content, setContent] = useState('');
-
+  const [description, setDescription] = useState('');
   const getActivity = async ()=> {
     try {
       const token = Cookies.get('token')!;
@@ -37,8 +32,11 @@ const ActivityIdPage = ({
       }).then(async r => {
         if (r.ok) {
           const result = await r.json();
-          console.log(result.data.data.content)
-          setContent(result.data.data.content);
+          const activity = result.data.data;
+          const decoded = he.decode(activity.content);
+          console.log(decoded);
+          setContent(decoded);
+          setDescription(activity.description);
         }
       });
 
@@ -54,14 +52,14 @@ const ActivityIdPage = ({
   // const isComplete = requiredFields.every(Boolean);
 
   return (
-      <>
-      <div
-          dangerouslySetInnerHTML={{ __html: content }}
-          // style={{ wordBreak: "break-word" }}
-      >
-
-      </div>
-      </>
+  <div className='p-20'>
+    <p className='text-center'>{description}</p>
+        <div
+            className='m-20 h-full '
+            dangerouslySetInnerHTML={{ __html: content }}
+            // style={{ wordBreak: "break-word" }}
+        />
+  </div>
    );
 }
  
