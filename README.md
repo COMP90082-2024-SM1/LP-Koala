@@ -41,13 +41,7 @@ Testing: After approval, the changes are tested. This includes unit tests, integ
 Merging: Once testing is passed, the PR is merged into the develop branch. Release branches are merged into main and develop once they are ready for deployment.<br>
 Deployment: Changes in the main branch are deployed to production according to our release schedule.
 
-## Release
-### Release v1.0<br>
-Release v1.0 provides a host of new features designed to enhance the user experience. Here are the critical updates:<br>
-User Login: Users can login the LMS system by prividing username and password. And according to different user roles, their accesses will vary, so the UI will also be various. We also set a jwt token tp check if the login status has expired.<br>
-User Access: For raters, they can view alllocated projects and activities in the project while researchers can have access to creating, editing and deleting projects and activities. Meanwhile, the researchers can choose to allocate the raters or remove the allocated raters. For admin, besides the researchers' access, they can also create or delete a user. All the users can change password or edit their profiles.<br>
-Project Function: A project is composed of several modules. Projects can be created,edited and deleted by researchers. A module consist of several activities. Modules can be created and deleted by researchers. Activities will display the teaching materials for raters to study, and they can also be created, edited, and deleted by researchers.
-
+## Project Repository
 ### Repository<br>
 main: This is the primary branch where the source code of HEAD always reflects a production-ready state. It's central to our development and deployment process.<br>
 frontend: This branch is used for development specific to the frontend part of our project. Developers working on user interface components, client-side logic, and styling would use this branch.<br>
@@ -55,3 +49,10 @@ deploy-frontend: This branch is used for deploying frontend changes. It acts as 
 backend: Similar to the frontend branch, this one focuses on backend development. This would include server-side logic, database management, API development, etc.<br>
 trigger: Specifically used for AI review processes, this branch handles tasks related to integrating, testing, or deploying AI models. It could be involved in automating reviews of code or content through AI tools.<br>
 deployment: Unlike the deploy-frontend branch, which specifically handles frontend deployments, this branch is used for deploying backend changes. It manages backend-specific configurations and deployment scripts, ensuring that backend updates can be rolled out smoothly and efficiently.
+
+## Release
+### Release v1.0<br>
+Release v1.0 provides a host of new features designed to enhance the user experience. Here are the critical updates:<br>
+User Login: Users can login the LMS system by prividing username and password. And according to different user roles, their accesses will vary, so the UI will also be various. We also set a jwt token tp check if the login status has expired.<br>
+User Access: For raters, they can view alllocated projects and activities in the project while researchers can have access to creating, editing and deleting projects and activities. Meanwhile, the researchers can choose to allocate the raters or remove the allocated raters. For admin, besides the researchers' access, they can also create or delete a user. All the users can change password or edit their profiles.<br>
+Project Function: A project is composed of several modules. Projects can be created,edited and deleted by researchers. A module consist of several activities. Modules can be created and deleted by researchers. Activities will display the teaching materials for raters to study, and they can also be created, edited, and deleted by researchers.
