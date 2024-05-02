@@ -28,7 +28,6 @@ export const ProjectCard  = ({
   isRater
                              }: ProjectCardProps) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const router = useRouter();
   const handleConfirmDelete = async () => {
       console.log("Deleting project", id);
       setShowConfirmModal(false)

@@ -71,7 +71,7 @@ const ChangePasswordForm = () => {
             <form className="space-y-6" onSubmit={onClick} action="#" method="POST">
                 <div>
                     <div className="flex items-center justify-between">
-                        <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                        <label htmlFor="current-password" className="block text-sm font-medium leading-6 text-gray-900">
                             Current Password
                         </label>
                     </div>

@@ -1,6 +1,6 @@
 'use client';
 import { ProjectCard } from "@/components/project-card";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {ClipLoader} from "react-spinners";
 import {getUserRole} from "@/lib/utils";
 import Cookies from "js-cookie";
@@ -29,6 +29,8 @@ export const ProjectsList = () => {
                 setIsLoading(false);
                 r.json().then(r=>setProjects(r.data))
             }
+        }).catch(error=>{
+            console.log(error);
         })
 
         const role =  await getUserRole(Cookies.get('token'));
