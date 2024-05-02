@@ -28,28 +28,12 @@ const formSchema = z.object({
 });
 
 const CreateActivityPage = ({params}:{params:{projectId: string, moduleId:string}}) => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-      image: ""
-    },
-  });
+
 
 
   const [description, setDescription] = useState('');
   const [content, setContent] = useState('');
-
-//   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-//     try {
-//       const response = await axios.post("/api/courses", values);
-//       router.push(`/teacher/courses/${response.data.id}`);
-//       toast.success("Course created");
-//     } catch {
-//       toast.error("Something went wrong");
-//     }
-//   }
+  const router = useRouter();
 
   const onClick = async ()=> {
     const token = Cookies.get('token')!
@@ -64,7 +48,8 @@ const CreateActivityPage = ({params}:{params:{projectId: string, moduleId:string
 
     if (response.ok){
       const result = await response.json();
-      console.log(result)
+      console.log(result);
+      router.push(`/projects/${params.projectId}/modules/${params.moduleId}`);
     }
   }
 

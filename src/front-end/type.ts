@@ -9,7 +9,8 @@ export type ImageElement = SlateElement & {
     href: string
 }
 
-export type InsertFnType = (url: string, alt: string, href: string) => void
+export type InsertFnTypeImg = (url: string, alt: string, href: string) => void
+export type InsertFnTypeVideo = (url: string, poster: string) => void
 
 export type Project = {
     _id: string,

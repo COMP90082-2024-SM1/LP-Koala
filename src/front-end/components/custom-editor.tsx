@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react'
 import { Editor, Toolbar } from '@wangeditor/editor-for-react'
 import { IDomEditor, IEditorConfig, IToolbarConfig } from '@wangeditor/editor'
 import { i18nChangeLanguage } from '@wangeditor/editor'
-import {ImageElement, InsertFnType} from "@/type";
+import {ImageElement, InsertFnTypeImg, InsertFnTypeVideo} from "@/type";
 
 
 interface CustomEditorProps {
@@ -73,7 +73,7 @@ function CustomEditor({onUpdate}:CustomEditorProps) {
 
         editorConfig.MENU_CONF['uploadImage'] = {
             allowedFileTypes: [],
-            async customUpload(file: File, insertFn: InsertFnType) {   // TS syntax
+            async customUpload(file: File, insertFn: InsertFnTypeImg) {   // TS syntax
 
                 // `file` is your selected file
 
@@ -93,6 +93,28 @@ function CustomEditor({onUpdate}:CustomEditorProps) {
                 insertFn(imageUrl, file.name, imageUrl);
             }
 
+        }
+        editorConfig.MENU_CONF['uploadVideo'] = {
+            // menu config...
+            async customUpload(file: File, insertFn: InsertFnTypeVideo) {
+
+                // `file` is your selected file
+
+                const formData = new FormData();
+                formData.append('file', file);
+
+                const response = await fetch("http://localhost:3000/test/file/upload",{
+                    method: 'POST',
+                    body: formData,
+                })
+
+                const data = await response.json();
+                // upload videos yourself, and get video's url and poster
+                const videoUrl = `http://localhost:3000/test/file/${data.fileId}`
+
+                // insert video
+                insertFn(videoUrl, '')
+            }
         }
     }
 
