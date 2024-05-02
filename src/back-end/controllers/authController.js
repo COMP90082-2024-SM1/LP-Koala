@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const AppError = require('./../utils/appError');
 const { promisify } = require('util');
+const verifyDocAccess = require('../utils/verifyDocAccess');
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -63,7 +64,7 @@ exports.protect = asyncCatch(async (req, res, next) => {
     return next(new AppError('The user with this token does not exist.', 401));
   }
 
-  // TODO: Check if user changed password after the token was issued
+  // Check if user changed password after the token was issued
   if (currentUser.changedPasswordAfter(decoded.iat)) {
     return next(
       new AppError('User recently changed password! Please log in again.', 401)
@@ -74,10 +75,12 @@ exports.protect = asyncCatch(async (req, res, next) => {
   next();
 });
 
-exports.restricTo = (...roles) => {
+exports.restrictTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-      return next(new AppError("You don't have access to create users.", 403));
+      return next(
+        new AppError("You don't have access to perform this operation.", 403)
+      );
     }
     next();
   };
@@ -101,3 +104,35 @@ exports.updatePassword = asyncCatch(async (req, res, next) => {
   // 4) Log user in, send JWT
   createSendToken(user, 200, req, res);
 });
+
+// Check if a user has access to a particular document
+exports.checkAccess = (Model) =>
+  asyncCatch(async (req, res, next) => {
+    const doc = await Model.findById(req.params.id);
+    if (!doc) {
+      return next(new AppError('No document found with that ID', 404));
+    }
+    // Check if a rater is able to access a particular module
+    if (req.user.role == 'rater' && doc.accessable) {
+      return next(new AppError('This item is not accessable.', 403));
+    }
+    // Check if a rater can access a module at the current time
+    if (
+      req.user.role == 'rater' &&
+      doc.accessTime &&
+      doc.accessTime > Date.now()
+    ) {
+      return next(
+        new AppError(
+          `This module is locked until ${Date.toLocaleString()}`,
+          403
+        )
+      );
+    }
+    if (verifyDocAccess(req, res, next, doc)) {
+      return next(
+        new AppError('Unauthorised user accessing this document', 403)
+      );
+    }
+    next();
+  });

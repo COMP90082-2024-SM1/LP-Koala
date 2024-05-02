@@ -9,15 +9,21 @@ router.use(authController.protect);
 
 router.post(
   '/createUser',
-  authController.restricTo('admin'),
+  authController.restrictTo('admin'),
   userController.createUser
 );
 
-router.get("/findUser/:userId", userController.findUser);
-router.get("/getUsers", authController.restricTo('admin'), userController.getUsers)
+
+router.get('/findUser/:userId', userController.findUser);
+router.get(
+  '/getUsers',
+  authController.restrictTo('admin'),
+  userController.getUsers
+);
+
 router.delete(
   '/deleteUser/:id',
-  authController.restricTo('admin'),
+  authController.restrictTo('admin'),
   userController.forbidSelfDelete,
   userController.deleteUser
 );

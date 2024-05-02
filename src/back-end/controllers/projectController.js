@@ -1,26 +1,26 @@
-const Project = require("../models/projectModel");
-const asyncCatch = require("../utils/asyncCatch");
+const Project = require('../models/projectModel');
+const AppError = require('../utils/appError');
+const asyncCatch = require('../utils/asyncCatch');
+const factory = require('./handlerFactory');
 
-exports.createProject = asyncCatch(async (req, res, next) => {
-    // Create new user object
-    console.log(req.body);
-    const newProject = await Project.create({
-        name: req.body.name,
+// Give an overview of users' projects, including researchers' name and usernames
+exports.getProjects = factory.getAllItems(Project);
 
-    });
-
-    // Send response
-    res.status(201).json({
-        status: "success",
-        data: { project: newProject },
-    });
-});
-
-exports.getProjects = asyncCatch(async (req, res, next) => {
-
-    const projects = await Project.find()
-    res.status(200).json({
-        status: "success",
-        projects: projects
-    })
-})
+// Returns a project with researchers' and raters' names and usernames
+exports.getOneProject = factory.getOneDoc(Project, [
+  {
+    path: 'researchers',
+    select: 'name username',
+  },
+  {
+    path: 'raters',
+    select: 'name username',
+  },
+  {
+    path: 'modules',
+    select: '-__v -projectId',
+  },
+]);
+exports.createProject = factory.createOneItem(Project);
+exports.deleteProject = factory.deleteOneDoc(Project);
+exports.updateProject = factory.updateOneItem(Project);

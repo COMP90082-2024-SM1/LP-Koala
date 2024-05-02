@@ -1,6 +1,6 @@
 # LP-Koala
-## DLASSP Project 
 
+## DLASSP Project 
 
 ## Project Overview
 The DLASSP project is conceived as a comprehensive and customisable LMS, tailored specifically for a unique user system consisting of Admins, Researchers, and Raters. The platform is intended to provide a versatile digital environment where the users can manage, participate in, and evaluate a variety of educational and assessment-oriented projects. Each user group is granted access privileges aligned with their operational scope and responsibilities to facilitate efficient project management, content creation, user interaction, and data analysis.
@@ -50,6 +50,7 @@ Currently, once a user logins, the login token will be expired in 5 minutes and 
 #### Website Domain Name<br>
 
 Since we deploy our project via Heruko for demonstration purposes for now, the domain name is https://lp-koala-frontend-1e10ff20d284.herokuapp.com/. This is subject to change later in the subject.<br>
+
 ## Workflow
 #### Our project uses a Git Flow branching strategy to streamline development and ensure stability:<br>
 **main**: This is the primary branch where the source code of HEAD always reflects a production-ready state. It's central to our development and deployment process.<br>
@@ -79,3 +80,4 @@ Release v1.0 provides a host of new features designed to enhance the user experi
 **User Login**: Users can login the LMS system by prividing username and password. And according to different user roles, their accesses will vary, so the UI will also be various. We also set a jwt token to check if the login status has expired.<br>
 **User Access**: For raters, they can view alllocated projects and activities in the project while researchers can have access to creating, editing and deleting projects and activities. Meanwhile, the researchers can choose to allocate the raters or remove the allocated raters. For admin, besides the researchers' access, they can also create or delete a user. All the users can change password or edit their profiles.<br>
 **Project Function**: A project is composed of several modules. Projects can be created,edited and deleted by researchers. A module consist of several activities. Modules can be created and deleted by researchers. Activities will display the teaching materials for raters to study, and they can also be created, edited, and deleted by researchers.
+
