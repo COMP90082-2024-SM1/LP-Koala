@@ -13,12 +13,14 @@ router.post(
   userController.createUser
 );
 
+
 router.get('/findUser/:userId', userController.findUser);
 router.get(
   '/getUsers',
   authController.restrictTo('admin'),
   userController.getUsers
 );
+
 router.delete(
   '/deleteUser/:id',
   authController.restrictTo('admin'),

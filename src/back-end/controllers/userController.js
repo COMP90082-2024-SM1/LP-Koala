@@ -93,6 +93,7 @@ exports.getUsers = asyncCatch(async (req, res, next) => {
     },
   });
 });
+
 exports.forbidSelfDelete = (req, res, next) => {
   if (req.params.id == req.user.id) {
     return next(new AppError('You cannot delete your own account.', 405));
