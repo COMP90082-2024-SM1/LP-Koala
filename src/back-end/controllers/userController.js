@@ -12,10 +12,10 @@ exports.createUser = asyncCatch(async (req, res, next) => {
 
     if (!allocatedProjectIds || allocatedProjectIds == []) {
       return next(
-        new AppError(
-          'A rater must be allocated to a project when created.',
-          400
-        )
+          new AppError(
+              'A rater must be allocated to a project when created.',
+              400
+          )
       );
     }
     allocatedProjectIds.forEach(async (id) => {
@@ -32,9 +32,9 @@ exports.createUser = asyncCatch(async (req, res, next) => {
     // Update projects
     allocatedProjectIds.forEach(async (id) => {
       await Project.findByIdAndUpdate(
-        id,
-        { $push: { raters: newUser.id } },
-        { new: true, runValidators: true }
+          id,
+          { $push: { raters: newUser.id } },
+          { new: true, runValidators: true }
       );
     });
   } else {
@@ -69,12 +69,12 @@ exports.findUser = asyncCatch(async (req, res, next) => {
 
 exports.updateName = asyncCatch(async (req, res, next) => {
   const updatedUser = await User.findByIdAndUpdate(
-    req.user.id,
-    { name: req.body.name },
-    {
-      new: true,
-      runValidators: true,
-    }
+      req.user.id,
+      { name: req.body.name },
+      {
+        new: true,
+        runValidators: true,
+      }
   );
   res.status(200).json({
     status: 'success',
@@ -112,14 +112,14 @@ exports.deleteUser = asyncCatch(async (req, res, next) => {
   if (user.role == 'rater' || user.role == 'researcher') {
     query[user.role + 's'] = { $elemMatch: { $eq: user.id } };
     await Project.updateMany(
-      query,
-      { $pull: { raters: user.id } },
-      { new: true, runValidators: true }
+        query,
+        { $pull: { raters: user.id } },
+        { new: true, runValidators: true }
     );
     await Module.updateMany(
-      query,
-      { $pull: { raters: user.id } },
-      { new: true, runValidators: true }
+        query,
+        { $pull: { raters: user.id } },
+        { new: true, runValidators: true }
     );
   }
 

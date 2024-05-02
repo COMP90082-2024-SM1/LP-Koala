@@ -1,11 +1,34 @@
-import React from 'react';
+import {redirect} from "next/navigation";
+import {cookies} from "next/headers";
 
 
-
-function Page() {
-    return (
-        <div>this is my page</div>
-    );
+interface ProjectProps  {
+    params: {projectId: string}
 }
+
+async function Page({params}:ProjectProps) {
+    const token = cookies().get('token')?.value
+
+    const response = await fetch(`http://localhost:3000/projects/${params.projectId}`, {
+            method: "GET",
+            headers: {
+                "Authorization": token!
+            }
+        });
+    const {data: {data}} = await response.json();
+
+    if (data.modules.length !== 0){
+        redirect(`/projects/${params.projectId}/modules/${data.modules[0]._id}`)
+    }
+
+    return(
+        <div className="text-center text-sm text-muted-foreground mt-10">
+            No Modules found
+        </div>
+    )
+
+}
+
+
 
 export default Page;

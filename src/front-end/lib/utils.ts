@@ -6,9 +6,12 @@ import {jwtDecode} from "jwt-decode";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
-
+interface UserType {
+    userId: string
+}
 export const getCurrentUser = async (token:string | undefined)=> {
-    const userId = jwtDecode(token!).id
+    const user = jwtDecode<UserType>(token!)
+    const userId = user.userId
     const response = await fetch(`http://localhost:3000/users/findUser/${userId}`, {
         method: 'GET',
         headers: {
@@ -29,6 +32,7 @@ export function isUserLoggedIn (token: string | undefined) {
     try {
         if (token !== undefined) {
             const decoded = jwtDecode(token);
+            // TODO need to validate on server side in case that user has recently changed their password
             return (decoded.exp ? decoded.exp : 0) >= getTimestampInSeconds();
 
         }else {

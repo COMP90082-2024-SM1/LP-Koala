@@ -5,6 +5,10 @@ const activitySchema = new mongoose.Schema({
         type: String,
         required: [true, 'An activity must have a general description']
     },
+    content:{
+        type: String,
+        required: [true, 'An activity must have content']
+    },
     multipleChoiceQuestions:[{
         type: mongoose.Schema.ObjectId,
         ref: 'multipleChoices'

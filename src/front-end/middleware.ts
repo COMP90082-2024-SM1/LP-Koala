@@ -14,7 +14,13 @@ export async function middleware  (request: NextRequest){
     });
 
     if (request.nextUrl.pathname.startsWith('/users')) {
-        if (role==='rater'){
+        if (role === 'rater'){
+            return NextResponse.redirect(new URL('/projects', request.url))
+        }
+    }
+
+    if (request.nextUrl.pathname.startsWith('/projects/create')) {
+        if (role === 'rater'){
             return NextResponse.redirect(new URL('/projects', request.url))
         }
     }

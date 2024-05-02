@@ -1,62 +1,80 @@
 "use client";
 
-import { CheckCircle, Lock, PlayCircle } from "lucide-react";
+import { LucideIcon, Trash } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-
 import { cn } from "@/lib/utils";
+import Cookies from "js-cookie";
+import { getUserRole } from "@/lib/utils"; 
+import React, {useEffect, useState } from 'react';
 
-interface CourseSidebarItemProps {
+interface SidebarItemProps {
+  icon: LucideIcon;
   label: string;
-  id: string;
-  isCompleted: boolean;
-  courseId: string;
-  isLocked: boolean;
+  href: string;
+  onDelete: () => void; 
 };
 
 export const ProjectSidebarItem = ({
+  icon: Icon,
   label,
-  id,
-  isCompleted,
-  courseId,
-  isLocked,
-}: CourseSidebarItemProps) => {
+  href,
+  onDelete
+}: SidebarItemProps) => {
   const pathname = usePathname();
   const router = useRouter();
+  const [userRole, setUserRole] = useState<string | null>(null);
 
-  const Icon = isLocked ? Lock : (isCompleted ? CheckCircle : PlayCircle);
-  const isActive = pathname?.includes(id);
+  const isActive =
+    (pathname === "/" && href === "/") ||
+      pathname === href ||
+      pathname?.startsWith(`${href}/`) ||
+      pathname.endsWith(href);
 
-  const onClick = () => {
-    router.push(`/courses/${courseId}/chapters/${id}`);
-  }
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      const role = await getUserRole(Cookies.get('token'));
+      setUserRole(role);
+    };
+  
+    fetchUserRole();
+  }, []);
+
+  const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      router.push(href)
+  };
 
   return (
-    <button
-      onClick={onClick}
-      type="button"
-      className={cn(
-        "flex items-center gap-x-2 text-slate-500 text-sm font-[500] pl-6 transition-all hover:text-slate-600 hover:bg-slate-300/20",
-        isActive && "text-slate-700 bg-slate-200/20 hover:bg-slate-200/20 hover:text-slate-700",
-        isCompleted && "text-emerald-700 hover:text-emerald-700",
-        isCompleted && isActive && "bg-emerald-200/20",
-      )}
-    >
-      <div className="flex items-center gap-x-2 py-4">
-        <Icon
-          size={22}
+      <>
+        <button
+          onClick={onClick}
+          type="button"
           className={cn(
-            "text-slate-500",
-            isActive && "text-slate-700",
-            isCompleted && "text-emerald-700"
+            "flex justify-between items-center w-full gap-x-2 text-slate-500 text-sm font-[500] pl-6 py-4 transition-all hover:text-slate-600 hover:bg-slate-300/20",
+            isActive && "text-sky-700 bg-sky-200/20 hover:bg-sky-200/20 hover:text-sky-700"
           )}
-        />
-        {label}
-      </div>
-      <div className={cn(
-        "ml-auto opacity-0 border-2 border-slate-700 h-full transition-all",
-        isActive && "opacity-100",
-        isCompleted && "border-emerald-700"
-      )} />
-    </button>
-  )
-}
+        >
+          <div className="flex items-center gap-x-2">
+            <Icon
+              size={22}
+              className={cn(
+                "text-slate-500",
+                isActive && "text-sky-700"
+              )}
+            />
+            {label}
+          </div>
+          {userRole !== 'rater' && (
+            <button
+            onClick={(e) => {
+                e.stopPropagation(); // Prevents the navigation event
+                onDelete();
+            }}
+            className="p-1 opacity-80 hover:opacity-100"
+            >
+                <Trash size={18} className="text-red-500 m-1" />
+            </button>
+          )}
+        </button>
+      </>
+  );
+};
