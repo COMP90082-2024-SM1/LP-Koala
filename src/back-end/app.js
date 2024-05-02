@@ -11,6 +11,7 @@ const mongoSanitise = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 
+
 const app = express();
 
 app.use(express.json());
@@ -25,11 +26,10 @@ app.use(xss());
 app.use(hpp({ whitelist: [] }));
 
 app.use((req, res, next) => {
-  req.requestTime = new Date().toISOString();
-  next();
+    req.requestTime = new Date().toISOString();
+    next();
 });
 app.use(cors());
-
 
 app.use('/users', userRouter);
 app.use('/projects', projectRouter);
