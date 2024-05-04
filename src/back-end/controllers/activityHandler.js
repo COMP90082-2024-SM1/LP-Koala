@@ -14,6 +14,31 @@ exports.createOne = Model =>
         });
     });
 
+exports.createNestObj = (Model, Second) =>
+    catchAsync( async (req, res, next) => {
+        const {id} = req.params;
+        const result = await Model.create(req.body);
+
+        const module = await Second.findById(id);
+        if (module.activities){
+            module.activities.push(result._id);
+        }
+
+        if (module.ratings){
+            module.ratings.push(result._id);
+        }
+
+        module.save();
+
+
+        res.status(201).json({
+            status: 'success',
+            data: {
+                data: result
+            }
+        })
+    });
+
 exports.getAll = Model =>
     catchAsync( async (req, res, next) =>{
         const result = await Model.find();

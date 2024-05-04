@@ -21,10 +21,10 @@ const moduleSchme = new Item({
     ref: 'Project',
     required: true,
   },
-  //   activities: {
-  //     type: mongoose.Schema.ObjectId,
-  //     ref: 'Activity',
-  //   },
+  activities: [{
+    type: mongoose.Schema.ObjectId,
+    ref: 'activity',
+  }]
 });
 
 const Module = mongoose.model('Module', moduleSchme);
