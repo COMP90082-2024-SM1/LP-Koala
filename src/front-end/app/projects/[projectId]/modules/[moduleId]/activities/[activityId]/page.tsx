@@ -17,7 +17,7 @@ const ActivityIdPage = ({
     try {
       const token = Cookies.get('token')!;
 
-      const response = await fetch(`http://localhost:3000/activity/${params.activityId}`,{
+      const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/activity/${params.activityId}`,{
         method: "GET",
         headers: {
           "Authorization": token!

@@ -24,24 +24,6 @@ function ActivityList({
     ]);
 
 
-    const getActivities = async ()=>{
-        const token = Cookies.get('token')!;
-        await fetch('http://localhost:3000/activity',{
-            method: 'GET',
-            headers: {
-                "Content-type": "application/json; charset=UTF-8",
-                "authorization": token
-            }
-        }).then(r=>{
-            if (r.ok){
-                const result = r.json().then(response=>console.log(response))
-            }
-        })
-    }
-
-    useEffect(() => {
-        getActivities()
-    }, []);
 
     return (
         <div className="flex flex-col items-center mt-8">

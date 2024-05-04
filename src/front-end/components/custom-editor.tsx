@@ -15,13 +15,7 @@ function CustomEditor({onUpdate}:CustomEditorProps) {
 
     i18nChangeLanguage('en');
     const [editor, setEditor] = useState<IDomEditor | null>(null)  // TS syntax
-    const [html, setHtml] = useState('<p>hello</p>')
-
-    useEffect(() => {
-        setTimeout(() => {
-            setHtml('<p>hello&nbsp;world</p>')
-        }, 1500)
-    }, [])
+    const [html, setHtml] = useState('');
 
     const toolbarConfig: Partial<IToolbarConfig> = { }
 
@@ -81,14 +75,14 @@ function CustomEditor({onUpdate}:CustomEditorProps) {
                 const formData = new FormData();
                 formData.append('file', file);
 
-                const response = await fetch("http://localhost:3000/test/file/upload",{
+                const response = await fetch("https://lp-koala-backend-c0a69db0f618.herokuapp.com/test/file/upload",{
                     method: 'POST',
                     body: formData,
                 })
 
                 const data = await response.json();
                 // TODO: deal with other file type here
-                const imageUrl = `http://localhost:3000/test/file/${data.fileId}`
+                const imageUrl = `https://lp-koala-backend-c0a69db0f618.herokuapp.com/test/file/${data.fileId}`
                 // insert image
                 insertFn(imageUrl, file.name, imageUrl);
             }
@@ -125,9 +119,6 @@ function CustomEditor({onUpdate}:CustomEditorProps) {
                     mode="default"
                     style={{ height: '500px', overflowY: 'hidden' }}
                 />
-            </div>
-            <div className='mt-14'>
-                {html}
             </div>
 
         </div>
