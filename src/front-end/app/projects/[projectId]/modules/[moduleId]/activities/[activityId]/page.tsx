@@ -7,6 +7,13 @@ import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getCurrentUser, getUserRole } from "@/lib/utils";
 
+interface Rating {
+  rating: number;
+  rater: {
+      _id: string;
+  }
+}
+
 const ActivityIdPage = ({
                           params
                         }: {
@@ -15,7 +22,7 @@ const ActivityIdPage = ({
 
   const [content, setContent] = useState('');
   const [description, setDescription] = useState('');
-  const [ratings, setRatings] = useState([]);
+  const [ratings, setRatings] = useState<Rating[]>([]);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [rateModalOpen, setRateModalOpen] = useState(false);
   const openRateModal = () => setRateModalOpen(true);
@@ -39,7 +46,6 @@ const ActivityIdPage = ({
           setContent(decoded);
           setDescription(activity.description);
           setRatings(activity.ratings);
-
         }
       });
 
@@ -71,11 +77,10 @@ const ActivityIdPage = ({
   }, [currentUser]);
 
   useEffect(() => {
-
     if(ratings.length>0 && currentUser) {
       setRatings(ratings.filter(rating => rating.rater._id === currentUser._id))
       const lastUserRating = ratings.length > 0 ? ratings[ratings.length - 1] : null;
-      setRatings(lastUserRating);
+      setRatings([lastUserRating]);
     }
 
   }, [ratings, currentUser]);
@@ -111,15 +116,15 @@ const ActivityIdPage = ({
   };
 
   const renderStars = (rating) => {
-    const totalStars = 5; // Adjust the total number of stars if needed
+    const totalStars = 5;
     const stars = [];
   
     for (let i = 1; i <= totalStars; i++) {
       stars.push(
         <Star
           key={i}
-          color={i <= rating ? '#FFD700' : '#CCCCCC'} // Gold for filled stars, grey for empty
-          fill={i <= rating ? '#FFD700' : 'none'} // Fill color for filled stars
+          color={i <= rating ? '#FFD700' : '#CCCCCC'}
+          fill={i <= rating ? '#FFD700' : 'none'}
           style={{ display: 'inline-block', marginRight: '2px' }}
         />
       );
@@ -138,7 +143,7 @@ const ActivityIdPage = ({
               // style={{ wordBreak: "break-word" }}
           />
       </div>
-      {ratings && renderStars(ratings.rating)}<br></br><br></br>
+      {ratings.length > 0 && renderStars(ratings[0].rating)}<br></br><br></br>
       {userRole !== 'rater' && (
         <Button className='w-48' onClick={openRateModal}>
           <Star className="h-4 w-4 mr-2" />
