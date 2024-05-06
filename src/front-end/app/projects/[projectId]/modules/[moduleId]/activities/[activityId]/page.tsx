@@ -36,56 +36,50 @@ const ActivityIdPage = ({
           const result = await r.json();
           const activity = result.data.data;
           const decoded = he.decode(activity.content);
-          // console.log(currentUser.id);
           setContent(decoded);
           setDescription(activity.description);
-          activity.ratings.forEach(rating => {
-            console.log("Rater ID:", rating.rater._id);
-          });
-          
-          if(currentUser) {
-            const userRatings = activity.ratings.filter(rating => rating.rater._id === currentUser._id);
-            const lastUserRating = userRatings.length > 0 ? userRatings[userRatings.length - 1] : null;
-            setRatings(lastUserRating);
-          }
-          console.log(activity.ratings[activity.ratings.length - 1]);
+          setRatings(activity.ratings);
+
         }
       });
-
 
     }catch (error){
       console.log(error)
     }
   }
 
-  useEffect(() => {
-    getActivity()
-  }, []);
-
-  useEffect(() => {
-    const fetchUserRole = async () => {
-      const role = await getUserRole(Cookies.get('token'));
-      setUserRole(role);
-    };
-  
-    fetchUserRole();
-  }, []);
-
-  useEffect(() => {
+  const fetchUser = async () => {
     const token = Cookies.get('token')!;
-    const fetchUser = async () => {
-      if (token) {
-        try {
-          const user = await getCurrentUser(token);
-          setCurrentUser(user);
-        } catch (error) {
-          console.error('Failed to fetch user:', error);
-        }
+    if (token) {
+      try {
+        const user = await getCurrentUser(token);
+        console.log(user)
+        setCurrentUser(user);
+        setUserRole(user.role);
+      } catch (error) {
+        console.error('Failed to fetch user:', error);
       }
-    };
+    }
+  };
 
+  useEffect(() => {
     fetchUser();
   }, []);
+
+  useEffect(() => {
+    getActivity()
+  }, [currentUser]);
+
+  useEffect(() => {
+
+    if(ratings.length>0 && currentUser) {
+      setRatings(ratings.filter(rating => rating.rater._id === currentUser._id))
+      const lastUserRating = ratings.length > 0 ? ratings[ratings.length - 1] : null;
+      setRatings(lastUserRating);
+    }
+
+  }, [ratings, currentUser]);
+
   
   const handleRateSubmit = async (rating: number) => {
     if (!currentUser) {
