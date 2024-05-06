@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react'
 import { Editor, Toolbar } from '@wangeditor/editor-for-react'
 import { IDomEditor, IEditorConfig, IToolbarConfig } from '@wangeditor/editor'
 import { i18nChangeLanguage } from '@wangeditor/editor'
-import {ImageElement, InsertFnType} from "@/type";
+import {ImageElement, InsertFnType, InsertFnTypeVideo} from "@/type";
 
 
 interface CustomEditorProps {
@@ -88,6 +88,29 @@ function CustomEditor({onUpdate}:CustomEditorProps) {
             }
 
         }
+        editorConfig.MENU_CONF['uploadVideo'] = {
+            // menu config...
+            async customUpload(file: File, insertFn: InsertFnTypeVideo) {
+
+                // `file` is your selected file
+
+                const formData = new FormData();
+                formData.append('file', file);
+
+                const response = await fetch("https://lp-koala-backend-c0a69db0f618.herokuapp.com/test/file/upload",{
+                    method: 'POST',
+                    body: formData,
+                })
+
+                const data = await response.json();
+                // upload videos yourself, and get video's url and poster
+                const videoUrl = `https://lp-koala-backend-c0a69db0f618.herokuapp.com/test/file/${data.fileId}`
+
+                // insert video
+                insertFn(videoUrl, '')
+            }
+        }
+
     }
 
 
