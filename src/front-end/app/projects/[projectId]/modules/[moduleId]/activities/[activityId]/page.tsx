@@ -144,7 +144,7 @@ const ActivityIdPage = ({
           />
       </div>
       {ratings.length > 0 && renderStars(ratings[0].rating)}<br></br><br></br>
-      {userRole !== 'rater' && (
+      {userRole == 'rater' && (
         <Button className='w-48' onClick={openRateModal}>
           <Star className="h-4 w-4 mr-2" />
           Rate

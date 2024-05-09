@@ -11,14 +11,16 @@ interface SidebarItemProps {
   icon: LucideIcon;
   label: string;
   href: string;
-  onDelete: () => void; 
+  onDelete?: () => void;
+  showDeleteIcon?: boolean;
 };
 
 export const ProjectSidebarItem = ({
   icon: Icon,
   label,
   href,
-  onDelete
+  onDelete,
+  showDeleteIcon = false
 }: SidebarItemProps) => {
   const pathname = usePathname();
   const router = useRouter();
@@ -63,7 +65,7 @@ export const ProjectSidebarItem = ({
             />
             {label}
           </div>
-          {userRole !== 'rater' && (
+          {userRole !== 'rater' && showDeleteIcon &&(
             <button
             onClick={(e) => {
                 e.stopPropagation(); // Prevents the navigation event

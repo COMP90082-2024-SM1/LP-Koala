@@ -1,6 +1,6 @@
 "use client"
 import Link from "next/link"
-import { PlusCircle , Puzzle} from "lucide-react"
+import { PlusCircle , Puzzle, MessageCircle } from "lucide-react"
 import {Logo} from "./logo";
 import {ProjectSidebarItem} from "@/app/projects/[projectId]/_components/project-sidebar-item";
 import {useRouter} from "next/navigation";
@@ -104,9 +104,16 @@ export const ProjectSidebar =  ({projectId}: {projectId:string}) => {
                     label={module.title}
                     href={`/projects/${projectId}/modules/${module._id}`}
                     onDelete={() => requestDelete(module._id)}
+                    showDeleteIcon={true}
                 />
-                
           ))}
+
+          <ProjectSidebarItem
+            key="forum"
+            icon={MessageCircle}
+            label="Forum"
+            href={`/projects/${projectId}/forums`}
+          />
       </div>
       {userRole !== 'rater' && (
         <Button className="my-5 mx-auto flex-row" onClick={() => router.push(`/projects/${projectId}/modules/create`)}>
