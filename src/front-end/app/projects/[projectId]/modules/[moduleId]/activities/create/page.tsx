@@ -39,7 +39,7 @@ const CreateActivityPage = ({params}:{params:{projectId: string, moduleId:string
       <div className='p-6 h-full'>
 
         <div className='my-4 items-center gap-1.5'>
-          <p className='text-center text-xl'>Creat Activity</p>
+          <p className='text-center text-xl'>Create Activity</p>
           <Label>Description</Label>
           <Input required value={description} onChange={(event)=>setDescription(event.target.value)}/>
         </div>

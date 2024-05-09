@@ -5,14 +5,16 @@ import {useRouter} from "next/navigation";
 import {useEffect, useState} from 'react';
 import ActivityList from "./_components/activity-list";
 import Cookies from "js-cookie";
-import { getUserRole } from "@/lib/utils"; 
+import { getUserRole } from "@/lib/utils";
+import {ClipLoader} from "react-spinners";
+
 
 function Page({params}:{params:{projectId: string, moduleId: string}}) {
     const router = useRouter();
     const {projectId, moduleId} = params;
     const [activities, setActivities] = useState([])
     const [userRole, setUserRole] = useState<string | null>(null);
-
+    const [isLoading, setIsLoading] = useState(true);
     const getActivities = async ()=> {
         try {
             const token = Cookies.get('token')!;
@@ -25,7 +27,8 @@ function Page({params}:{params:{projectId: string, moduleId: string}}) {
             }).then(async r => {
                 if (r.ok) {
                     const result = await r.json();
-                    console.log(result.data.data.activities)
+                    console.log(result.data.data.activities);
+                    setIsLoading(false);
                     setActivities(result.data.data.activities);
                 }
             });
@@ -59,7 +62,16 @@ function Page({params}:{params:{projectId: string, moduleId: string}}) {
                     </Button>
                 )}
             </div>
+
             <ActivityList activities={activities} projectId={projectId} moduleId={moduleId} />
+            {activities.length === 0 && !isLoading && (
+                <div className="text-center text-sm text-muted-foreground mt-10">
+                    No Activities found
+                </div>
+            )}
+            <div className='justify-center flex'>
+                <ClipLoader loading={isLoading} size={50} className='!border-sky-700 !border-b-transparent' />
+            </div>
         </div>
     );
 }
