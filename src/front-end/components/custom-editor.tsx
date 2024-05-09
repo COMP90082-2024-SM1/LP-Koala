@@ -6,7 +6,10 @@ import { Editor, Toolbar } from '@wangeditor/editor-for-react'
 import { IDomEditor, IEditorConfig, IToolbarConfig } from '@wangeditor/editor'
 import { i18nChangeLanguage } from '@wangeditor/editor'
 import {ImageElement, InsertFnType, InsertFnTypeVideo} from "@/type";
+import { Boot } from '@wangeditor/editor'
+import attachmentModule from '@wangeditor/plugin-upload-attachment'
 
+Boot.registerModule(attachmentModule)
 
 interface CustomEditorProps {
     onUpdate: (content:string) => void
@@ -14,17 +17,32 @@ interface CustomEditorProps {
 function CustomEditor({onUpdate}:CustomEditorProps) {
 
     i18nChangeLanguage('en');
-    const [editor, setEditor] = useState<IDomEditor | null>(null)  // TS syntax
+    const [editor, setEditor] = useState<IDomEditor | null>(null)
     const [html, setHtml] = useState('');
 
-    const toolbarConfig: Partial<IToolbarConfig> = { }
+    const toolbarConfig: Partial<IToolbarConfig> = {
+        excludeKeys: [
+            'insertLink',
+            'insertImage',
+            'insertVideo'
+        ],
+        insertKeys: {
+            index: 21,
+            keys: ['uploadAttachment'],
+        },
+    }
 
     const editorConfig: Partial<IEditorConfig> = {
+        hoverbarKeys: {
+            attachment: {
+                menuKeys: ['downloadAttachment'], // “下载附件”菜单
+            },
+        },
         placeholder: 'Type here...',
         MENU_CONF: {}
     }
 
-    function customCheckImageFn(src: string, alt: string, url: string): boolean | undefined | string {  // TS syntax
+    function customCheckImageFn(src: string, alt: string, url: string): boolean | undefined | string {
         if (!src) {
             return
         }
@@ -41,30 +59,28 @@ function CustomEditor({onUpdate}:CustomEditorProps) {
         return src
     }
 
-    if (editorConfig.MENU_CONF !== undefined){
+    if (editorConfig.MENU_CONF !== undefined) {
 
         editorConfig.MENU_CONF['insertImage'] = {
             onInsertedImage(imageNode: ImageElement | null) {
                 if (imageNode == null) return
 
-                const { src, alt, url, href } = imageNode
+                const {src, alt, url, href} = imageNode
                 console.log('inserted image', src, alt, url, href)
             },
             checkImage: customCheckImageFn,
             parseImageSrc: customParseImageSrc,
         }
-
         editorConfig.MENU_CONF['editImage'] = {
             onUpdatedImage(imageNode: ImageElement | null) {
                 if (imageNode == null) return
 
-                const { src, alt, url } = imageNode
+                const {src, alt, url} = imageNode
                 console.log('updated image', src, alt, url)
             },
             checkImage: customCheckImageFn, // support `async function`
             parseImageSrc: customParseImageSrc, // support `async function`
         }
-
         editorConfig.MENU_CONF['uploadImage'] = {
             allowedFileTypes: [],
             async customUpload(file: File, insertFn: InsertFnType) {   // TS syntax
@@ -75,7 +91,7 @@ function CustomEditor({onUpdate}:CustomEditorProps) {
                 const formData = new FormData();
                 formData.append('file', file);
 
-                const response = await fetch("https://lp-koala-backend-c0a69db0f618.herokuapp.com/test/file/upload",{
+                const response = await fetch("https://lp-koala-backend-c0a69db0f618.herokuapp.com/test/file/upload", {
                     method: 'POST',
                     body: formData,
                 })
@@ -97,7 +113,7 @@ function CustomEditor({onUpdate}:CustomEditorProps) {
                 const formData = new FormData();
                 formData.append('file', file);
 
-                const response = await fetch("https://lp-koala-backend-c0a69db0f618.herokuapp.com/test/file/upload",{
+                const response = await fetch("https://lp-koala-backend-c0a69db0f618.herokuapp.com/test/file/upload", {
                     method: 'POST',
                     body: formData,
                 })
@@ -110,10 +126,29 @@ function CustomEditor({onUpdate}:CustomEditorProps) {
                 insertFn(videoUrl, '')
             }
         }
+        editorConfig.MENU_CONF['uploadAttachment'] = {
+            allowedFileTypes: ['.pdf', '.doc', '.docx'],
+            async customUpload(file: File, insertFn: Function) {
+                // `file` is your selected file
+
+                const formData = new FormData();
+                formData.append('file', file);
+
+                const response = await fetch("https://lp-koala-backend-c0a69db0f618.herokuapp.com/test/file/upload", {
+                    method: 'POST',
+                    body: formData,
+                })
+
+                const data = await response.json();
+                // upload videos yourself, and get video's url and poster
+                const fileUrl = `https://lp-koala-backend-c0a69db0f618.herokuapp.com/test/file/${data.fileId}`
+
+                // insert file
+                insertFn(file.name, fileUrl);
+            },
+        }
 
     }
-
-
     useEffect(() => {
         return () => {
             if (editor == null) return
