@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const User = require('./../userModel');
 const threadSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -24,7 +24,7 @@ const threadSchema = new mongoose.Schema({
   posts: [
     {
       type: mongoose.Schema.ObjectId,
-      ref: 'post',
+      ref: 'Post',
     },
   ],
   creatAt: Date,
@@ -43,6 +43,6 @@ threadSchema.pre('save', function (next) {
   next();
 });
 
-const threadModel = mongoose.model('thread', threadSchema);
+const Thread = mongoose.model('Thread', threadSchema);
 
-module.exports = threadModel;
+module.exports = Thread;
