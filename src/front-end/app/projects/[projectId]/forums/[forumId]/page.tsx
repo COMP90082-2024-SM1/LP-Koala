@@ -1,10 +1,24 @@
-import React from 'react';
+"use client"
+import React, {useEffect, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Trash, Edit } from "lucide-react";
+import ConfirmModal from '@/components/confirm-modal';
+import Cookies from "js-cookie";
+import { getUserRole } from "@/lib/utils";
 
-const ForumPost = ({ forum }) => {
+const ForumPost = ({ forum, onDelete, onEdit }) => {
+  const [userRole, setUserRole] = useState<string | null>(null);
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      const role = await getUserRole(Cookies.get('token'));
+      setUserRole(role);
+    };
+  
+    fetchUserRole();
+  }, []);
+
   return (
     <div className="bg-white shadow rounded-lg p-6 mb-6">
         <div className="flex items-start space-x-4">
@@ -14,6 +28,12 @@ const ForumPost = ({ forum }) => {
             <p className="text-sm text-gray-500">Posted by {forum.username}</p>
             <p className="mt-2 text-gray-700">{forum.description}</p>
             </div>
+            {userRole !== 'rater' && (
+              <>
+                <Edit size={18} onClick={onEdit} className="text-blue-500 m-1 cursor-pointer" />
+                <Trash size={18} onClick={onDelete} className="text-red-500 m-1 cursor-pointer"/>
+              </> 
+            )}
         </div>
         <div className="mt-4">
             <textarea
@@ -28,7 +48,26 @@ const ForumPost = ({ forum }) => {
 };
 
 const ForumPage = () => {
-  // Sample data
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [selectedForumId, setSelectedForumId] = useState(null);
+  const [editingForumId, setEditingForumId] = useState(null);
+
+  const requestDelete = (forumId) => {
+    setSelectedForumId(forumId);
+    setShowConfirmModal(true);
+  };
+
+  const handleDelete = () => {
+    console.log("Deleting Forum with ID:", selectedForumId);
+    setShowConfirmModal(false);
+  };
+
+  const onEdit = (forumId) => {
+    setEditingForumId(forumId);
+    // Navigate to the edit page or open an edit modal
+    console.log("Editing Forum with ID:", forumId);
+  };
+
   const forums = [
     {
       username: "JohnDoe",
@@ -53,8 +92,13 @@ const ForumPage = () => {
             </Button>
         </Link>
         {forums.map((forum, index) => (
-            <ForumPost key={index} forum={forum} />
+            <ForumPost key={index} forum={forum} onDelete={() => requestDelete(forum.id)} onEdit={() => onEdit(forum.id)}/>
         ))}
+        <ConfirmModal
+          isOpen={showConfirmModal}
+          onClose={() => setShowConfirmModal(false)}
+          onConfirm={handleDelete}
+        />
     </div>
   );
 };

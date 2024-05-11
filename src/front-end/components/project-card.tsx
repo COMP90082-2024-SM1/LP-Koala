@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Trash, MoreHorizontal, Pencil } from "lucide-react"
+import { Trash, MoreHorizontal, Edit } from "lucide-react"
 import ConfirmModal from './confirm-modal';
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
@@ -73,13 +73,13 @@ export const ProjectCard  = ({
             <DropdownMenuContent align="end">
               <Link href={`/projects/${id}/edit`}>
                 <DropdownMenuItem>
-                  <Pencil className="h-4 w-4 mr-2" />
+                  <Edit size={16} className="text-blue-500 m-1" />
                   Edit
                 </DropdownMenuItem>
               </Link>
               <button onClick={() => setShowConfirmModal(true)} className="w-full text-left">
                 <DropdownMenuItem>
-                  <Trash className="h-4 w-4 mr-2" />
+                  <Trash size={16} className="text-red-500 m-1" />
                   Delete
                 </DropdownMenuItem>
               </button>
@@ -99,15 +99,8 @@ export const ProjectCard  = ({
           <div className="text-lg md:text-base font-medium group-hover:text-sky-700 transition line-clamp-2">
             {name}
           </div>
-          {/*<p className="text-xs text-muted-foreground">*/}
-          {/*  {category}*/}
-          {/*</p>*/}
           <div className="my-3 flex items-center gap-x-2 text-sm md:text-xs">
             <div className="flex items-center gap-x-1 text-slate-500">
-              {/*<IconBadge size="sm" icon={BookOpen} />*/}
-              {/*<span>*/}
-              {/*  {chaptersLength} {chaptersLength === 1 ? "Module" : "Modules"}*/}
-              {/*</span>*/}
             </div>
           </div>
         </div>

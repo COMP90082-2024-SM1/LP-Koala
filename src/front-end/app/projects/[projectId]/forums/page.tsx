@@ -50,7 +50,7 @@ function Page({params}:{params:{projectId: string, moduleId: string}}) {
         };
       
         fetchUserRole();
-      }, []);
+    }, []);
 
     return (
         <div className="p-6 space-y-4">
