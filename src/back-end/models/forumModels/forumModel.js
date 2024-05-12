@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const forumSchema = new mongoose.Schema({
   description: {
     type: String,
-    required: [true, 'An activity must have a general description'],
+    required: [true, 'A forum must have a general description'],
   },
   threads: [
     {
@@ -13,9 +13,9 @@ const forumSchema = new mongoose.Schema({
   ],
 });
 
-forumSchema.pre(/^find/, function (next) {
-  this.populate('threads');
-});
+// forumSchema.pre(/^find/, function (next) {
+//   this.populate('threads');
+// });
 
 const forumModel = mongoose.model('forum', forumSchema);
 

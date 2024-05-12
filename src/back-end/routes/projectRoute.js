@@ -1,4 +1,3 @@
-
 const express = require('express');
 const projectController = require('../controllers/projectController');
 const {
@@ -7,11 +6,15 @@ const {
   checkAccess,
 } = require('../controllers/authController');
 const Project = require('../models/projectModel');
+const forumRouter = require('./forumRoute');
 
 const router = express.Router();
 
 router.use(protect);
-
+const submodelVerify = (req, res, next) => (
+  checkAccess(Project, req.params.projectId), next()
+);
+router.use('/:projectId/forum', submodelVerify, forumRouter);
 // Only researchers/raters can see their own projects, but admin can see all the projects
 router.get('/', projectController.getProjects);
 

@@ -7,9 +7,9 @@ const AppError = require('./appError');
 module.exports = (req, res, next, doc) => {
   const isUnauthorised = (role, users) =>
     req.user.role === role &&
-    users &&
-    users.length !== 0 &&
-    !users.some((user) => user._id == req.user.id);
+    users != null &&
+    (users.length == 0 ||
+      (users.length !== 0 && !users.some((user) => user._id == req.user.id)));
   const unauthRater = isUnauthorised('rater', doc.raters);
   const unauthResearcher = isUnauthorised('researcher', doc.researchers);
   return unauthRater || unauthResearcher;

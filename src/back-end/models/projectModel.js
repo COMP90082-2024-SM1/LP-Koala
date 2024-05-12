@@ -19,6 +19,10 @@ const projectSchema = new Item({
       ref: 'Module',
     },
   ],
+  forum: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'forum',
+  },
 });
 const Project = mongoose.model('Project', projectSchema);
 
