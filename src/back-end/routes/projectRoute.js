@@ -14,7 +14,7 @@ router.use(protect);
 const submodelVerify = (req, res, next) => (
   checkAccess(Project, req.params.projectId), next()
 );
-router.use('/:projectId/forum', submodelVerify, forumRouter);
+router.use('/:projectId/forums', forumRouter);
 // Only researchers/raters can see their own projects, but admin can see all the projects
 router.get('/', projectController.getProjects);
 

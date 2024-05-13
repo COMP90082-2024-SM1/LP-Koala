@@ -42,7 +42,6 @@ exports.getAllResponds = factory.getAll(Respond);
 exports.createOneForum = asyncCatch(async (req, res, next) => {
   const result = await Forum.create(req.body);
   // update the corresponding project reference
-  console.log(req.params.projectId);
   await Project.findByIdAndUpdate(
     req.params.projectId,
     { forum: result.id },
