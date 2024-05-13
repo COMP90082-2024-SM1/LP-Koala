@@ -21,9 +21,9 @@ const isDescendent = async (rootId, descendantType, descendantId) => {
       },
     },
   ];
-  console.log(descendantType);
-  console.log(rootId);
-  console.log(descendantId);
+  // console.log(descendantType);
+  // console.log(rootId);
+  // console.log(descendantId);
   if (descendantType === 'thread') {
     aggconfig.push({ $match: { 'threads._id': descendantId } });
   } else if (descendantType === 'post') {
@@ -63,14 +63,14 @@ const isDescendent = async (rootId, descendantType, descendantId) => {
   aggconfig.push(
     ...[{ $project: { _id: 1, exists: { $literal: true } } }, { $limit: 1 }]
   );
-  console.log(aggconfig);
+  // console.log(aggconfig);
   const result = await Forum.aggregate(aggconfig);
-  console.log(result);
+  // console.log(result);
   if (result.length === 0) {
-    console.log(`Instance is not in the given grandparent`);
+    // console.log(`Instance is not in the given grandparent`);
     return false;
   } else {
-    console.log(`Instance is in the given grandparent`);
+    // console.log(`Instance is in the given grandparent`);
     return true;
   }
 };
