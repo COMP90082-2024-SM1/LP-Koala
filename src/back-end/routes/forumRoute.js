@@ -5,9 +5,8 @@ const {
   restrictTo,
   checkAccess,
 } = require('../controllers/authController');
-const Module = require('../models/moduleModel');
-
 const router = express.Router();
+
 router.use(protect);
 
 router
@@ -15,38 +14,31 @@ router
   .get(forumController.getAllForums)
   .post(forumController.createOneForum);
 
-router
-  .route('/threads/')
-  .get(forumController.getAllThreads)
-  .post(forumController.createOneThread);
+router.route('/threads/').get(forumController.getAllThreads);
 
-router
-  .route('/threads/posts/')
-  .get(forumController.getAllPosts)
-  .post(forumController.createOnePost);
+router.route('/threads/posts/').get(forumController.getAllPosts);
 
-router
-  .route('/threads/posts/responds/')
-  .get(forumController.getAllResponds)
-  .post(forumController.createOneRespond);
+router.route('/threads/posts/responds/').get(forumController.getAllResponds);
 
 router
   .route('/threads/posts/responds/:id')
   .get(forumController.getOneRespond)
   .delete(forumController.deleteOneRespond);
-
 router
   .route('/threads/posts/:id')
   .get(forumController.getOnePost)
-  .delete(forumController.deleteOnePost);
+  .delete(forumController.deleteOnePost)
+  .post(forumController.createOneRespond);
 
 router
   .route('/threads/:id')
   .get(forumController.getOneThread)
-  .delete(forumController.deleteOneThread);
+  .delete(forumController.deleteOneThread)
+  .post(forumController.createOnePost);
 router
   .route('/:id')
   .get(forumController.getOneForum)
-  .delete(forumController.deleteOneForum);
+  .delete(forumController.deleteOneForum)
+  .post(forumController.createOneThread);
 
 module.exports = router;

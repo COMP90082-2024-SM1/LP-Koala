@@ -8,15 +8,16 @@ const forumSchema = new mongoose.Schema({
   threads: [
     {
       type: mongoose.Schema.ObjectId,
-      ref: 'thread',
+      ref: 'Thread',
     },
   ],
 });
 
-// forumSchema.pre(/^find/, function (next) {
-//   this.populate('threads');
-// });
+forumSchema.pre(/^find/, function (next) {
+  this.populate('threads');
+  next();
+});
 
-const forumModel = mongoose.model('forum', forumSchema);
+const Forum = mongoose.model('Forum', forumSchema);
 
-module.exports = forumModel;
+module.exports = Forum;
