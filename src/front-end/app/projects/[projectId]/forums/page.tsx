@@ -58,7 +58,7 @@ function Page({params}:{params:{projectId: string, moduleId: string}}) {
                 {userRole !== 'rater' && (
                     <Button className='w-48' onClick={()=>router.push(`/projects/${projectId}/forums/create`)}>
                     <PlusCircle className="h-4 w-4 mr-2" />
-                        New Forum
+                        New Thread
                     </Button>
                 )}
             </div>
@@ -66,7 +66,7 @@ function Page({params}:{params:{projectId: string, moduleId: string}}) {
             <ActivityList activities={activities} projectId={projectId} moduleId={moduleId} />
             {activities.length === 0 && !isLoading && (
                 <div className="text-center text-sm text-muted-foreground mt-10">
-                    No Forums found
+                    No Threads found
                 </div>
             )}
             <div className='justify-center flex'>

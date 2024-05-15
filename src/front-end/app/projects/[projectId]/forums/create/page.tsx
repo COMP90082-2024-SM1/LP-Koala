@@ -1,13 +1,14 @@
 "use client";
 
 import * as z from "zod";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { ArrowLeft } from "lucide-react";
+import { getCurrentUser } from "@/lib/utils";
 
 import {
   Form,
@@ -27,37 +28,56 @@ const formSchema = z.object({
     message: "Title is required",
   }),
   content: z.string().min(1, {
-    message: "Content is required",  // Example validation rule
+    message: "Content is required",
   }),
-  image: z.string().min(1, {
-    message: "image is required",
-  }),
+  // image: z.string().min(1, {
+  //   message: "image is required",
+  // }),
 });
 type FormData = z.infer<typeof formSchema>;
 
 function CreatePage({params}: {params:{projectId: string}}) {
   const router = useRouter();
   const {projectId} = params;
+  const [currentUser, setCurrentUser] = useState(null);
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
       content:"",
-      image: ""
+      // image: ""
     },
   });
-
   const {formState: { isSubmitting, isValid }, reset } = form;
+
+  const fetchUser = async () => {
+    const token = Cookies.get('token')!;
+    if (token) {
+      try {
+        const user = await getCurrentUser(token);
+        console.log(user)
+        setCurrentUser(user);
+      } catch (error) {
+        console.error('Failed to fetch user:', error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   const onSubmit = async (data: FormData) => {
     const fullData = {
+      user: currentUser.id,
       title: data.title,
-      image: data.image,
+      content: data.content,
+      // image: data.image,
     };
       console.log(fullData);
 
     try {
-      const response = await fetch('https://lp-koala-backend-c0a69db0f618.herokuapp.com/projects/createProject', {
+      const response = await fetch('localhost:3000/projects/${projectId}/forums/6641bef75ace9cf438c45c36', {
         method: 'POST',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
@@ -89,7 +109,7 @@ function CreatePage({params}: {params:{projectId: string}}) {
           </Button>
         </Link>
         <h1 className="text-2xl">
-          Create your Forum
+          Create your Thread
         </h1>
         <Form {...form}>
           <form
@@ -140,7 +160,7 @@ function CreatePage({params}: {params:{projectId: string}}) {
               )}
             />
             {/* Image Upload Field */}
-            <FormField
+            {/* <FormField
               control={form.control}
               name="image"
               render={({ field }) => (
@@ -172,7 +192,7 @@ function CreatePage({params}: {params:{projectId: string}}) {
                   <FormMessage />
                 </FormItem>
               )}
-            /><br></br>
+            /><br></br> */}
             {/* Form Buttons */}
             <div className="flex items-center gap-x-2">
               <Link href="/projects">

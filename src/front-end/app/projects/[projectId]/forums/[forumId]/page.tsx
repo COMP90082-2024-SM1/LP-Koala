@@ -30,7 +30,7 @@ const ForumPost = ({ forum, onDelete, onEdit }) => {
             </div>
             {userRole !== 'rater' && (
               <>
-                <Edit size={18} onClick={onEdit} className="text-blue-500 m-1 cursor-pointer" />
+                {/* <Edit size={18} onClick={onEdit} className="text-blue-500 m-1 cursor-pointer" /> */}
                 <Trash size={18} onClick={onDelete} className="text-red-500 m-1 cursor-pointer"/>
               </> 
             )}
