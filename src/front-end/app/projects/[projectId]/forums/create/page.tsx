@@ -57,7 +57,7 @@ function CreatePage({params}: {params:{projectId: string}}) {
     console.log(fullData);
 
     try {
-      const response = await fetch(`localhost:3000/projects/${projectId}/forums/threads/`, {
+      const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/projects/${projectId}/forums/threads`, {
         method: 'POST',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
@@ -67,7 +67,7 @@ function CreatePage({params}: {params:{projectId: string}}) {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to create project');
+        throw new Error('Failed to create thread');
       }
 
       const result = await response.json();
@@ -186,7 +186,7 @@ function CreatePage({params}: {params:{projectId: string}}) {
               <Button
                 type="submit"
                 disabled={!isValid || isSubmitting}
-                className={cn('z-[-10]')}
+                // className={}？
               >
                 Submit
               </Button>

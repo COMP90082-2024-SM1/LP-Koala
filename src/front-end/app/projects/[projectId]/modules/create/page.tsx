@@ -49,7 +49,7 @@ function CreatePage({params}:ProjectProps) {
       console.log(fullData);
 
     try {
-      const response = await fetch('https://lp-koala-backend-c0a69db0f618.herokuapp.com/createModule', {
+      const response = await fetch('https://lp-koala-backend-c0a69db0f618.herokuapp.com/modules/createModule', {
         method: 'POST',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
