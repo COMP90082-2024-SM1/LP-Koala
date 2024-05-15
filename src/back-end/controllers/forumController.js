@@ -1,7 +1,5 @@
-const Forum = require('./../models/forumModels/forumModel');
 const Post = require('./../models/forumModels/postModel');
 const Thread = require('./../models/forumModels/threadModel');
-const Respond = require('./../models/forumModels/respondModel');
 const Project = require('./../models/projectModel');
 const factory = require('./activityHandler');
 const asyncCatch = require('./../utils/asyncCatch');
@@ -41,22 +39,6 @@ const isDescendent = async (rootId, descendantType, descendantId) => {
         { $match: { 'posts._id': descendantId } },
       ]
     );
-  } else if (descendantType === 'respond') {
-    aggconfig.push(
-      ...[
-        { $unwind: '$threads' },
-        {
-          $lookup: {
-            from: 'posts',
-            localField: 'threads.posts',
-            foreignField: '_id',
-            as: 'posts',
-          },
-        },
-        { $unwind: '$posts' },
-        { $match: { 'posts.responds': descendantId } },
-      ]
-    );
   } else {
     return false;
   }
@@ -64,7 +46,7 @@ const isDescendent = async (rootId, descendantType, descendantId) => {
     ...[{ $project: { _id: 1, exists: { $literal: true } } }, { $limit: 1 }]
   );
   // console.log(aggconfig);
-  const result = await Forum.aggregate(aggconfig);
+  const result = await Project.aggregate(aggconfig);
   // console.log(result);
   if (result.length === 0) {
     // console.log(`Instance is not in the given grandparent`);
@@ -78,11 +60,9 @@ const createChild = (Model) =>
   asyncCatch(async (req, res, next) => {
     let parent;
     if (Model.modelName === 'Thread') {
-      parent = await Forum.findById(req.params.id);
+      parent = await Project.findById(req.params.projectId);
     } else if (Model.modelName === 'Post') {
       parent = await Thread.findById(req.params.id);
-    } else if (Model.modelName === 'Respond') {
-      parent = await Post.findById(req.params.id);
     }
     if (!parent) {
       return next(
@@ -104,62 +84,78 @@ const createChild = (Model) =>
 
 exports.checkDescendant = (Model) =>
   asyncCatch(async (req, res, next) => {
-    const rootProject = await Project.findById(req.params.projectId);
-    if (Model.modelName === 'Forum') {
-      if (req.params.id != rootProject.forum) {
-        return next(
-          new AppError("This project doesn't have this document", 404)
-        );
-      }
-      next();
-    } else {
-      const forumID = rootProject.forum;
-      const descendantId = new mongoose.Types.ObjectId(req.params.id);
-      const result = await isDescendent(
-        forumID,
-        Model.modelName.toLowerCase(),
-        descendantId
-      );
-      if (!result) {
-        return next(
-          new AppError("This project doesn't have this document", 404)
-        );
-      }
-      next();
+    const rootID = new mongoose.Types.ObjectId(req.params.projectId);
+    const descendantId = new mongoose.Types.ObjectId(req.params.id);
+    const result = await isDescendent(
+      rootID,
+      Model.modelName.toLowerCase(),
+      descendantId
+    );
+    if (!result) {
+      return next(new AppError("This project doesn't have this document", 404));
     }
+    next();
   });
 
-exports.getAllForums = factory.getAll(Forum);
-exports.getAllPosts = factory.getAll(Post);
-exports.getAllThreads = factory.getAll(Thread);
-exports.getAllResponds = factory.getAll(Respond);
-
-exports.createOneForum = asyncCatch(async (req, res, next) => {
-  const result = await Forum.create(req.body);
-  // update the corresponding project reference
-  await Project.findByIdAndUpdate(
-    req.params.projectId,
-    { forum: result.id },
-    { new: true, runValidators: true }
-  );
-  res.status(201).json({
+exports.getAllThreads = asyncCatch(async (req, res, next) => {
+  const proj = await Project.findById(req.params.projectId).populate('threads');
+  res.status(200).json({
     status: 'success',
     data: {
-      data: result,
+      data: proj.threads,
     },
   });
 });
 
+// exports.createOneForum = asyncCatch(async (req, res, next) => {
+//   const result = await Forum.create(req.body);
+//   // update the corresponding project reference
+//   await Project.findByIdAndUpdate(
+//     req.params.projectId,
+//     { forum: result.id },
+//     { new: true, runValidators: true }
+//   );
+//   res.status(201).json({
+//     status: 'success',
+//     data: {
+//       data: result,
+//     },
+//   });
+// });
+const deletePostAndRemoveReference = async (postId) => {
+  // Find the post to get its parent thread
+  const post = await Post.findById(postId);
+  if (!post) {
+    throw new Error('Post not found');
+  }
+  const thread = await Thread.findOne({ posts: postId });
+  if (!thread) {
+    throw new Error('Thread not found for this post');
+  }
+
+  thread.posts.pull(postId);
+  await thread.save();
+
+  // Delete the post
+  return await Post.findByIdAndDelete(postId);
+};
 exports.createOnePost = createChild(Post);
 exports.createOneThread = createChild(Thread);
-exports.createOneRespond = createChild(Respond);
 
-exports.getOneForum = factory.getOne(Forum);
 exports.getOnePost = factory.getOne(Post);
 exports.getOneThread = factory.getOne(Thread);
-exports.getOneRespond = factory.getOne(Respond);
 
-exports.deleteOneForum = factory.deleteOne(Forum);
-exports.deleteOnePost = factory.deleteOne(Post);
+exports.deleteOnePost = asyncCatch(async (req, res, next) => {
+  const result = await deletePostAndRemoveReference(req.params.id);
+
+  if (!result) {
+    console.log(req.params);
+    return next(new AppError('No such document found with given ID', 404));
+  }
+
+  res.status(204).json({
+    status: 'success',
+    data: null,
+  });
+});
 exports.deleteOneThread = factory.deleteOne(Thread);
-exports.deleteOneRespond = factory.deleteOne(Respond);

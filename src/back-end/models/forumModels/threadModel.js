@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const Post = require('./postModel');
 const User = require('./../userModel');
 const threadSchema = new mongoose.Schema({
   title: {
@@ -37,6 +37,13 @@ threadSchema.pre(/^find/, function (next) {
 threadSchema.pre('save', function (next) {
   if (this.isNew) {
     this.creatAt = Date.now();
+  }
+  next();
+});
+threadSchema.pre('findOneAndDelete', async function (next) {
+  const thread = await this.model.findOne(this.getQuery());
+  if (thread) {
+    await Post.deleteMany({ _id: { $in: thread.posts } });
   }
   next();
 });

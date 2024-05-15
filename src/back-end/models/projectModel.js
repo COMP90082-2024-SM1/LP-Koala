@@ -19,10 +19,12 @@ const projectSchema = new Item({
       ref: 'Module',
     },
   ],
-  forum: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'forum',
-  },
+  threads: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Thread',
+    },
+  ],
 });
 const Project = mongoose.model('Project', projectSchema);
 

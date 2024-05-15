@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const User = require('./../userModel');
-
 const postSchema = new mongoose.Schema({
   content: {
     type: String,
@@ -18,18 +17,7 @@ const postSchema = new mongoose.Schema({
       message: 'Error: No user information',
     },
   },
-  responds: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Respond',
-    },
-  ],
   creatAt: Date,
-});
-
-postSchema.pre(/^find/, function (next) {
-  this.populate('responds');
-  next();
 });
 
 postSchema.pre('save', function (next) {
@@ -38,7 +26,13 @@ postSchema.pre('save', function (next) {
   }
   next();
 });
-
+// postSchema.pre('findOneAndDelete', async function (next) {
+//   const post = await this.model.findOne(this.getQuery());
+//   if (post) {
+//     await Thread.updateOne({ posts: post._id }, { $pull: { posts: post._id } });
+//   }
+//   next();
+// });
 const Post = mongoose.model('Post', postSchema);
 
 module.exports = Post;
