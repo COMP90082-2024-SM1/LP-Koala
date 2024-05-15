@@ -3,23 +3,23 @@ import { PlusCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {useRouter} from "next/navigation";
 import {useEffect, useState} from 'react';
-import ActivityList from "./_components/activity-list";
+import ThreadList from "./_components/thread-list";
 import Cookies from "js-cookie";
 import { getUserRole } from "@/lib/utils";
 import {ClipLoader} from "react-spinners";
 
 
-function Page({params}:{params:{projectId: string, moduleId: string}}) {
+function Page({params}:{params:{projectId: string, threadId: string}}) {
     const router = useRouter();
-    const {projectId, moduleId} = params;
-    const [activities, setActivities] = useState([])
+    const {projectId} = params;
+    const [threads, setThreads] = useState([])
     const [userRole, setUserRole] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const getActivities = async ()=> {
+    const getThreads = async ()=> {
         try {
             const token = Cookies.get('token')!;
 
-            const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/modules/${moduleId}`,{
+            const response = await fetch(`localhost:3000/projects/${projectId}/forums/threads/`,{
                 method: "GET",
                 headers: {
                     "Authorization": token!
@@ -27,9 +27,9 @@ function Page({params}:{params:{projectId: string, moduleId: string}}) {
             }).then(async r => {
                 if (r.ok) {
                     const result = await r.json();
-                    console.log(result.data.data.activities);
+                    console.log(result.data.threads);
                     setIsLoading(false);
-                    setActivities(result.data.data.activities);
+                    setThreads(result.data.threads);
                 }
             });
 
@@ -40,7 +40,7 @@ function Page({params}:{params:{projectId: string, moduleId: string}}) {
     }
 
     useEffect(() => {
-        getActivities();
+        getThreads();
     }, []);
 
     useEffect(() => {
@@ -63,8 +63,8 @@ function Page({params}:{params:{projectId: string, moduleId: string}}) {
                 )}
             </div>
 
-            <ActivityList activities={activities} projectId={projectId} moduleId={moduleId} />
-            {activities.length === 0 && !isLoading && (
+            <ThreadList threads={threads} projectId={projectId} />
+            {threads.length === 0 && !isLoading && (
                 <div className="text-center text-sm text-muted-foreground mt-10">
                     No Threads found
                 </div>

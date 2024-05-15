@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { ArrowLeft } from "lucide-react";
-import { getCurrentUser } from "@/lib/utils";
 
 import {
   Form,
@@ -27,7 +26,7 @@ const formSchema = z.object({
   title: z.string().min(1, {
     message: "Title is required",
   }),
-  content: z.string().min(1, {
+  description: z.string().min(1, {
     message: "Content is required",
   }),
   // image: z.string().min(1, {
@@ -39,45 +38,26 @@ type FormData = z.infer<typeof formSchema>;
 function CreatePage({params}: {params:{projectId: string}}) {
   const router = useRouter();
   const {projectId} = params;
-  const [currentUser, setCurrentUser] = useState(null);
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      content:"",
+      description:"",
       // image: ""
     },
   });
   const {formState: { isSubmitting, isValid }, reset } = form;
 
-  const fetchUser = async () => {
-    const token = Cookies.get('token')!;
-    if (token) {
-      try {
-        const user = await getCurrentUser(token);
-        console.log(user)
-        setCurrentUser(user);
-      } catch (error) {
-        console.error('Failed to fetch user:', error);
-      }
-    }
-  };
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
   const onSubmit = async (data: FormData) => {
     const fullData = {
-      user: currentUser.id,
+      description: data.description,
       title: data.title,
-      content: data.content,
       // image: data.image,
     };
-      console.log(fullData);
+    console.log(fullData);
 
     try {
-      const response = await fetch('localhost:3000/projects/${projectId}/forums/6641bef75ace9cf438c45c36', {
+      const response = await fetch(`localhost:3000/projects/${projectId}/forums/threads/`, {
         method: 'POST',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
@@ -93,7 +73,7 @@ function CreatePage({params}: {params:{projectId: string}}) {
       const result = await response.json();
       console.log(result);
       reset();
-      router.push('/projects/${projectId}/forums');
+      router.push(`/projects/${projectId}/forums`);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -102,12 +82,12 @@ function CreatePage({params}: {params:{projectId: string}}) {
   return ( 
     <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
       <div>
-        <Link href='/projects/${projectId}/forums'>
+        {/* <Link href='/projects/${projectId}/forums'>
           <Button style={{ width: '100px', position: 'relative', zIndex: 1 }} className="mt-auto mb-4">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back
           </Button>
-        </Link>
+        </Link> */}
         <h1 className="text-2xl">
           Create your Thread
         </h1>
@@ -123,7 +103,7 @@ function CreatePage({params}: {params:{projectId: string}}) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Forum title
+                    Thread Title
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -139,17 +119,17 @@ function CreatePage({params}: {params:{projectId: string}}) {
             {/* Content Upload Field */}
             <FormField
               control={form.control}
-              name="content"
+              name="description"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Forum Content
+                    Thread Description
                   </FormLabel>
                   <FormControl>
                     <textarea
                       {...field}
                       disabled={isSubmitting}
-                      placeholder="Enter detailed project content"
+                      placeholder="Enter detailed thread description"
                       rows={10}
                       className="w-full p-2 border rounded"
                     />

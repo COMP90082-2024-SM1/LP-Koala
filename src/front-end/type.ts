@@ -25,3 +25,8 @@ export type Activity = {
     description: string,
     content: string,
 }
+export type Thread = {
+    _id: string,
+    title: string,
+    description: string,
+}

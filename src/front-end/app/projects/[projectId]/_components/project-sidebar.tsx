@@ -107,14 +107,13 @@ export const ProjectSidebar =  ({projectId}: {projectId:string}) => {
                     showDeleteIcon={true}
                 />
           ))}
-
-          <ProjectSidebarItem
+      </div>
+      <ProjectSidebarItem
             key="forum"
             icon={MessageCircle}
             label="Forum"
             href={`/projects/${projectId}/forums`}
-          />
-      </div>
+      />
       {userRole !== 'rater' && (
         <Button className="my-5 mx-auto flex-row" onClick={() => router.push(`/projects/${projectId}/modules/create`)}>
           <PlusCircle className="h-4 w-4 mr-2" />
