@@ -122,22 +122,27 @@ exports.getAllThreads = asyncCatch(async (req, res, next) => {
 //     },
 //   });
 // });
-const deletePostAndRemoveReference = async (postId) => {
+const deleteAndRemoveReference = async (Model, insId) => {
   // Find the post to get its parent thread
-  const post = await Post.findById(postId);
-  if (!post) {
-    throw new Error('Post not found');
+  const instance = await Model.findById(insId);
+  if (!instance) {
+    throw new Error('Instance not found');
   }
-  const thread = await Thread.findOne({ posts: postId });
-  if (!thread) {
+  let parent;
+  if (Model.modelName === 'Post') {
+    parent = await Thread.findOne({ posts: insId });
+  } else if (Model.modelName === 'Thread') {
+    parent = await Project.findOne({ threads: insId });
+  }
+
+  if (!parent) {
     throw new Error('Thread not found for this post');
   }
-
-  thread.posts.pull(postId);
-  await thread.save();
+  parent[Model.modelName.toLowerCase() + 's'].pull(insId);
+  await parent.save();
 
   // Delete the post
-  return await Post.findByIdAndDelete(postId);
+  return await Model.findByIdAndDelete(insId);
 };
 exports.createOnePost = createChild(Post);
 exports.createOneThread = createChild(Thread);
@@ -146,7 +151,7 @@ exports.getOnePost = factory.getOne(Post);
 exports.getOneThread = factory.getOne(Thread);
 
 exports.deleteOnePost = asyncCatch(async (req, res, next) => {
-  const result = await deletePostAndRemoveReference(req.params.id);
+  const result = await deleteAndRemoveReference(Post, req.params.id);
 
   if (!result) {
     console.log(req.params);
@@ -158,4 +163,16 @@ exports.deleteOnePost = asyncCatch(async (req, res, next) => {
     data: null,
   });
 });
-exports.deleteOneThread = factory.deleteOne(Thread);
+exports.deleteOneThread = asyncCatch(async (req, res, next) => {
+  const result = await deleteAndRemoveReference(Thread, req.params.id);
+
+  if (!result) {
+    console.log(req.params);
+    return next(new AppError('No such document found with given ID', 404));
+  }
+
+  res.status(204).json({
+    status: 'success',
+    data: null,
+  });
+});
