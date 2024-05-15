@@ -8,7 +8,6 @@ import { ArrowLeft, Trash, Edit } from "lucide-react";
 import ConfirmModal from '@/components/confirm-modal';
 import Cookies from "js-cookie";
 import { getUserRole } from "@/lib/utils";
-import {cookies} from "next/headers";
 
 // const ForumPost = ({ forum, onDelete }) => {
 //   const [userRole, setUserRole] = useState<string | null>(null);
@@ -78,7 +77,7 @@ const ThreadIdPage = ({
   const [posts, setPosts] = useState<Post[]>([]);
 
   const getAllUsers = async () => {
-    const token = cookies().get('token')?.value
+    const token = Cookies.get('token')!
     const response = await fetch('https://lp-koala-backend-c0a69db0f618.herokuapp.com/users/getUsers', {
         method: 'GET',
         headers: {
