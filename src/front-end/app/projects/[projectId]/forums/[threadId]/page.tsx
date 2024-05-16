@@ -63,7 +63,6 @@ const ThreadIdPage = ({
                       }: {
   params:{ projectId: string; threadId: string}
                       }) => {
-  
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [user, setUser] = useState('');
@@ -94,7 +93,7 @@ const ThreadIdPage = ({
     try {
       const token = Cookies.get('token')!;
 
-      const response = await fetch(`localhost:3000/projects/${params.projectId}/forums/threads/${params.threadId}`,{
+      const response = await fetch(`http://localhost:3001/projects/${params.projectId}/forums/threads/${params.threadId}`,{
         method: "GET",
         headers: {
           "Authorization": token!
@@ -102,6 +101,7 @@ const ThreadIdPage = ({
       }).then(async r => {
         if (r.ok) {
           const result = await r.json();
+          console.log(result);
           const thread = result.data.data;
           setTitle(thread.title);
           setDescription(thread.description);
@@ -140,7 +140,7 @@ const ThreadIdPage = ({
     const token = Cookies.get('token')!;
     const user = Cookies.get('user')!
     try {
-      const response = await fetch(`localhost:3000/projects/${params.projectId}/forums/threads/${id}`,{
+      const response = await fetch(`http://localhost:3001/projects/${params.projectId}/forums/threads/${id}`,{
           method: 'DELETE',
           headers: {
               "Content-type": "application/json; charset=UTF-8",
@@ -165,7 +165,7 @@ const ThreadIdPage = ({
   const submitReply = async () => {
       const token = Cookies.get('token');
       try {
-          const response = await fetch(`localhost:3000/projects/${params.projectId}/forums/threads/${params.threadId}`, {
+          const response = await fetch(`http://localhost:3001/projects/${params.projectId}/forums/threads/${params.threadId}`, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
@@ -186,7 +186,7 @@ const ThreadIdPage = ({
 
   return (
     <div className="max-w-4xl mx-auto p-4">
-        <Link href='/projects/${projectId}/forums'>
+        <Link href={`/projects/${params.projectId}/forums`}>
             <Button style={{ width: '100px', position: 'relative', zIndex: 1 }} className="mt-auto mb-4">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back
