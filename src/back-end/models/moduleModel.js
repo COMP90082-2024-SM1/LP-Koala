@@ -9,22 +9,17 @@ const moduleSchme = new Item({
   description: {
     type: String,
   },
-  accessTime: {
-    type: Date,
-  },
-  accessable: {
-    type: Boolean,
-    default: true,
-  },
   projectId: {
     type: mongoose.Schema.ObjectId,
     ref: 'Project',
     required: true,
   },
-  activities: [{
-    type: mongoose.Schema.ObjectId,
-    ref: 'activity',
-  }]
+  activities: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'activity',
+    },
+  ],
 });
 
 const Module = mongoose.model('Module', moduleSchme);
