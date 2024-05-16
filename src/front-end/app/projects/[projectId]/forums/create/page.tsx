@@ -57,7 +57,7 @@ function CreatePage({params}: {params:{projectId: string}}) {
     console.log(fullData);
 
     try {
-      const response = await fetch(`http://localhost:3001/projects/${projectId}/forums/threads`, {
+      const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/projects/${projectId}/forums/threads`, {
         method: 'POST',
         headers: {
             "Content-type": "application/json; charset=UTF-8",

@@ -8,6 +8,7 @@ import { ArrowLeft, Trash, Edit } from "lucide-react";
 import ConfirmModal from '@/components/confirm-modal';
 import Cookies from "js-cookie";
 import { getUserRole } from "@/lib/utils";
+import {useRouter} from "next/navigation";
 
 // const ForumPost = ({ forum, onDelete }) => {
 //   const [userRole, setUserRole] = useState<string | null>(null);
@@ -70,11 +71,10 @@ const ThreadIdPage = ({
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const openConfirmModal = () => setShowConfirmModal(true);
   const closeConfirmModal = () => setShowConfirmModal(false);
-  const [threadIdToDelete, setThreadIdToDelete] = useState(null);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [reply, setReply] = useState('');
   const [posts, setPosts] = useState<Post[]>([]);
-
+  const router = useRouter();
   const getAllUsers = async () => {
     const token = Cookies.get('token')!
     const response = await fetch('https://lp-koala-backend-c0a69db0f618.herokuapp.com/users/getUsers', {
@@ -93,7 +93,7 @@ const ThreadIdPage = ({
     try {
       const token = Cookies.get('token')!;
 
-      const response = await fetch(`http://localhost:3001/projects/${params.projectId}/forums/threads/${params.threadId}`,{
+      const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/projects/${params.projectId}/forums/threads/${params.threadId}`,{
         method: "GET",
         headers: {
           "Authorization": token!
@@ -134,24 +134,24 @@ const ThreadIdPage = ({
   };
 
   const handleDelete = async (id: string) => {
-    console.log("Deleting thread with ID:", threadIdToDelete);
+    console.log("Deleting thread with ID:", params.threadId);
     setShowConfirmModal(false);
 
     const token = Cookies.get('token')!;
     const user = Cookies.get('user')!
     try {
-      const response = await fetch(`http://localhost:3001/projects/${params.projectId}/forums/threads/${id}`,{
+      const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/projects/${params.projectId}/forums/threads/${id}`,{
           method: 'DELETE',
           headers: {
               "Content-type": "application/json; charset=UTF-8",
               'authorization': token
           },
-          body: `{"user": ${user}}`
+          // body: `{"user": ${user}}`
       })
 
       if (response.status === 204) {
           console.log('thread',id,' deleted');
-          location.reload();
+          router.push(`/projects/${params.projectId}/forums`);
       }
     } catch (error){
         console.log(error)
@@ -165,7 +165,7 @@ const ThreadIdPage = ({
   const submitReply = async () => {
       const token = Cookies.get('token');
       try {
-          const response = await fetch(`http://localhost:3001/projects/${params.projectId}/forums/threads/${params.threadId}`, {
+          const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/projects/${params.projectId}/forums/threads/${params.threadId}`, {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
@@ -175,7 +175,11 @@ const ThreadIdPage = ({
           });
           if (response.ok) {
               console.log("Reply submitted successfully");
+              const result = await response.json();
               setReply('');
+              setPosts((posts)=> [...posts, {_id: result._id , content: reply, user: user
+              }])
+              router.refresh();
           } else {
               throw new Error('Failed to submit reply');
           }
@@ -230,7 +234,7 @@ const ThreadIdPage = ({
         <ConfirmModal
           isOpen={showConfirmModal}
           onClose={() => closeConfirmModal}
-          onConfirm= {() => threadIdToDelete && handleDelete(threadIdToDelete)}
+          onConfirm= {() => handleDelete(params.threadId)}
         />
     </div>
   );

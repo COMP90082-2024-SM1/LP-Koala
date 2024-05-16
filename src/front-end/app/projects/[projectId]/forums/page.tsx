@@ -19,7 +19,7 @@ function Page({params}:{params:{projectId: string, threadId: string}}) {
         try {
             const token = Cookies.get('token')!;
 
-            const response = await fetch(`http://localhost:3001/projects/${projectId}/forums/threads/`,{
+            const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/projects/${projectId}/forums/threads/`,{
                 method: "GET",
                 headers: {
                     "Authorization": token!
