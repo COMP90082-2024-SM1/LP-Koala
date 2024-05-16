@@ -1,16 +1,18 @@
 'use client';
 import Cookies from "js-cookie";
-import {useEffect, useState} from "react";
+import {use, useEffect, useState} from "react";
 import he from "he";
 import RateModal from '@/components/rate-modal';
 import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getCurrentUser, getUserRole } from "@/lib/utils";
+import { getCurrentUser } from "@/lib/utils";
 
 interface Rating {
   rating: number;
   rater: {
       _id: string;
+      name?: string;
+      role?: string;
   }
 }
 
@@ -46,6 +48,7 @@ const ActivityIdPage = ({
           setContent(decoded);
           setDescription(activity.description);
           setRatings(activity.ratings);
+          console.log(activity.ratings);
         }
       });
 
@@ -59,7 +62,6 @@ const ActivityIdPage = ({
     if (token) {
       try {
         const user = await getCurrentUser(token);
-        console.log(user)
         setCurrentUser(user);
         setUserRole(user.role);
       } catch (error) {
@@ -133,6 +135,23 @@ const ActivityIdPage = ({
     return stars;
   };
 
+  const convertToCSV = (ratings: Rating[]): string => {
+    const headers = "Rater ID, Rater Name, Rating";
+    const rows = ratings.map(rating => `${rating.rater._id}, ${rating.rater.name}, ${rating.rating}`);
+    return [headers, ...rows].join('\n');
+  };
+
+  const downloadCSV = () => {
+    const csvString = convertToCSV(ratings);
+    const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute('download', `activity-${params.activityId}/ratings.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <>
       <div className='p-20'>
@@ -148,6 +167,11 @@ const ActivityIdPage = ({
         <Button className='w-48' onClick={openRateModal}>
           <Star className="h-4 w-4 mr-2" />
           Rate
+        </Button>
+      )}
+      {userRole !== 'rater' && (
+        <Button className='w-48' onClick={downloadCSV}>
+          Download Ratings
         </Button>
       )}
       {rateModalOpen && <RateModal isOpen={rateModalOpen} onClose={closeRateModal} onSubmit={handleRateSubmit} />}
