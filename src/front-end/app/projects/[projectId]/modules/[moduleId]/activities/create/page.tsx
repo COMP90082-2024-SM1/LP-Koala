@@ -46,7 +46,7 @@ const CreateActivityPage = ({params}:{params:{projectId: string, moduleId:string
         <CustomEditor onUpdate={(content)=>{
           setContent(content);
         }}/>
-        <Button type='button' onClick={onClick}>
+        <Button type='button' onClick={onClick} className='m-auto'>
           Create
         </Button>
       </div>
