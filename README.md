@@ -83,5 +83,5 @@ Release v1.0 provides a host of new features designed to enhance the user experi
 
 ### Release v2.0<br>
 Except the functions implemented in Release v1.0, some new features are developed as mentioned in the sprint 3 requirements. Here are the critical updates:<br>
-**Rating**: After studying an activity, raters can rate the current activity from one star to five stars. Moreover, the researchers has the access to downloading the rating data to do the further analysis.
+**Rating**: After studying an activity, raters can rate the current activity from one star to five stars. Moreover, the researchers has the access to downloading the rating data to do the further analysis.<br>
 **Furom**: The researchers can create a thread while the raters can write a post replying to the thread. They can check the answers and discuss their own ideas through the threads.
