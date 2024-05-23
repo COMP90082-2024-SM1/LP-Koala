@@ -81,3 +81,7 @@ Release v1.0 provides a host of new features designed to enhance the user experi
 **User Access**: For raters, they can view alllocated projects and activities in the project while researchers can have access to creating, editing and deleting projects and activities. Meanwhile, the researchers can choose to allocate the raters or remove the allocated raters. For admin, besides the researchers' access, they can also create or delete a user. All the users can change password or edit their profiles.<br>
 **Project Function**: A project is composed of several modules. Projects can be created,edited and deleted by researchers. A module consist of several activities. Modules can be created and deleted by researchers. Activities will display the teaching materials for raters to study, and they can also be created, edited, and deleted by researchers.
 
+### Release v2.0<br>
+Except the functions implemented in Release v1.0, some new features are developed as mentioned in the sprint 3 requirements. Here are the critical updates:<br>
+**Rating**: After studying an activity, raters can rate the current activity from one star to five stars. Moreover, the researchers has the access to downloading the rating data to do the further analysis.
+**Furom**: The researchers can create a thread while the raters can write a post replying to the thread. They can check the answers and discuss their own ideas through the threads.
