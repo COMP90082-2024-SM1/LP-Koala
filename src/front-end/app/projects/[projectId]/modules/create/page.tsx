@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Cookies from "js-cookie";
+import { ArrowLeft } from "lucide-react";
 
 import {
   Form,
@@ -83,6 +84,12 @@ function CreatePage({params}:ProjectProps) {
   return ( 
     <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
       <div>
+        {/* <Link href={`/projects/${params.projectId}/modules`}>
+          <Button style={{ width: '100px', position: 'relative', zIndex: 1 }} className="mt-auto mb-4">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back
+          </Button>
+        </Link> */}
         <h1 className="text-2xl">
           Create your module
         </h1>

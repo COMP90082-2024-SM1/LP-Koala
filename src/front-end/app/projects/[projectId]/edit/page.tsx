@@ -9,6 +9,7 @@ import { ArrowRight } from "lucide-react"
 import Allocation from '@/components/allocate-user';
 import Cookies from "js-cookie";
 import { useRouter } from 'next/navigation';
+import { ArrowLeft } from "lucide-react";
 
 import {
   Form,
@@ -165,6 +166,12 @@ const EditPage: React.FC<PageProps> = ({params}) =>{
   return (
     <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
       <div>
+        <Link href='/projects'>
+          <Button style={{ width: '100px', position: 'relative', zIndex: 1 }} className="mt-auto mb-4">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back
+          </Button>
+        </Link>
         <h1 className="text-2xl">
           Edit your project
         </h1>

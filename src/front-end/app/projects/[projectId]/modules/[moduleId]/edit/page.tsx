@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { useRouter } from 'next/navigation';
+import { ArrowLeft } from "lucide-react";
 
 import {
   Form,
@@ -97,7 +98,7 @@ const EditPage: React.FC<PageProps> = ({params}) =>{
       const result = await response.json();
       console.log(result);
       reset();
-      router.push(`/projects`);
+      router.push(`/projects/${params.projectId}/modules/${params.moduleId}`);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -106,6 +107,12 @@ const EditPage: React.FC<PageProps> = ({params}) =>{
   return (
     <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
       <div>
+      <Link href={`/projects/${params.projectId}/modules/${params.moduleId}`}>
+          <Button style={{ width: '100px', position: 'relative', zIndex: 1 }} className="mt-auto mb-4">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back
+          </Button>
+        </Link>
         <h1 className="text-2xl">
           Edit your Module
         </h1>
