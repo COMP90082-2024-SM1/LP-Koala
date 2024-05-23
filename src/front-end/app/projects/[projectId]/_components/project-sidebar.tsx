@@ -123,7 +123,7 @@ export const ProjectSidebar =  ({projectId}: {projectId:string}) => {
             href={`/projects/${projectId}/forums`}
       />
       {userRole !== 'rater' && (
-        <Button className="my-5 mx-auto flex-row" onClick={() => router.push(`/projects/${projectId}/modules/create`)}>
+        <Button className="my-5 mx-auto flex-row bg-[#1c407f]" onClick={() => router.push(`/projects/${projectId}/modules/create`)}>
           <PlusCircle className="h-4 w-4 mr-2" />
           Add Module
         </Button>

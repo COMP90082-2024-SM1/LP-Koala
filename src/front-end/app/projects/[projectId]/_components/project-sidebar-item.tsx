@@ -76,7 +76,7 @@ export const ProjectSidebarItem = ({
               }}
               className="p-1 opacity-80 hover:opacity-100"
               >
-              <Edit size={18} className="text-blue-500 m-1 cursor-pointer" />
+                  <Edit size={18} className="text-blue-500 m-1" />
               </button>
               <button
                 onClick={(e) => {

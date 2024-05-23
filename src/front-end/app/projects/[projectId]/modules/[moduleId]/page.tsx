@@ -56,7 +56,7 @@ function Page({params}:{params:{projectId: string, moduleId: string}}) {
         <div className="p-6 space-y-4">
             <div className="flex flex-row justify-between">
                 {userRole !== 'rater' && (
-                    <Button className='w-48' onClick={()=>router.push(`/projects/${projectId}/modules/${moduleId}/activities/create`)}>
+                    <Button className='w-48 bg-[#1c407f]' onClick={()=>router.push(`/projects/${projectId}/modules/${moduleId}/activities/create`)}>
                     <PlusCircle className="h-4 w-4 mr-2" />
                         New Activity
                     </Button>

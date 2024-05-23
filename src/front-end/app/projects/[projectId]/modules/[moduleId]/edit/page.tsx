@@ -174,7 +174,7 @@ const EditPage: React.FC<PageProps> = ({params}) =>{
             />
             {/* Form Buttons */}
             <div className="flex items-center gap-x-2">
-              <Link href="/projects">
+              <Link href={`/projects/${params.projectId}/modules/${params.moduleId}}`}>
                 <Button
                   type="button"
                   variant="ghost"
