@@ -20,6 +20,10 @@ const moduleSchme = new Item({
       ref: 'activity',
     },
   ],
+  open: {
+    type: String,
+    default: "true"
+  }
 });
 
 const Module = mongoose.model('Module', moduleSchme);

@@ -24,11 +24,7 @@ const projectSchema = new Item({
       type: mongoose.Schema.ObjectId,
       ref: 'Thread',
     },
-  ],
-  date: {
-    type: String,
-    default: "1970-01-01"
-  }
+  ]
 });
 const Project = mongoose.model('Project', projectSchema);
 
