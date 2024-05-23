@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const User = require('./../userModel');
 
 const respondSchema = new mongoose.Schema({
   user: {
@@ -27,6 +28,6 @@ respondSchema.pre('save', function (next) {
   next();
 });
 
-const respondModel = mongoose.model('respond', respondSchema);
+const Respond = mongoose.model('Respond', respondSchema);
 
-module.exports = respondModel;
+module.exports = Respond;
