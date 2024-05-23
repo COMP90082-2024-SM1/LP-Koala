@@ -10,44 +10,6 @@ import Cookies from "js-cookie";
 import { getUserRole } from "@/lib/utils";
 import {useRouter} from "next/navigation";
 
-// const ForumPost = ({ forum, onDelete }) => {
-//   const [userRole, setUserRole] = useState<string | null>(null);
-//   useEffect(() => {
-//     const fetchUserRole = async () => {
-//       const role = await getUserRole(Cookies.get('token'));
-//       setUserRole(role);
-//     };
-  
-//     fetchUserRole();
-//   }, []);
-
-//   return (
-//     <div className="bg-white shadow rounded-lg p-6 mb-6">
-//         <div className="flex items-start space-x-4">
-//             {/* <img src={forum.image} alt="Forum" className="w-16 h-16 rounded-full object-cover" /> */}
-//             <div className="flex-1">
-//             <h2 className="text-xl font-bold">{forum.title}</h2>
-//             <p className="text-sm text-gray-500">Posted by {forum.username}</p>
-//             <p className="mt-2 text-gray-700">{forum.description}</p>
-//             </div>
-//             {userRole !== 'rater' && (
-//               <>
-//                 {/* <Edit size={18} onClick={onEdit} className="text-blue-500 m-1 cursor-pointer" /> */}
-//                 <Trash size={18} onClick={onDelete} className="text-red-500 m-1 cursor-pointer"/>
-//               </> 
-//             )}
-//         </div>
-//         <div className="mt-4">
-//             <textarea
-//             className="w-full p-2 border rounded"
-//             placeholder="Write a reply..."
-//             rows={4}
-//             ></textarea>
-//             <Button className="mt-2">Reply</Button>
-//         </div>
-//     </div>
-//   );
-// };
 interface Post {
   _id: string;
   content: string;

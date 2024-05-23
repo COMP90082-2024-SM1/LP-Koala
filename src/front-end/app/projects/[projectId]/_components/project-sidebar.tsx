@@ -13,6 +13,7 @@ import { getUserRole } from "@/lib/utils";
 interface Module {
   _id: string;
   title: string;
+  open: string;
 }
 
 export const ProjectSidebar =  ({projectId}: {projectId:string}) => {
@@ -66,6 +67,10 @@ export const ProjectSidebar =  ({projectId}: {projectId:string}) => {
     fetchUserRole();
   }, []);
 
+  const navigateToEditPage = (moduleId: string) => {
+    router.push(`/projects/${projectId}/modules/${moduleId}/edit`);
+  };
+
   const handleDelete = async (id: string) => {
     console.log("Deleting module", id);
     setShowConfirmModal(false)
@@ -98,14 +103,17 @@ export const ProjectSidebar =  ({projectId}: {projectId:string}) => {
       </div>
       <div className="flex flex-col w-full">
           {modules.map((module) => (
-                <ProjectSidebarItem
+            (userRole === 'researcher' || (userRole === 'rater' && module.open === 'Yes')) && (
+              <ProjectSidebarItem
                     key={module._id}
                     icon={Puzzle}
                     label={module.title}
                     href={`/projects/${projectId}/modules/${module._id}`}
+                    onEdit={() => navigateToEditPage(module._id)}
                     onDelete={() => requestDelete(module._id)}
                     showDeleteIcon={true}
                 />
+            )
           ))}
       </div>
       <ProjectSidebarItem
