@@ -2,19 +2,17 @@
 
 import {useEffect, useState} from "react";
 import Cookies from "js-cookie";
-import {Activity} from "@/type";
+import {Thread} from "@/type";
 import Link from "next/link";
 
-interface ActivityListProps {
-    activities: Activity[],
+interface ThreadListProps {
+    threads: Thread[],
     projectId: string,
-    moduleId: string
 }
-function ActivityList({
-                          activities,
-                          projectId,
-                          moduleId
-                      }:ActivityListProps) {
+function ThreadList({
+                          threads,
+                          projectId
+                      }:ThreadListProps) {
 
     const [ac, setAc] = useState([
         { id: 1, title: 'Hiking' },
@@ -27,15 +25,15 @@ function ActivityList({
 
     return (
         <div className="flex flex-col items-center mt-8">
-            <h2 className="text-3xl font-semibold mb-4">Activities</h2>
+            <h2 className="text-3xl font-semibold mb-4">Threads</h2>
             <ul className="grid gap-4">
-                {activities !== undefined && activities.map(activity => (
+                {threads !== undefined && threads.map(thread => (
                     <Link
-                        href={`/projects/${projectId}/modules/${moduleId}/activities/${activity._id}`}
-                        key={activity._id}
+                        href={`/projects/${projectId}/forums/${thread._id}`}
+                        key={thread._id}
                         className="bg-gray-200 rounded-lg p-4 shadow-md w-64"
                     >
-                        <h3 className="text-xl font-semibold">{activity.description}</h3>
+                        <h3 className="text-xl font-semibold">{thread.title}</h3>
                         {/* You can add more details about each activity here */}
                     </Link>
                 ))}
@@ -44,4 +42,4 @@ function ActivityList({
     );
 }
 
-export default ActivityList;
+export default ThreadList;

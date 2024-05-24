@@ -1,3 +1,4 @@
+
 const Project = require('../models/projectModel');
 const AppError = require('../utils/appError');
 const asyncCatch = require('../utils/asyncCatch');
@@ -24,3 +25,4 @@ exports.getOneProject = factory.getOneDoc(Project, [
 exports.createProject = factory.createOneItem(Project);
 exports.deleteProject = factory.deleteOneDoc(Project);
 exports.updateProject = factory.updateOneItem(Project);
+

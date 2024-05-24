@@ -3,6 +3,7 @@ const {singleChoice, mcqQuestion} = require('./../models/multipleChoiceModel');
 const shortAnswer = require('./../models/shortAnswerModel');
 const activity = require('./../models/activityModel');
 const rating = require('./../models/ratingModel');
+const myModule = require('./../models/moduleModel')
 const factory = require('./activityHandler');
 
 
@@ -14,8 +15,8 @@ exports.getAllActivity = factory.getAll(activity);
 exports.createChoice = factory.createOne(singleChoice);
 exports.createMcq = factory.createOne(mcqQuestion);
 exports.createShortAnswerQuestions = factory.createOne(shortAnswer);
-exports.createActivity = factory.createOne(activity);
-exports.createRating = factory.createOne(rating);
+exports.createActivity = factory.createNestObj(activity, myModule);
+exports.createRating = factory.createNestObj(rating, activity);
 
 exports.getOneChoice = factory.getOne(singleChoice);
 exports.getOneMcqQuestion = factory.getOne(mcqQuestion);
@@ -27,3 +28,4 @@ exports.deleteChoice = factory.deleteOne(singleChoice);
 exports.deleteMcq = factory.deleteOne(mcqQuestion);
 exports.deleteActivity = factory.deleteOne(activity);
 exports.deleteShortAnswerQuestions = factory.deleteOne(shortAnswer);
+exports.deleteRating = factory.deleteOne(rating);

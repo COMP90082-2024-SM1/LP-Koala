@@ -9,6 +9,7 @@ import { ArrowRight } from "lucide-react"
 import Allocation from '@/components/allocate-user';
 import Cookies from "js-cookie";
 import { useRouter } from 'next/navigation';
+import { ArrowLeft } from "lucide-react";
 
 import {
   Form,
@@ -63,7 +64,7 @@ const EditPage: React.FC<PageProps> = ({params}) =>{
 
   useEffect(() => {
     const fetchProject = async () => {
-      const response = await fetch(`http://localhost:3000/projects/${params.projectId}`, {
+      const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/projects/${params.projectId}`, {
         method: 'GET',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
@@ -140,7 +141,7 @@ const EditPage: React.FC<PageProps> = ({params}) =>{
       console.log(fullData);
 
     try {
-      const response = await fetch(`http://localhost:3000/projects/${params.projectId}`, {
+      const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/projects/${params.projectId}`, {
         method: 'POST',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
@@ -165,6 +166,12 @@ const EditPage: React.FC<PageProps> = ({params}) =>{
   return (
     <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
       <div>
+        <Link href='/projects'>
+          <Button style={{ width: '100px', position: 'relative', zIndex: 1 }} className="mt-auto mb-4">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back
+          </Button>
+        </Link>
         <h1 className="text-2xl">
           Edit your project
         </h1>

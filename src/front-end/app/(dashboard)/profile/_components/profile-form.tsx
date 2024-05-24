@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 export function ProfileForm () {
 
-    const user = JSON.parse(Cookies.get('user')!);
+    const user = JSON.parse(Cookies.get('user')??null)??{name:''};
     const token = Cookies.get('token')!;
     const [isEditing, setIsEditing] = useState(false);
     const [editedName, setEditedName] = useState(user.name);
@@ -19,7 +19,7 @@ export function ProfileForm () {
 
         Cookies.set('user', JSON.stringify(user));
         try {
-            const response = await fetch('http://localhost:3000/users/updateName', {
+            const response = await fetch('https://lp-koala-backend-c0a69db0f618.herokuapp.com/users/updateName', {
                 method: "PATCH",
                 body: JSON.stringify({name:editedName}),
                 headers: {

@@ -7,7 +7,8 @@ exports.getModules = factory.getAllItems(Module);
 exports.getOneModule = factory.getOneDoc(Module, [
     {
       path: 'activities',
-}]);
+      select: '-ratings -__v -multipleChoiceQuestions -shortAnswerQuestions -files -ratings -content'
+    }]);
 exports.createModule = asyncCatch(async (req, res, next) => {
   // Pass researchers according to front-end input
   if (!req.body.researchers || req.body.researchers == []) {

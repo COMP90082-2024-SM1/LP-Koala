@@ -9,7 +9,7 @@ export type ImageElement = SlateElement & {
     href: string
 }
 
-export type InsertFnTypeImg = (url: string, alt: string, href: string) => void
+export type InsertFnType = (url: string, alt: string, href: string) => void
 export type InsertFnTypeVideo = (url: string, poster: string) => void
 
 export type Project = {
@@ -20,9 +20,13 @@ export type Project = {
     raters: string[]
 
 }
-
 export type Activity = {
     _id: string,
     description: string,
     content: string,
+}
+export type Thread = {
+    _id: string,
+    title: string,
+    description: string,
 }

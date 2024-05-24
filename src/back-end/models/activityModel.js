@@ -28,9 +28,11 @@ const activitySchema = new mongoose.Schema({
 });
 
 activitySchema.pre(/^find/, function(next) {
-    this.populate('multipleChoiceQuestions');
-    this.populate('shortAnswerQuestions');
-    this.populate('files');
+    if(!this._fields){
+        this.populate('multipleChoiceQuestions');
+        this.populate('shortAnswerQuestions');
+        this.populate('files');
+    }
     next();
 })
 

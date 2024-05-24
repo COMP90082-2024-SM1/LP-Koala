@@ -10,7 +10,7 @@ import { ProjectSidebar } from "./project-sidebar";
 
 
 
-export const ProjectMobileSidebar = ({projectId}: {projectId: string}) => {
+export const ProjectMobileSidebar = ({projectId}:{projectId:string}) => {
   return (
     <Sheet>
       <SheetTrigger className="md:hidden pr-4 hover:opacity-75 transition">

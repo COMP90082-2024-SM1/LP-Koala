@@ -111,7 +111,7 @@ export const columns: ColumnDef<User>[] = [
           const token = Cookies.get('token')!
           setIsLoading(true)
           try {
-            const response = await fetch(`http://localhost:3000/users/deleteUser/${_id}`,{
+            const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/users/deleteUser/${_id}`,{
                   method: 'DELETE',
                   headers: {
                     "Content-type": "application/json; charset=UTF-8",
@@ -122,6 +122,7 @@ export const columns: ColumnDef<User>[] = [
             if (response.status === 204) {
               setIsModalOpen(false);
               router.refresh();
+              location.reload();
             }
 
           } catch (error){

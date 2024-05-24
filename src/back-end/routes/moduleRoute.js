@@ -9,7 +9,7 @@ const {
 const {
   protect,
   restrictTo,
-  checkAccess,
+  checkModuleAccess,
 } = require('../controllers/authController');
 const Module = require('../models/moduleModel');
 
@@ -23,8 +23,8 @@ router.post('/createModule', restrictTo('researcher'), createModule);
 
 router
   .route('/:id')
-  .get(checkAccess(Module), getOneModule)
-  .delete(restrictTo('researcher'), checkAccess(Module), deleteModule)
-  .post(restrictTo('researcher'), checkAccess(Module), updateModule);
+  .get(checkModuleAccess(Module), getOneModule)
+  .delete(restrictTo('researcher'), checkModuleAccess(Module), deleteModule)
+  .post(restrictTo('researcher'), checkModuleAccess(Module), updateModule);
 
 module.exports = router;

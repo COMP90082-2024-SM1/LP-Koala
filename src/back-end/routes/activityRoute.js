@@ -29,18 +29,22 @@ router.route('/shortAnswer/:id')
     .delete(activityController.deleteShortAnswerQuestions);
 
 router.route('/')
-    .get(activityController.getAllActivity)
+    .get(activityController.getAllActivity);
+
+router.route('/:id')
     .post(activityController.createActivity);
 
 router.route('/:id')
     .get(activityController.getOneActivity)
     .delete(activityController.deleteActivity);
 
-router.route('/ratings')
+router.route('/:id/ratings')
     .post(activityController.createRating);
 
+
 router.route('/ratings/:id')
-    .get(activityController.getOneRating);
+    .get(activityController.getOneRating)
+    .delete(activityController.deleteRating);
 
 
 

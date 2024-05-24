@@ -21,7 +21,7 @@ const Allocation: React.FC<AllocationProps> = ({ isOpen, onClose, onConfirm, onU
     const [selectedUsers, setSelectedUsers] = useState<string[]>(allocatedUsers?allocatedUsers:[]);
 
     const getUsers = async () => {
-        const response = await fetch('http://localhost:3000/users/getUsers', {
+        const response = await fetch('https://lp-koala-backend-c0a69db0f618.herokuapp.com/users/getUsers', {
             method: 'GET',
             headers: {
                 "Content-type": "application/json; charset=UTF-8",

@@ -1,6 +1,6 @@
 'use client';
 import { ProjectCard } from "@/components/project-card";
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {ClipLoader} from "react-spinners";
 import {getUserRole} from "@/lib/utils";
 import Cookies from "js-cookie";
@@ -18,7 +18,7 @@ export const ProjectsList = () => {
     const [role, setRole] = useState('');
     const getProjectsAndRole = async ()=>{
         const token = Cookies.get('token')!;
-        await fetch('http://localhost:3000/projects', {
+        await fetch('https://lp-koala-backend-c0a69db0f618.herokuapp.com/projects', {
             method: 'GET',
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
@@ -29,8 +29,6 @@ export const ProjectsList = () => {
                 setIsLoading(false);
                 r.json().then(r=>setProjects(r.data))
             }
-        }).catch(error=>{
-            console.log(error);
         })
 
         const role =  await getUserRole(Cookies.get('token'));
