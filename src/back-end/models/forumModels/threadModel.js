@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-
+const Post = require('./postModel');
+const User = require('./../userModel');
 const threadSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -24,25 +25,29 @@ const threadSchema = new mongoose.Schema({
   posts: [
     {
       type: mongoose.Schema.ObjectId,
-      ref: 'post',
+      ref: 'Post',
     },
   ],
   creatAt: Date,
 });
-
 threadSchema.pre(/^find/, function (next) {
   this.populate('posts');
   next();
 });
-
 threadSchema.pre('save', function (next) {
   if (this.isNew) {
     this.creatAt = Date.now();
   }
-
+  next();
+});
+threadSchema.pre('findOneAndDelete', async function (next) {
+  const thread = await this.model.findOne(this.getQuery());
+  if (thread) {
+    await Post.deleteMany({ _id: { $in: thread.posts } });
+  }
   next();
 });
 
-const threadModel = mongoose.model('thread', threadSchema);
+const Thread = mongoose.model('Thread', threadSchema);
 
-module.exports = threadModel;
+module.exports = Thread;

@@ -24,7 +24,7 @@ const SignInForm = () => {
         setIsLoading(true);
         setErrorMessageDisplayed(false);
         try {
-            const response = await fetch('http://localhost:3000/users/login', {
+            const response = await fetch('https://lp-koala-backend-c0a69db0f618.herokuapp.com/users/login', {
                 method: 'POST',
                 body: JSON.stringify(formData),
                 headers: {
@@ -74,7 +74,7 @@ const SignInForm = () => {
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 <form className="space-y-6" onSubmit={onClick} action="#" method="POST">
                     <div>
-                        <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
+                        <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                             Username
                         </label>
                         <div className="mt-2">

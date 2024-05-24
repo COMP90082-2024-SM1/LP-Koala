@@ -1,35 +1,15 @@
 "use client";
 
-import * as z from "zod";
-import axios from "axios";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
-
-
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import CustomEditor from "@/components/custom-editor";
 import {Label} from "@/components/ui/label";
 import {useState} from "react";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
-const formSchema = z.object({
-  title: z.string().min(1, {
-    message: "Title is required",
-  }),
-  description: z.string().min(1, {
-    message: "Description is required",
-  }),
-  image: z.string().min(1, {
-    message: "image is required",
-  }),
-});
 
 const CreateActivityPage = ({params}:{params:{projectId: string, moduleId:string}}) => {
-
-
 
   const [description, setDescription] = useState('');
   const [content, setContent] = useState('');
@@ -37,7 +17,7 @@ const CreateActivityPage = ({params}:{params:{projectId: string, moduleId:string
 
   const onClick = async ()=> {
     const token = Cookies.get('token')!
-    const response = await fetch("http://localhost:3000/activity", {
+    const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/activity/${params.moduleId}`, {
       method: "POST",
       body: JSON.stringify({description, content}),
       headers: {
@@ -47,29 +27,30 @@ const CreateActivityPage = ({params}:{params:{projectId: string, moduleId:string
     })
 
     if (response.ok){
-      const result = await response.json();
-      console.log(result);
-      router.push(`/projects/${params.projectId}/modules/${params.moduleId}`);
+        const result = await response.json();
+        console.log(result);
+        router.push(`/projects/${params.projectId}/modules/${params.moduleId}`);
+
     }
   }
 
-  return ( 
+  return (
 
-  <div className='p-6 h-full'>
+      <div className='p-6 h-full'>
 
-    <div className='my-4 items-center gap-1.5'>
-      <p className='text-center text-xl'>Creat Activity</p>
-      <Label>Description</Label>
-      <Input required value={description} onChange={(event)=>setDescription(event.target.value)}/>
-    </div>
-    <CustomEditor onUpdate={(content)=>{
-        setContent(content);
-      }}/>
-    <Button type='button' onClick={onClick}>
-      Create
-    </Button>
-  </div>
-   );
+        <div className='my-4 items-center gap-1.5'>
+          <p className='text-center text-xl'>Create Activity</p>
+          <Label>Description</Label>
+          <Input required value={description} onChange={(event)=>setDescription(event.target.value)}/>
+        </div>
+        <CustomEditor onUpdate={(content)=>{
+          setContent(content);
+        }}/>
+        <Button type='button' onClick={onClick} className='m-auto'>
+          Create
+        </Button>
+      </div>
+  );
 }
- 
+
 export default CreateActivityPage;

@@ -1,12 +1,12 @@
 "use client";
 
 import * as z from "zod";
-import React, { useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Cookies from "js-cookie";
+import { useRouter } from 'next/navigation';
 import { ArrowLeft } from "lucide-react";
 
 import {
@@ -31,12 +31,17 @@ const formSchema = z.object({
 });
 type FormData = z.infer<typeof formSchema>;
 
-interface ProjectProps  {
-    params: {projectId: string}
+interface PageProps {
+  params: { projectId: string; moduleId: string };
 }
 
-function CreatePage({params}:ProjectProps) {
-  const router = useRouter();
+interface Module {
+  title: string;
+  open: string;
+}
+
+const EditPage: React.FC<PageProps> = ({params}) =>{
+  const router = useRouter(); 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,18 +49,40 @@ function CreatePage({params}:ProjectProps) {
       visibility: "Yes"
     },
   });
+
+  const [module, setModule] = useState<Module | null>(null);
   const {formState: { isSubmitting, isValid }, reset } = form;
+
+  useEffect(() => {
+    const fetchProject = async () => {
+      const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/modules/${params.moduleId}`, {
+        method: 'GET',
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            'Authorization': Cookies.get('token')!
+        },
+      });
+      const {data: {data}} = await response.json();
+      setModule(data);
+      reset({ // Reset form with fetched data
+        title: data.title,
+        visibility: data.open,
+      });
+    };
+
+    fetchProject();
+  }, [params.moduleId, reset]);
 
   const onSubmit = async (data: FormData) => {
     const fullData = {
-      title: data.title,
-      open: data.visibility,
-      projectId: params.projectId
+        title: data.title,
+        open: data.visibility,
+        // projectId: params.projectId
     };
-      console.log(fullData);
+    console.log(fullData);
 
     try {
-      const response = await fetch('https://lp-koala-backend-c0a69db0f618.herokuapp.com/modules/createModule', {
+      const response = await fetch(`https://lp-koala-backend-c0a69db0f618.herokuapp.com/modules/${params.moduleId}`, {
         method: 'POST',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
@@ -64,34 +91,30 @@ function CreatePage({params}:ProjectProps) {
         body: JSON.stringify(fullData)
       });
 
-      const responseBody = await response.json();
       if (!response.ok) {
-        throw new Error('Failed to create module');
+        throw new Error('Failed to create project');
       }
 
-      try {
-        reset();
-        location.replace(`/projects/${params.projectId}/modules/${responseBody.data._id}`)
-      } catch (parseError) {
-          console.error('Error parsing JSON:', parseError);
-          throw new Error('Server error: Expected JSON response, received something else.');
-      }
+      const result = await response.json();
+      console.log(result);
+      reset();
+      router.push(`/projects/${params.projectId}/modules/${params.moduleId}`);
     } catch (error) {
       console.error('Error:', error);
     }
   };
 
-  return ( 
+  return (
     <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
       <div>
-        {/* <Link href={`/projects/${params.projectId}/modules`}>
+      <Link href={`/projects/${params.projectId}/modules/${params.moduleId}`}>
           <Button style={{ width: '100px', position: 'relative', zIndex: 1 }} className="mt-auto mb-4">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back
           </Button>
-        </Link> */}
+        </Link>
         <h1 className="text-2xl">
-          Create your module
+          Edit your Module
         </h1>
         <Form {...form}>
           <form
@@ -110,7 +133,6 @@ function CreatePage({params}:ProjectProps) {
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="e.g., 'Module 1'"
                       {...field}
                     />
                   </FormControl>
@@ -118,7 +140,7 @@ function CreatePage({params}:ProjectProps) {
                 </FormItem>
               )}
             />
-            {/* Visibility Dropdown Field */}
+            {/* Visibility Dropdown */}
             <FormField
               control={form.control}
               name="visibility"
@@ -128,7 +150,7 @@ function CreatePage({params}:ProjectProps) {
                     Visibility
                   </FormLabel>
                   <FormControl>
-                    <div style={{
+                  <div style={{
                       position: 'relative',
                       display: 'inline-block',
                       width: '100%',
@@ -159,7 +181,7 @@ function CreatePage({params}:ProjectProps) {
             />
             {/* Form Buttons */}
             <div className="flex items-center gap-x-2">
-              <Link href={`/projects/${params.projectId}`}>
+              <Link href={`/projects/${params.projectId}/modules/${params.moduleId}}`}>
                 <Button
                   type="button"
                   variant="ghost"
@@ -181,5 +203,5 @@ function CreatePage({params}:ProjectProps) {
     </div>
    );
 }
- 
-export default CreatePage;
+
+export default EditPage;

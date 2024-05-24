@@ -19,7 +19,7 @@ const ChangePasswordForm = () => {
         setIsLoading(true);
         setErrorMessageDisplayed(false);
         try {
-            const response = await fetch('http://localhost:3000/users/updateMyPassword', {
+            const response = await fetch('https://lp-koala-backend-c0a69db0f618.herokuapp.com/users/updateMyPassword', {
                 method: 'PATCH',
                 body: JSON.stringify(formData),
                 headers: {
@@ -71,7 +71,7 @@ const ChangePasswordForm = () => {
             <form className="space-y-6" onSubmit={onClick} action="#" method="POST">
                 <div>
                     <div className="flex items-center justify-between">
-                        <label htmlFor="current-password" className="block text-sm font-medium leading-6 text-gray-900">
+                        <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                             Current Password
                         </label>
                     </div>

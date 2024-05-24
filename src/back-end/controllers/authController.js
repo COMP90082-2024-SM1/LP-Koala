@@ -2,6 +2,7 @@ const asyncCatch = require('../utils/asyncCatch');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 const AppError = require('./../utils/appError');
+const Project = require('../models/projectModel');
 const { promisify } = require('util');
 const verifyDocAccess = require('../utils/verifyDocAccess');
 
@@ -111,24 +112,29 @@ exports.checkAccess = (Model) =>
     if (!doc) {
       return next(new AppError('No document found with that ID', 404));
     }
-    // Check if a rater is able to access a particular module
-    if (req.user.role == 'rater' && doc.accessable) {
-      return next(new AppError('This item is not accessable.', 403));
-    }
-    // Check if a rater can access a module at the current time
-    if (
-      req.user.role == 'rater' &&
-      doc.accessTime &&
-      doc.accessTime > Date.now()
-    ) {
+    if (verifyDocAccess(req, res, next, doc)) {
       return next(
-        new AppError(
-          `This module is locked until ${Date.toLocaleString()}`,
-          403
-        )
+        new AppError('Unauthorised user accessing this document', 403)
       );
     }
-    if (verifyDocAccess(req, res, next, doc)) {
+    next();
+  });
+// Check if a user has access to a particular module
+exports.checkModuleAccess = (Module) =>
+  asyncCatch(async (req, res, next) => {
+    const myModule = await Module.findById(req.params.id);
+    if (!myModule) {
+      return next(new AppError('No document found with that ID', 404));
+    }
+    const projectId = myModule.projectId;
+    const project = await Project.findById(projectId);
+    if (!project) {
+      return next(
+        new AppError('No project associated with this module found ', 404)
+      );
+    }
+
+    if (verifyDocAccess(req, res, next, project)) {
       return next(
         new AppError('Unauthorised user accessing this document', 403)
       );

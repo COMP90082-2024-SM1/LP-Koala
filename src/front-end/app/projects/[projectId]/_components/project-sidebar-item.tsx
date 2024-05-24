@@ -1,6 +1,6 @@
 "use client";
 
-import { LucideIcon, Trash } from "lucide-react";
+import { LucideIcon, Trash, Edit } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Cookies from "js-cookie";
@@ -11,14 +11,18 @@ interface SidebarItemProps {
   icon: LucideIcon;
   label: string;
   href: string;
-  onDelete: () => void; 
+  onDelete?: () => void;
+  onEdit?: () => void;
+  showDeleteIcon?: boolean;
 };
 
 export const ProjectSidebarItem = ({
   icon: Icon,
   label,
   href,
-  onDelete
+  onDelete,
+  onEdit,
+  showDeleteIcon = false
 }: SidebarItemProps) => {
   const pathname = usePathname();
   const router = useRouter();
@@ -63,16 +67,27 @@ export const ProjectSidebarItem = ({
             />
             {label}
           </div>
-          {userRole !== 'rater' && (
-            <button
-            onClick={(e) => {
+          {userRole !== 'rater' && showDeleteIcon &&(
+            <>
+              <button
+              onClick={(e) => {
                 e.stopPropagation(); // Prevents the navigation event
-                onDelete();
-            }}
-            className="p-1 opacity-80 hover:opacity-100"
-            >
-                <Trash size={18} className="text-red-500 m-1" />
-            </button>
+                onEdit();
+              }}
+              className="p-1 opacity-80 hover:opacity-100"
+              >
+                  <Edit size={18} className="text-blue-500 m-1" />
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevents the navigation event
+                  onDelete();
+                }}
+                className="p-1 opacity-80 hover:opacity-100"
+                >
+                    <Trash size={18} className="text-red-500 m-1" />
+                </button>
+            </>
           )}
         </button>
       </>

@@ -13,11 +13,18 @@ const projectSchema = new Item({
   image: {
     type: String,
   },
-  modules: {
-    type: [mongoose.Schema.ObjectId],
-    ref: 'Module',
-  },
-
+  modules: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Module',
+    },
+  ],
+  threads: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Thread',
+    },
+  ]
 });
 const Project = mongoose.model('Project', projectSchema);
 

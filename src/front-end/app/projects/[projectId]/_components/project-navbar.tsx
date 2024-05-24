@@ -8,7 +8,8 @@ import { Button } from "@/components/ui/button"
 
 
 
-export const ProjectNavbar = ({projectId}:{projectId: string}) => {
+export const ProjectNavbar = ({projectId}:{projectId:string}) => {
+    console.log(projectId, 'navbar')
   return (
       <div className="p-4 border-b h-full flex items-center bg-white shadow-sm">
           <p className='text-center right-52 left-52 md:right-28 md:left-80 absolute text-3xl md:text-6xl text-sky-700 z-0'>DLASSP</p>

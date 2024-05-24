@@ -1,52 +1,29 @@
 const express = require('express');
 const forumController = require('./../controllers/forumController');
-const {
-  protect,
-  restrictTo,
-  checkAccess,
-} = require('../controllers/authController');
-const Module = require('../models/moduleModel');
-
-const router = express.Router();
-router.use(protect);
-
-router
-  .route('/')
-  .get(forumController.getAllForums)
-  .post(forumController.createOneForum);
+const Post = require('../models/forumModels/postModel');
+const Thread = require('../models/forumModels/threadModel');
+const router = express.Router({ mergeParams: true });
 
 router
   .route('/threads/')
   .get(forumController.getAllThreads)
   .post(forumController.createOneThread);
 
-router
-  .route('/threads/posts/')
-  .get(forumController.getAllPosts)
-  .post(forumController.createOnePost);
+// router.route('/threads/posts/').get(forumController.getAllPosts);
 
-router
-  .route('/threads/posts/responds/')
-  .get(forumController.getAllResponds)
-  .post(forumController.createOneRespond);
-
-router
-  .route('/threads/posts/responds/:id')
-  .get(forumController.getOneRespond)
-  .delete(forumController.deleteOneRespond);
-
+// router.route('/threads/posts/responds/').get(forumController.getAllResponds);
 router
   .route('/threads/posts/:id')
-  .get(forumController.getOnePost)
-  .delete(forumController.deleteOnePost);
+  .get(forumController.checkDescendant(Post), forumController.getOnePost)
+  .delete(forumController.checkDescendant(Post), forumController.deleteOnePost);
 
 router
   .route('/threads/:id')
-  .get(forumController.getOneThread)
-  .delete(forumController.deleteOneThread);
-router
-  .route('/:id')
-  .get(forumController.getOneForum)
-  .delete(forumController.deleteOneForum);
+  .get(forumController.checkDescendant(Thread), forumController.getOneThread)
+  .delete(
+    forumController.checkDescendant(Thread),
+    forumController.deleteOneThread
+  )
+  .post(forumController.checkDescendant(Thread), forumController.createOnePost);
 
 module.exports = router;
