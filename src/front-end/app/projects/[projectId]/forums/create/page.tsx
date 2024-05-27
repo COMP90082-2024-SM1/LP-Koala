@@ -29,9 +29,6 @@ const formSchema = z.object({
   description: z.string().min(1, {
     message: "Content is required",
   }),
-  // image: z.string().min(1, {
-  //   message: "image is required",
-  // }),
 });
 type FormData = z.infer<typeof formSchema>;
 
@@ -43,7 +40,6 @@ function CreatePage({params}: {params:{projectId: string}}) {
     defaultValues: {
       title: "",
       description:"",
-      // image: ""
     },
   });
   const {formState: { isSubmitting, isValid }, reset } = form;
@@ -52,7 +48,6 @@ function CreatePage({params}: {params:{projectId: string}}) {
     const fullData = {
       description: data.description,
       title: data.title,
-      // image: data.image,
     };
     console.log(fullData);
 
@@ -139,40 +134,6 @@ function CreatePage({params}: {params:{projectId: string}}) {
                 </FormItem>
               )}
             />
-            {/* Image Upload Field */}
-            {/* <FormField
-              control={form.control}
-              name="image"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    Forum image
-                  </FormLabel><br></br>
-                  <FormControl>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      disabled={isSubmitting}
-                      onChange={(e) => {
-                        if (e.target.files && e.target.files[0]) {
-                            const reader = new FileReader()
-                            reader.readAsDataURL(e.target.files[0])
-                            reader.onload = () => {
-                                console.log('called: ', reader)
-                                // console.log(reader.result)
-                                field.onChange(reader.result)
-                            }
-                          field.onChange(e.target.files[0]);
-                        } else {
-                          field.onChange(null); // Set field value to null if no file is selected
-                        }
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /><br></br> */}
             {/* Form Buttons */}
             <div className="flex items-center gap-x-2">
               <Link href="/projects">
