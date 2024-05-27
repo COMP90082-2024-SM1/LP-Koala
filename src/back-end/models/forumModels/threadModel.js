@@ -32,6 +32,7 @@ const threadSchema = new mongoose.Schema({
 });
 threadSchema.pre(/^find/, function (next) {
   this.populate('posts');
+  this.populate('user')
   next();
 });
 threadSchema.pre('save', function (next) {
