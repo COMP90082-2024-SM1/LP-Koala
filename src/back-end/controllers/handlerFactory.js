@@ -74,8 +74,8 @@ exports.getAllItems = (Model) =>
     } else if (role === 'rater' && Model.constructor.modelName === 'Module') {
       query = {
         raters: { $elemMatch: { $eq: id } },
-        accessable: true,
-        accessTime: { $lte: Date.now() },
+        open: true,
+        // accessTime: { $lte: Date.now() },
       };
     } else if (role == null || role != 'admin') {
       // Return error in case no role is found
