@@ -157,12 +157,13 @@ const ThreadIdPage = ({
             {posts.map((post) => (
               <div key={post._id} className="bg-gray-100 p-3 rounded my-2">
                 <p className="text-sm text-gray-800">{post.content}</p>
-                <p className="text-xs text-gray-500">Posted by {post.user.name}</p>
+                {post.user && <p className="text-xs text-gray-500">Posted by {post.user.name}</p>}        
               </div>
             ))}
           </div>
           <div className="mt-4">
               <textarea
+              id="reply"
               className="w-full p-2 border rounded"
               placeholder="Write a reply..."
               rows={4}
@@ -173,7 +174,8 @@ const ThreadIdPage = ({
           </div>
         </div>
         <ConfirmModal
-          isOpen={showConfirmModal}
+          isOpen={
+            showConfirmModal}
           onClose={() => closeConfirmModal}
           onConfirm= {() => handleDelete(params.threadId)}
         />
