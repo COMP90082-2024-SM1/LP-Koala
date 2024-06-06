@@ -64,6 +64,7 @@ exports.getAllItems = (Model) =>
     const role = req.user.role;
     const id = req.user.id;
     let query = {};
+    console.log('GOING TO GET ALL MODULES');
     // Firstly, we find the corresponding query according to their roles
     if (
       role === 'researcher' ||
@@ -74,7 +75,7 @@ exports.getAllItems = (Model) =>
     } else if (role === 'rater' && Model.constructor.modelName === 'Module') {
       query = {
         raters: { $elemMatch: { $eq: id } },
-        open: true,
+        open: 'Yes',
         // accessTime: { $lte: Date.now() },
       };
     } else if (role == null || role != 'admin') {
@@ -87,11 +88,12 @@ exports.getAllItems = (Model) =>
       );
     }
     // Next, display their own models according to their roles
+    console.log(query);
     items = await Model.find(query).populate({
       path: 'researchers',
       select: 'name username',
     });
-
+    console.log(items);
     res.status(200).json({
       status: 'success',
       data: items,
