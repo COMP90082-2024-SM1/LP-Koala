@@ -58,15 +58,17 @@ exports.getOneProject = asyncCatch(async (req, res, next) => {
     return next(new AppError('No document found with that ID', 404));
   }
   // Filter out unpublished modules
-  let filteredModules = [];
-  if (doc.modules.length != 0) {
-    for (const m of doc.modules) {
-      if (m.open == 'Yes') {
-        filteredModules = filteredModules.concat(m);
+  if (req.user.role === 'rater') {
+    let filteredModules = [];
+    if (doc.modules.length != 0) {
+      for (const m of doc.modules) {
+        if (m.open == 'Yes') {
+          filteredModules = filteredModules.concat(m);
+        }
       }
     }
+    doc.modules = filteredModules;
   }
-  doc.modules = filteredModules;
 
   res.status(200).json({
     status: 'success',
