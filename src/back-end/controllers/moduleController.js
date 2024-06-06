@@ -4,34 +4,11 @@ const Project = require('../models/projectModel');
 const asyncCatch = require('../utils/asyncCatch');
 
 exports.getModules = factory.getAllItems(Module);
-exports.getOneModule = asyncCatch(async (req, res, next) => {
-  const popOptions = {
-    path: 'activities',
-    select: '-ratings -__v -multipleChoiceQuestions -shortAnswerQuestions -files -ratings -content'
-  };
-  let query = Model.findById(req.params.id);
-  // Raters cannot access unpublished module
-  if (req.user.role === 'rater') {
-    query = Model.find({
-      _id: req.params.id,
-      open: true,
-    });
-  }
-  if (popOptions) query = query.populate(popOptions);
-  const doc = await query;
-
-  if (!doc) {
-    return next(new AppError('No document found with that ID', 404));
-  }
-  res.status(200).json({
-    status: 'success',
-    data: {
-      data: doc,
-    },
-  });
-});
-  
-
+exports.getOneModule = factory.getOneDoc(Module, [
+    {
+      path: 'activities',
+      select: '-ratings -__v -multipleChoiceQuestions -shortAnswerQuestions -files -ratings -content'
+    }]);
 exports.createModule = asyncCatch(async (req, res, next) => {
   // Pass researchers according to front-end input
   if (!req.body.researchers || req.body.researchers == []) {
