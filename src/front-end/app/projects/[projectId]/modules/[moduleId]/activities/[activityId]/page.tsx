@@ -85,7 +85,7 @@ const ActivityIdPage = ({
       setRatings([lastUserRating]);
     }
 
-  }, [ratings, currentUser]);
+  }, [currentUser]);
 
   
   const handleRateSubmit = async (rating: number) => {
@@ -162,7 +162,7 @@ const ActivityIdPage = ({
               // style={{ wordBreak: "break-word" }}
           />
       </div>
-      {ratings.length > 0 && renderStars(ratings[0].rating)}<br></br><br></br>
+      {/*{ratings.length > 0 && renderStars(ratings[0].rating)}<br></br><br></br>*/}
       {userRole == 'rater' && (
         <Button className='w-48' onClick={openRateModal}>
           <Star className="h-4 w-4 mr-2" />

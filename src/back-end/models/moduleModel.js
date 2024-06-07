@@ -22,8 +22,8 @@ const moduleSchme = new Item({
   ],
   open: {
     type: String,
-    default: "true"
-  }
+    default: 'Yes',
+  },
 });
 
 const Module = mongoose.model('Module', moduleSchme);

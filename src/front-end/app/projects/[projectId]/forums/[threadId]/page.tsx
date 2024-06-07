@@ -10,15 +10,14 @@ import Cookies from "js-cookie";
 import { getUserRole } from "@/lib/utils";
 import {useRouter} from "next/navigation";
 
+interface User {
+  name: string;
+}
+
 interface Post {
   _id: string;
   content: string;
-  user: string;
-}
-
-interface User {
-  _id: string;
-  name: string;
+  user: User;
 }
 
 const ThreadIdPage = ({
@@ -28,8 +27,7 @@ const ThreadIdPage = ({
                       }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [user, setUser] = useState('');
-  const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [username, setUserName] = useState('');
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const openConfirmModal = () => setShowConfirmModal(true);
   const closeConfirmModal = () => setShowConfirmModal(false);
@@ -37,19 +35,6 @@ const ThreadIdPage = ({
   const [reply, setReply] = useState('');
   const [posts, setPosts] = useState<Post[]>([]);
   const router = useRouter();
-  const getAllUsers = async () => {
-    const token = Cookies.get('token')!
-    const response = await fetch('https://lp-koala-backend-c0a69db0f618.herokuapp.com/users/getUsers', {
-        method: 'GET',
-        headers: {
-            "Content-type": "application/json; charset=UTF-8",
-            "Authorization": token!
-        }
-    })
-
-    const responseObject = await response.json()
-    setAllUsers(responseObject.data.users);
-  }
 
   const getThread = async ()=> {
     try {
@@ -67,7 +52,7 @@ const ThreadIdPage = ({
           const thread = result.data.data;
           setTitle(thread.title);
           setDescription(thread.description);
-          setUser(thread.user);
+          setUserName(thread.user.name);
           setPosts(thread.posts);
         }
       });
@@ -77,7 +62,6 @@ const ThreadIdPage = ({
   }
 
   useEffect(() => {
-    getAllUsers();
     getThread();
   }, [params.threadId]);
 
@@ -89,11 +73,6 @@ const ThreadIdPage = ({
   
     fetchUserRole();
   }, []);
-
-  const findUserNameById = (userId) => {
-    const user = allUsers.find(user => user._id === userId);
-    return user ? user.name : 'Unknown';
-  };
 
   const handleDelete = async (id: string) => {
     console.log("Deleting thread with ID:", params.threadId);
@@ -139,7 +118,8 @@ const ThreadIdPage = ({
               console.log("Reply submitted successfully");
               const result = await response.json();
               setReply('');
-              setPosts((posts)=> [...posts, {_id: result._id , content: reply, user: user
+              console.log(result);
+              setPosts((posts)=> [...posts, {_id: result._id , content: reply, user: result.user
               }])
               router.refresh();
           } else {
@@ -160,10 +140,9 @@ const ThreadIdPage = ({
         </Link>
         <div className="bg-white shadow rounded-lg p-6 mb-6">
           <div className="flex items-start space-x-4">
-              {/* <img src={forum.image} alt="Forum" className="w-16 h-16 rounded-full object-cover" /> */}
               <div className="flex-1">
               <h2 className="text-xl font-bold">{title}</h2>
-              <p className="text-sm text-gray-500">Posted by {findUserNameById(user)}</p>
+              <p className="text-sm text-gray-500">Posted by {username}</p>
               <p className="mt-2 text-gray-700">{description}</p>
               </div>
               {userRole !== 'rater' && (
@@ -178,12 +157,13 @@ const ThreadIdPage = ({
             {posts.map((post) => (
               <div key={post._id} className="bg-gray-100 p-3 rounded my-2">
                 <p className="text-sm text-gray-800">{post.content}</p>
-                <p className="text-xs text-gray-500">Posted by {findUserNameById(post.user)}</p>
+                {post.user && <p className="text-xs text-gray-500">Posted by {post.user.name}</p>}        
               </div>
             ))}
           </div>
           <div className="mt-4">
               <textarea
+              id="reply"
               className="w-full p-2 border rounded"
               placeholder="Write a reply..."
               rows={4}
@@ -194,7 +174,8 @@ const ThreadIdPage = ({
           </div>
         </div>
         <ConfirmModal
-          isOpen={showConfirmModal}
+          isOpen={
+            showConfirmModal}
           onClose={() => closeConfirmModal}
           onConfirm= {() => handleDelete(params.threadId)}
         />

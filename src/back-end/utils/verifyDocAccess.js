@@ -5,6 +5,9 @@ const AppError = require('./appError');
 // NOTE: WE ASSUME EACH DOCUMENT WOULD HAVE A LIST OF RATERS AND RESEARCHERS
 // TO IDENTIFY THEIR ACCESSABILITY.
 module.exports = (req, res, next, doc) => {
+  if (req.user.role == 'admin') {
+    return false;
+  }
   const isUnauthorised = (role, users) =>
     req.user.role === role &&
     users != null &&

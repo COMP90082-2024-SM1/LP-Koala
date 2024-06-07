@@ -27,7 +27,7 @@ router
   .route('/:id')
   .get(checkAccess(Project), projectController.getOneProject)
   .delete(
-    restrictTo('researcher'),
+    restrictTo('researcher','admin'),
     checkAccess(Project),
     projectController.deleteProject
   )

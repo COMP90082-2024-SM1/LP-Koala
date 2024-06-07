@@ -36,20 +36,22 @@ const CreateActivityPage = ({params}:{params:{projectId: string, moduleId:string
 
   return (
 
-      <div className='p-6 h-full'>
-
-        <div className='my-4 items-center gap-1.5'>
-          <p className='text-center text-xl'>Create Activity</p>
-          <Label>Description</Label>
-          <Input required value={description} onChange={(event)=>setDescription(event.target.value)}/>
-        </div>
-        <CustomEditor onUpdate={(content)=>{
-          setContent(content);
-        }}/>
+    <div className='p-6 h-full flex flex-col items-center justify-center' style={{ minHeight: '100vh', overflowY: 'auto' }}>
+      <div className='my-4 w-full text-center gap-1.5'>
+        <p className='text-center text-xl'>Create Activity</p>
+        <Label>Description</Label>
+        <Input required value={description} onChange={(event) => setDescription(event.target.value)} />
+      </div>
+      <CustomEditor onUpdate={(content) => {
+        setContent(content);
+      }} />
+      <div style={{ marginTop: '200px' }}> {/* Adjust the margin as needed */}
         <Button type='button' onClick={onClick} className='m-auto'>
           Create
         </Button>
       </div>
+    </div>
+
   );
 }
 

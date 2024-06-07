@@ -20,6 +20,11 @@ const postSchema = new mongoose.Schema({
   creatAt: Date,
 });
 
+postSchema.pre(/^find/, function (next) {
+  this.populate('user')
+  next();
+});
+
 postSchema.pre('save', function (next) {
   if (this.isNew) {
     this.creatAt = Date.now();
